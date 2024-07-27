@@ -1,0 +1,7 @@
+name: 'Views Vanilla Javascript Slideshow'
+type: module
+description: 'Provides a Vanilla Javascript Slideshow format for Views.'
+core_version_requirement: ^10 || ^11
+package: Custom
+dependencies:
+  - drupal:views
