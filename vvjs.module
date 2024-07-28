@@ -42,7 +42,7 @@ function _vvjs_helper_render_readme() {
   return $filter->process($text, 'en');
 }
 
-// Store Views 3D Carousel preprocess theme functions in a separate .inc file.
+// Store vvjs preprocess theme functions in a separate .inc file.
 \Drupal::moduleHandler()->loadInclude('vvjs', 'inc', 'vvjs.theme');
 
 /**
