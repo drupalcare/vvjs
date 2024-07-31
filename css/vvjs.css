@@ -40,6 +40,12 @@
   background-color: transparent !important;
 }
 
+.vvjs__slide-bottom-btn {
+  all: unset;
+  background-color: gray;
+  border: none;
+}
+
 .vvjs .vvjs__inner > .vvjs__slide-arrows button {
   top: calc(50% - 24px);
 }
@@ -105,10 +111,6 @@
   font-size: 0 !important;
   line-height: initial !important;
   transition: width 0.3s ease-in-out;
-}
-
-.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dots > .vvjs__slide-bottom-btn {
-  background-color: gray;
 }
 
 .vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dots > .vvjs__slide-bottom-btn.vvjs__active {
