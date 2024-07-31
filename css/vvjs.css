@@ -45,10 +45,10 @@
 }
 
 .vvjs .vvjs__inner.not-zero > .vvjs__slide-arrows button,
-.vvjs .vvjs__inner.nav.zero > .vvjs__slide-arrows button,
-.vvjs .vvjs__inner.nav.not-zero > .vvjs__slide-arrows button,
-.vvjs .vvjs__inner.dot.zero > .vvjs__slide-arrows button,
-.vvjs .vvjs__inner.dot.not-zero > .vvjs__slide-arrows button {
+.vvjs .vvjs__inner.numbers.zero > .vvjs__slide-arrows button,
+.vvjs .vvjs__inner.numbers.not-zero > .vvjs__slide-arrows button,
+.vvjs .vvjs__inner.dots.zero > .vvjs__slide-arrows button,
+.vvjs .vvjs__inner.dots.not-zero > .vvjs__slide-arrows button {
   top: calc(50% - 48px);
 }
 
@@ -76,8 +76,8 @@
 }
 
 .vvjs .vvjs__inner .vvjs__ps-value,
-.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number:not(.dot,
-.nav) > .vvjs__slide-bottom-btn {
+.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number:not(.dots,
+.numbers) > .vvjs__slide-bottom-btn {
   opacity: 0;
   height: 0;
   padding: 0;
@@ -91,12 +91,12 @@
   display: none;
 }
 
-.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dot > .vvjs__slide-bottom-btn,
-.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.nav > .vvjs__slide-bottom-btn {
+.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dots > .vvjs__slide-bottom-btn,
+.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.numbers > .vvjs__slide-bottom-btn {
   opacity: 100;
 }
 
-.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dot > .vvjs__slide-bottom-btn {
+.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dots > .vvjs__slide-bottom-btn {
   padding: 0 !important;
   margin: 0 8px;
   width: 10px !important;
@@ -107,11 +107,11 @@
   transition: width 0.3s ease-in-out;
 }
 
-.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dot > .vvjs__slide-bottom-btn {
+.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dots > .vvjs__slide-bottom-btn {
   background-color: gray;
 }
 
-.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dot > .vvjs__slide-bottom-btn.vvjs__active {
+.vvjs .vvjs__inner > .vvjs__slide-nav.vvjs__slide-number.dots > .vvjs__slide-bottom-btn.vvjs__active {
   width: calc(2 * 12px) !important;
   border-radius: 3px !important;
 }

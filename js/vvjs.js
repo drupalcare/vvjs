@@ -64,7 +64,7 @@
       };
 
       const updateNavigationState = (parentId, activeSlideId) => {
-        const allButtons = context.querySelectorAll(`#vvjs__itemshow-${parentId}>.vvjs__slide-nav>.vvjs__slide-bottom-btn`);
+        const allButtons = context.querySelectorAll(`#vvjs-wrap-${parentId}>.vvjs__slide-nav>.vvjs__slide-bottom-btn`);
         allButtons.forEach(button => {
           const buttonId = getElementId(button.id);
           if (buttonId === activeSlideId) {
@@ -96,8 +96,8 @@
       const getNextSlide = (parentId, slideId) => {
         const slidesSelector = `#vvjs__items-${parentId}>.vvjs__slide-item`;
         const currentIdSelector = `#vvjs__items-${parentId}>#vvjs__slide-item-${parentId}-${slideId}`;
-        const activeButtonSelector = `#vvjs__itemshow-${parentId}>.vvjs__slide-nav>#vvjs__slide-bottom-btn-${slideId}`;
-        const allActiveClassesSelector = `#vvjs__itemshow-${parentId}>.vvjs__slide-nav>.vvjs__slide-bottom-btn`;
+        const activeButtonSelector = `#vvjs-wrap-${parentId}>.vvjs__slide-nav>#vvjs__slide-bottom-btn-${slideId}`;
+        const allActiveClassesSelector = `#vvjs-wrap-${parentId}>.vvjs__slide-nav>.vvjs__slide-bottom-btn`;
 
         let slides = context.querySelectorAll(slidesSelector);
         let selectedPane = context.querySelector(currentIdSelector);
@@ -127,7 +127,7 @@
 
         // Resume auto-slide if it was playing
         if (!isPaused) {
-          let slideTime = parseInt(context.querySelector(`#vvjs__itemshow-${parentId}>.vvjs__ps-value`).textContent);
+          let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}>.vvjs__ps-value`).textContent);
           manageAutoSlideInterval('start', parentId, slideTime);
         }
       };
@@ -154,7 +154,7 @@
 
         // Restart the auto-slide interval if the slideshow is not paused
         if (!isPaused) {
-          const slideTime = parseInt(context.querySelector(`#vvjs__itemshow-${parentId}>.vvjs__ps-value`).textContent);
+          const slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}>.vvjs__ps-value`).textContent);
           manageAutoSlideInterval('start', parentId, slideTime);
         }
       };
@@ -182,7 +182,7 @@
       once('init-slides', slides).forEach(slide => {
         let slideId = slide.id;
         let parentId = parseInt(slide.id.split('-')[1]);
-        let slideTime = parseInt(context.querySelector(`#vvjs__itemshow-${parentId}>.vvjs__ps-value`).textContent);
+        let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}>.vvjs__ps-value`).textContent);
 
         manageAutoSlideInterval('start', parentId, slideTime);
 

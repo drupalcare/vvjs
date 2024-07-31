@@ -11,7 +11,7 @@ use Drupal\views\Plugin\views\style\StylePluginBase;
  * @ingroup views_style_plugins
  *
  * @ViewsStyle(
- *   id = "views_vanilla_js_slideshow",
+ *   id = "views_vvjs",
  *   title = @Translation("Views Vanilla JavaScript Slideshow"),
  *   help = @Translation("Render items in a Slideshow using vanilla JavaScript."),
  *   theme = "views_view_vvjs",
@@ -34,8 +34,8 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options = parent::defineOptions();
     $options['time_in_seconds'] = ['default' => 5000];
     $options['navigation'] = ['default' => 'dots'];
-    $options['animation'] = ['default' => 'bottom'];
-    $options['arrows'] = ['default' => TRUE];
+    $options['animation'] = ['default' => 'vvjs__animate_bottom'];
+    $options['arrows'] = ['default' => 'On'];
     $options['unique_id'] = ['default' => $this->generateUniqueId()];
     return $options;
   }
@@ -74,8 +74,8 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#title' => $this->t('Navigation Type'),
       '#options' => [
         'none' => $this->t('None'),
-        'dot' => $this->t('Dots'),
-        'nav' => $this->t('Numbers'),
+        'dots' => $this->t('Dots'),
+        'numbers' => $this->t('Numbers'),
       ],
       '#default_value' => $this->options['navigation'],
       '#description' => $this->t('Show the bottom nav as dots or numbers.'),
@@ -118,15 +118,17 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     return random_int(10000000, 99999999);
   }
 
+
   /**
-   * {@inheritdoc}
+   * Renders the view with the 3D carousel style.
+   *
+   * @return array
+   *   A render array for the 3D carousel.
    */
   public function render() {
     $rows = [];
     foreach ($this->view->result as $row) {
-      $rows[] = [
-        'content' => $this->view->rowPlugin->render($row),
-      ];
+      $rows[] = $this->view->rowPlugin->render($row);
     }
 
     return [
@@ -135,6 +137,11 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#options' => $this->options,
       '#rows' => $rows,
       '#unique_id' => $this->options['unique_id'],
+      '#attached' => [
+        'library' => [
+          'vvjs/vvjs',
+        ],
+      ],
     ];
   }
 
