@@ -35,9 +35,8 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options['time_in_seconds'] = ['default' => 5000];
     $options['navigation'] = ['default' => 'dots'];
     $options['animation'] = ['default' => 'vvjs__animate_bottom'];
-    $options['arrows'] = ['default' => 'On'];
+    $options['arrows'] = ['default' => TRUE];
     $options['unique_id'] = ['default' => $this->generateUniqueId()];
-    // New option for enabling CSS.
     $options['enable_css'] = ['default' => TRUE];
     return $options;
   }
@@ -53,6 +52,13 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#title' => $this->t('Enable CSS Library'),
       '#default_value' => $this->options['enable_css'],
       '#description' => $this->t('Check this box to include the CSS library for styling the slideshow.'),
+    ];
+
+    $form['arrows'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Slide Navigation Arrows'),
+      '#default_value' => $this->options['arrows'],
+      '#description' => $this->t('Display the Slide Navigation Arrows.'),
     ];
 
     $form['time_in_seconds'] = [
@@ -104,13 +110,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       ],
       '#default_value' => $this->options['animation'],
       '#description' => $this->t('Choose the animation type.'),
-    ];
-
-    $form['arrows'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Slide Navigation Arrows'),
-      '#default_value' => $this->options['arrows'],
-      '#description' => $this->t('Display the Slide Navigation Arrows.'),
     ];
   }
 

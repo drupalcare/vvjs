@@ -85,7 +85,7 @@
       </div>
     {% endif %}
 
-    <div class="time-in-seconds" aria-hidden="true">
+    <div class="time-in-seconds" aria-hidden="false" aria-label="{{ 'This is the time in milliseconds for each slide transition. Current setting is ' ~ time_in_seconds ~ ' milliseconds.'|t }}">
       {{ time_in_seconds }}
     </div>
   </div>
