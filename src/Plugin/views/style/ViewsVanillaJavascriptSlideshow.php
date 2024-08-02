@@ -37,6 +37,8 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options['animation'] = ['default' => 'vvjs__animate_bottom'];
     $options['arrows'] = ['default' => 'On'];
     $options['unique_id'] = ['default' => $this->generateUniqueId()];
+    // New option for enabling CSS.
+    $options['enable_css'] = ['default' => TRUE];
     return $options;
   }
 
@@ -45,6 +47,13 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
+
+    $form['enable_css'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable CSS Library'),
+      '#default_value' => $this->options['enable_css'],
+      '#description' => $this->t('Check this box to include the CSS library for styling the slideshow.'),
+    ];
 
     $form['time_in_seconds'] = [
       '#type' => 'select',
@@ -71,14 +80,14 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
     $form['navigation'] = [
       '#type' => 'select',
-      '#title' => $this->t('Navigation Type'),
+      '#title' => $this->t('Slide Indicators'),
       '#options' => [
         'none' => $this->t('None'),
         'dots' => $this->t('Dots'),
         'numbers' => $this->t('Numbers'),
       ],
       '#default_value' => $this->options['navigation'],
-      '#description' => $this->t('Show the bottom nav as dots or numbers.'),
+      '#description' => $this->t('Show the bottom slide navigation dots/numbers'),
     ];
 
     $form['animation'] = [
@@ -98,16 +107,11 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     ];
 
     $form['arrows'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Top Arrows'),
-      '#options' => [
-        'On' => $this->t('On'),
-        'Off' => $this->t('Off'),
-      ],
+      '#type' => 'checkbox',
+      '#title' => $this->t('Slide Navigation Arrows'),
       '#default_value' => $this->options['arrows'],
-      '#description' => $this->t('Display the top left/right arrows.'),
+      '#description' => $this->t('Display the Slide Navigation Arrows.'),
     ];
-
   }
 
   /**
@@ -117,7 +121,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     // 8 digit unique ID
     return random_int(10000000, 99999999);
   }
-
 
   /**
    * Renders the view with the 3D carousel style.
@@ -131,6 +134,16 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       $rows[] = $this->view->rowPlugin->render($row);
     }
 
+    $libraries = [
+      'vvjs/vvjs',
+    ];
+
+    // Conditionally include the CSS library based on the option.
+    if ($this->options['enable_css']) {
+      // Updated to attach the CSS library.
+      $libraries[] = 'vvjs/vvjs-style';
+    }
+
     return [
       '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
@@ -138,9 +151,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#rows' => $rows,
       '#unique_id' => $this->options['unique_id'],
       '#attached' => [
-        'library' => [
-          'vvjs/vvjs',
-        ],
+        'library' => $libraries,
       ],
     ];
   }

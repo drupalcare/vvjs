@@ -10,3 +10,9 @@ vvjs:
     - core/drupal.ajax
     - core/drupalSettings
     - core/once
+
+vvjs-style:
+  version: VERSION
+  css:
+    theme:
+      css/vvjs-style.css: { }

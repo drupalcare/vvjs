@@ -30,41 +30,42 @@
 ] %}
 
 {# Slideshow fields #}
-{% set pb_prev_next = options.arrows %}
-{% set pb_bottom_nav = options.navigation %}
-{% set pb_animated_tab = options.animation %}
-{% set pb_play_stop = options.time_in_seconds %}
+{% set nav_arrows = options.arrows %}
+{% set nav_arrows = options.arrows ? 'On' : 'Off' %}
+{% set nav_dots_numbers = options.navigation %}
+{% set animation = options.animation %}
+{% set time_in_seconds = options.time_in_seconds %}
 
 {# Main wrapper #}
 <div {{ attributes.addClass(classes).setAttribute('id', view_id) }}>
 
   {% set total_slides = 0 %}
-  <div id="{{ slide_id }}" class="vvjs__inner{{ pb_bottom_nav ? ' ' ~ pb_bottom_nav }}{{ pb_play_stop == 0 ? ' zero' : ' not-zero' }}">
-    <div id="vvjs__items-{{ unique_id }}" class="vvjs__items">
+  <div id="{{ slide_id }}" class="slideshow-inner{{ nav_dots_numbers ? ' ' ~ nav_dots_numbers }}{{ time_in_seconds == 0 ? ' zero' : ' not-zero' }}">
+    <div id="slideshow-items-{{ unique_id }}" class="vvjs__items">
       {% for row in rows %}
         {% set total_slides = total_slides + 1 %}
-        <div id="vvjs__slide-item-{{ unique_id }}-{{ loop.index }}" role="tabpanel" data-index="{{ loop.index }}" aria-hidden="{{ loop.first ? 'false' : 'true' }}" {% if pb_bottom_nav %}aria-labelledby="vvjs__slide-bottom-btn-{{ loop.index }}"{% endif %} class="vvjs__slide-item">
-          <div class="vvjs__slide-item-inner{{ pb_animated_tab ? ' ' ~ pb_animated_tab : '' }}" id="{{ slide_id }}-{{ loop.index }}-pane">
+        <div id="slideshow-item-{{ unique_id }}-{{ loop.index }}" role="tabpanel" data-index="{{ loop.index }}" aria-hidden="{{ loop.first ? 'false' : 'true' }}" {% if nav_dots_numbers %}aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %} class="slideshow-item">
+          <div class="slideshow-item-inner{{ animation ? ' ' ~ animation : '' }}" id="{{ slide_id }}-{{ loop.index }}-pane">
             {{ row.content }}
           </div>
         </div>
       {% endfor %}
     </div>
 
-    {% if pb_bottom_nav or pb_play_stop > 0 %}
-      <div id="vvjs__slide-nav-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="vvjs__slide-nav vvjs__slide-number {{ pb_bottom_nav }}">
-        {% if pb_play_stop > 0 %}
-          <button id="btn-{{ unique_id }}" type="button" role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="vvjs__button hide-{{ pb_play_stop }} vvjs__play playing" aria-live="polite">
+    {% if nav_dots_numbers or time_in_seconds > 0 %}
+      <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
+        {% if time_in_seconds > 0 %}
+          <button id="btn-{{ unique_id }}" type="button" role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button hide-{{ time_in_seconds }} play playing" aria-live="polite">
             <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>&#10073;&nbsp;&#10073;
           </button>
         {% endif %}
-        {% if pb_bottom_nav %}
+        {% if nav_dots_numbers %}
           {% for row in rows %}
-            <button id="vvjs__slide-bottom-btn-{{ loop.index }}" type="button" role="tab"
+            <button id="dots-numbers-button-{{ loop.index }}" type="button" role="tab"
                     aria-label="{{ 'Slide @index'|t({'@index': loop.index}) }}"
                     aria-selected="{{ loop.first ? 'true' : 'false' }}"
-                    aria-controls="vvjs__slide-item-{{ unique_id }}-{{ loop.index }}"
-                    class="vvjs__button vvjs__slide-bottom-btn{{ loop.first ? ' vvjs__active' : '' }}"
+                    aria-controls="slideshow-item-{{ unique_id }}-{{ loop.index }}"
+                    class="button dots-numbers-button{{ loop.first ? ' active' : '' }}"
                     {{ not loop.first ? 'tabindex=-1' }}>
               {{ loop.index }}
             </button>
@@ -73,19 +74,19 @@
       </div>
     {% endif %}
 
-    {% if pb_prev_next %}
-      <div id="vvjs__slide-arrows-{{ unique_id }}" class="vvjs__slide-arrows vvjs__prev-next-arrow-{{ pb_prev_next }}" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
-        <button class="vvjs__prev vvjs__button" role="button" aria-controls="vvjs__items-{{ unique_id }}" aria-label="{{ 'Previous Slide'|t }}">
+    {% if nav_arrows %}
+      <div id="slide-indicators-{{ unique_id }}" class="slide-indicators {{ nav_arrows }}" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
+        <button class="button prev-arrow" role="button" aria-controls="slideshow-items-{{ unique_id }}" aria-label="{{ 'Previous Slide'|t }}">
           <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>❮
         </button>
-        <button class="vvjs__next vvjs__button" role="button" aria-controls="vvjs__items-{{ unique_id }}" aria-label="{{ 'Next Slide'|t }}">
+        <button class="button next-arrow" role="button" aria-controls="slideshow-items-{{ unique_id }}" aria-label="{{ 'Next Slide'|t }}">
           <span class="visually-hidden">{{ 'Next Slide'|t }}</span>❯
         </button>
       </div>
     {% endif %}
 
-    <div class="vvjs__ps-value" aria-hidden="true">
-      {{ pb_play_stop }}
+    <div class="time-in-seconds" aria-hidden="true">
+      {{ time_in_seconds }}
     </div>
   </div>
 

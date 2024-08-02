@@ -1,0 +1,73 @@
+/**
+ * @file
+ * Views Vanilla Javascript Slideshow.
+ *
+ * Filename:     vvjs-style.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.vvjs .slide-indicators button {
+  all: unset;
+  position: absolute;
+  cursor: pointer;
+  transition: 0.4s;
+  outline: none;
+  min-height: 48px;
+  min-width: 48px;
+  font-size: 48px;
+  text-decoration: none !important;
+  background-color: transparent !important;
+}
+
+.vvjs  .slide-indicators button {
+  top: calc(50% - 24px);
+}
+
+.vvjs .slideshow-inner.not-zero > .slide-indicators button,
+.vvjs .slideshow-inner.numbers.zero > .slide-indicators button,
+.vvjs .slideshow-inner.numbers.not-zero > .slide-indicators button,
+.vvjs .slideshow-inner.dots.zero > .slide-indicators button,
+.vvjs .slideshow-inner.dots.not-zero > .slide-indicators button {
+  top: calc(50% - 48px);
+}
+
+.vvjs .slide-indicators .next-arrow {
+  right: 48px;
+}
+
+.vvjs .slide-indicators .prev-arrow {
+  left: 48px;
+}
+
+.vvjs .slide-indicators.On {
+  opacity: 0;
+}
+
+.vvjs .slide-indicators.On:hover {
+  opacity: 100;
+  outline: none;
+  background-color: transparent !important;
+}
+
+.vvjs .nav-dots-numbers > .active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.vvjs .nav-dots-numbers {
+  min-height: calc(2 * 20px);
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.vvjs .nav-dots-numbers .play {
+  font-weight: bold;
+}
+
+.vvjs .nav-dots-numbers .button {
+  padding: 3px 12px;
+  font-size: 14px;
+}
