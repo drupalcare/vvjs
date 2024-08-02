@@ -54,7 +54,7 @@
 
     {% if nav_dots_numbers or time_in_seconds > 0 %}
       <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
-        {% if time_in_seconds != 0 %}
+        {% if time_in_seconds > 0 %}
           <button id="play-pause-button-{{ unique_id }}" type="button" role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button display-{{ time_in_seconds }} play playing" aria-live="polite">
             <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>&#10073;&nbsp;&#10073;
           </button>
