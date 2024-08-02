@@ -12,7 +12,7 @@
   Drupal.behaviors.ViewsVJsSlideshow = {
     attach: function(context, settings) {
 
-      const slides = once('ViewsVanillaJsSlideshow', '.vvjs__items', context);
+      const slides = once('ViewsVanillaJsSlideshow', '.slideshow-items', context);
       if (!slides.length) {
         return;
       }
@@ -112,7 +112,6 @@
       };
 
       const handlePrevNextBtn = (element, itemFunction) => {
-        console.log(element);
         const parentId = getElementId(element, 2);
         manageAutoSlideInterval('clear');
         const slides = context.querySelectorAll(`#slideshow-items-${parentId}>.slideshow-item`);
@@ -121,7 +120,6 @@
 
         updateSlideVisibility(parentId, slideId);
         updateNavigationState(parentId, slideId);
-           console.log(parentId);
         // Resume auto-slide if it was playing
         if (!isPaused) {
           let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}>.time-in-seconds`).textContent);
@@ -178,26 +176,25 @@
 
       once('init-slides', slides).forEach(slide => {
         let slideId = slide.id;
-        let parentId = parseInt(slide.id.split('-')[2]);
+        let parentId = getElementId(slideId, 2);
         let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}>.time-in-seconds`).textContent);
-
         manageAutoSlideInterval('start', parentId, slideTime);
-
         if (slideTime != 0) {
           let stopOnHover = context.getElementById(slideId);
-          let playPause = context.getElementById(`btn-${parentId}`);
+          let playPause = context.getElementById(`play-pause-button-${parentId}`);
           let btnClasses = playPause.classList;
           btnClasses.add('dots-numbers-inactive');
+
 
           const togglePlayPause = () => {
             isPaused = !isPaused;
             if (isPaused) {
-              playPause.classList.replace('play', 'vvjs__pause');
+              playPause.classList.replace('play', 'pause');
               playPause.innerHTML = '&#9654;';
               playPause.setAttribute('aria-label', 'Start automatic slide show');
               manageAutoSlideInterval('clear');
             } else {
-              playPause.classList.replace('vvjs__pause', 'play');
+              playPause.classList.replace('pause', 'play');
               playPause.innerHTML = '&#10073;&nbsp;&#10073;';
               playPause.setAttribute('aria-label', 'Stop automatic slide show');
               manageAutoSlideInterval('start', parentId, slideTime);
