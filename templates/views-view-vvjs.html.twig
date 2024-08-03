@@ -29,8 +29,18 @@
   view_id,
 ] %}
 
+{# Set view id #}
+{% set unique_id = options.unique_id %}
+{% set view_id = 'vvjs-' ~ unique_id %}
+{% set slide_id = 'vvjs-wrap-' ~ unique_id %}
+{# Set the classes for the view #}
+{% set classes = [
+  'vvjs',
+  'vvjs-' ~ unique_id,
+  view_id,
+] %}
+
 {# Slideshow fields #}
-{% set nav_arrows = options.arrows %}
 {% set nav_arrows = options.arrows ? 'On' : 'Off' %}
 {% set nav_dots_numbers = options.navigation %}
 {% set animation = options.animation %}
@@ -55,7 +65,7 @@
     {% if nav_dots_numbers or time_in_seconds > 0 %}
       <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
         {% if time_in_seconds > 0 %}
-          <button id="play-pause-button-{{ unique_id }}" type="button" role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button display-{{ time_in_seconds }} play playing" aria-live="polite">
+          <button id="play-pause-button-{{ unique_id }}" type="button" role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button play-pause-button display-{{ time_in_seconds }} play playing" aria-live="polite">
             <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>&#10073;&nbsp;&#10073;
           </button>
         {% endif %}
@@ -74,7 +84,7 @@
       </div>
     {% endif %}
 
-    {% if nav_arrows %}
+    {% if nav_arrows == 'On' %}
       <div id="slide-indicators-{{ unique_id }}" class="slide-indicators {{ nav_arrows }}" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
         <button class="button prev-arrow" role="button" aria-controls="slideshow-items-{{ unique_id }}" aria-label="{{ 'Previous Slide'|t }}">
           <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>❮

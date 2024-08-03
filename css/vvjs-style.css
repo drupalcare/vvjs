@@ -70,4 +70,5 @@
 .vvjs .nav-dots-numbers .button {
   padding: 3px 12px;
   font-size: 14px;
+  max-height: 30px;
 }

@@ -2,7 +2,9 @@
 
 /**
  * @file
- * Contains vvjs.module.
+ * Provides the module implementation for vvjs.
+ *
+ * Contains template preprocessing and theme definitions for Views.
  *
  * Filename:     vvjs.module
  * Website:      https://www.flashwebcenter.com
@@ -25,22 +27,27 @@ function vvjs_help($route_name, RouteMatchInterface $route_match) {
 
 /**
  * Helper function to render README.md.
+ *
+ * @return string
+ *   The rendered content of README.md.
  */
 function _vvjs_helper_render_readme() {
-  $text = file_get_contents(__DIR__ . "/README.md");
+  $readme_path = __DIR__ . '/README.md';
+  $text = file_get_contents($readme_path);
+
+  if ($text === FALSE) {
+    return t('README.md file not found.');
+  }
 
   if (!\Drupal::moduleHandler()->moduleExists('markdown')) {
-    return '<pre>' . $text . '</pre>';
+    return '<pre>' . htmlspecialchars($text) . '</pre>';
   }
 
   // Use the Markdown filter to render the README.
   $filter_manager = \Drupal::service('plugin.manager.filter');
-  $settings = \Drupal::configFactory()
-    ->get('markdown.settings')
-    ->getRawData();
-  $config = ['settings' => $settings];
-  $filter = $filter_manager->createInstance('markdown', $config);
-  return $filter->process($text, 'en');
+  $settings = \Drupal::config('markdown.settings')->getRawData();
+  $filter = $filter_manager->createInstance('markdown', ['settings' => $settings]);
+  return $filter->process($text, 'en')->getProcessedText();
 }
 
 /**
@@ -61,19 +68,54 @@ function vvjs_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for views_view_vvjs.
+ * Preprocess function for views_view_vvjs template.
+ *
+ * Prepares variables for the views_view_vvjs template.
+ *
+ * @param array $variables
+ *   An associative array containing the variables passed to the template.
  */
-function template_preprocess_views_view_vvjs(&$variables) {
+function template_preprocess_views_view_vvjs(array &$variables) {
+  // Load necessary views theme functions.
   \Drupal::moduleHandler()->loadInclude('views', 'inc', 'views.theme');
+
+  // Access the style plugin handler.
   $handler = $variables['view']->style_plugin;
 
+  // Initialize list attributes array.
   $list_attributes = [];
-  if ($handler->options['animation'] != 'none') {
+
+  // Add options as data attributes.
+  if (!empty($handler->options['animation'])) {
     $list_attributes['data-animation'] = $handler->options['animation'];
   }
 
+  if (!empty($handler->options['navigation'])) {
+    $list_attributes['data-navigation'] = $handler->options['navigation'];
+  }
+
+  if (!empty($handler->options['time_in_seconds'])) {
+    $list_attributes['data-time-in-seconds'] = $handler->options['time_in_seconds'];
+  }
+
+  if (!empty($handler->options['arrows'])) {
+    $list_attributes['data-arrows'] = 'true';
+  }
+
+  // Unique ID for the slideshow instance.
+  if (!empty($handler->options['unique_id'])) {
+    $list_attributes['data-unique-id'] = $handler->options['unique_id'];
+  }
+
+  // Add the enable_css option as a data attribute.
+  if (!empty($handler->options['enable_css'])) {
+    $list_attributes['data-enable-css'] = 'true';
+  }
+
+  // Create an Attribute object for the list.
   $variables['list_attributes'] = new Attribute($list_attributes);
 
+  // Pass additional settings to the template.
   $variables['settings'] = [
     'view_id' => $handler->view->dom_id,
     'animation' => $handler->options['animation'],
@@ -81,7 +123,9 @@ function template_preprocess_views_view_vvjs(&$variables) {
     'navigation' => $handler->options['navigation'],
     'arrows' => $handler->options['arrows'],
     'unique_id' => $handler->options['unique_id'],
+    'enable_css' => $handler->options['enable_css'],
   ];
 
+  // Call the default preprocess function for unformatted views.
   template_preprocess_views_view_unformatted($variables);
 }
