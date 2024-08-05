@@ -9,7 +9,7 @@
 ((Drupal, drupalSettings, once) => {
   'use strict';
 
-  Drupal.behaviors.ViewsVJsSlideshow = {
+  Drupal.behaviors.VVJSlideshow = {
     attach: function(context, settings) {
 
       const slides = once('ViewsVanillaJsSlideshow', '.slideshow-items', context);
