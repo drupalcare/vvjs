@@ -41,6 +41,7 @@
 
 .vvjs .slide-indicators.On {
   opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
 }
 
 .vvjs .slide-indicators.On:hover {
