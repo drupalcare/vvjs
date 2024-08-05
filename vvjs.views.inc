@@ -8,7 +8,7 @@
 /**
  * Implements hook_views_data_alter().
  */
-function vvjs_views_data_alter(array &$data) {
+function vvjs_views_data_alter(array &$data): void {
   // Define the style plugin schema.
   $data['views_style_plugin']['views_vvjs'] = [
     'type' => 'views_style',

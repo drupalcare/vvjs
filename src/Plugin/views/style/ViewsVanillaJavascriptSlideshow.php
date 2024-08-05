@@ -30,7 +30,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   /**
    * Set default options.
    */
-  protected function defineOptions() {
+  protected function defineOptions(): array {
     $options = parent::defineOptions();
     $options['time_in_seconds'] = ['default' => 5000];
     $options['navigation'] = ['default' => 'dots'];
@@ -44,7 +44,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function buildOptionsForm(&$form, FormStateInterface $form_state) {
+  public function buildOptionsForm(&$form, FormStateInterface $form_state): void {
     parent::buildOptionsForm($form, $form_state);
 
     $form['enable_css'] = [
@@ -115,8 +115,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Generates a unique numeric ID for the view display.
+   *
+   * @throws \Random\RandomException
    */
-  protected function generateUniqueId() {
+  protected function generateUniqueId(): int {
     // 8 digit unique ID
     return random_int(10000000, 99999999);
   }
@@ -127,7 +129,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
    * @return array
    *   A render array for the 3D carousel.
    */
-  public function render() {
+  public function render(): array {
     $rows = [];
     foreach ($this->view->result as $row) {
       $rows[] = $this->view->rowPlugin->render($row);
