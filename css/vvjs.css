@@ -55,9 +55,10 @@
 .vvjs .nav-dots-numbers.dots .dots-numbers-button {
   all: unset;
   border: none;
+  cursor: pointer;
 }
 
-.vvjs .nav-dots-numbers .dots-numbers-button {
+.vvjs .nav-dots-numbers.numbers .dots-numbers-button {
   cursor: pointer;
 }
 
@@ -68,7 +69,7 @@
 
 .vvjs .nav-dots-numbers.dots > .dots-numbers-button {
   padding: 0 !important;
-  margin: 0 8px;
+  margin: 10px 8px;
   width: 10px !important;
   height: 10px !important;
   border-radius: 50% !important;

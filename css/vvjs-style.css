@@ -69,7 +69,16 @@
 }
 
 .vvjs .nav-dots-numbers .button {
-  padding: 3px 12px;
-  font-size: 14px;
+  margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vvjs .nav-dots-numbers.dots .button {
+  max-height: 36px;
+}
+
+.vvjs .nav-dots-numbers.numbers .button {
   max-height: 30px;
 }
