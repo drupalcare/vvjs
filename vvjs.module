@@ -99,7 +99,7 @@ function template_preprocess_views_view_vvjs(array &$variables) {
   }
 
   if (!empty($handler->options['arrows'])) {
-    $list_attributes['data-arrows'] = 'true';
+    $list_attributes['data-arrows'] = $handler->options['arrows'];
   }
 
   // Unique ID for the slideshow instance.

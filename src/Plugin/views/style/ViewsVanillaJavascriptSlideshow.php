@@ -35,7 +35,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options['time_in_seconds'] = ['default' => 5000];
     $options['navigation'] = ['default' => 'dots'];
     $options['animation'] = ['default' => 'vvjs__animate_bottom'];
-    $options['arrows'] = ['default' => TRUE];
+    $options['arrows'] = ['default' => 'top'];
     $options['unique_id'] = ['default' => $this->generateUniqueId()];
     $options['enable_css'] = ['default' => TRUE];
     return $options;
@@ -55,10 +55,15 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     ];
 
     $form['arrows'] = [
-      '#type' => 'checkbox',
+      '#type' => 'select',
       '#title' => $this->t('Slide Navigation Arrows'),
+      '#options' => [
+        'none' => $this->t('None'),
+        'sides' => $this->t('Show arrows on the sides'),
+        'top' => $this->t('Show arrows at the top of the slide'),
+      ],
       '#default_value' => $this->options['arrows'],
-      '#description' => $this->t('Display the Slide Navigation Arrows.'),
+      '#description' => $this->t('Side arrows are always visible, while top arrows are hidden by default and appear when you hover over the slide.'),
     ];
 
     $form['time_in_seconds'] = [

@@ -6,51 +6,7 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.vvjs .slide-indicators button {
-  all: unset;
-  position: absolute;
-  cursor: pointer;
-  transition: 0.4s;
-  outline: none;
-  min-height: 48px;
-  min-width: 48px;
-  font-size: 48px;
-  text-decoration: none !important;
-  background-color: transparent !important;
-}
-
-.vvjs  .slide-indicators button {
-  top: calc(50% - 24px);
-}
-
-.vvjs .slideshow-inner.not-zero > .slide-indicators button,
-.vvjs .slideshow-inner.numbers.zero > .slide-indicators button,
-.vvjs .slideshow-inner.numbers.not-zero > .slide-indicators button,
-.vvjs .slideshow-inner.dots.zero > .slide-indicators button,
-.vvjs .slideshow-inner.dots.not-zero > .slide-indicators button {
-  top: calc(50% - 48px);
-}
-
-.vvjs .slide-indicators .next-arrow {
-  right: 48px;
-}
-
-.vvjs .slide-indicators .prev-arrow {
-  left: 48px;
-}
-
-.vvjs .slide-indicators.On {
-  opacity: 0;
-  transition: opacity 0.3s ease, background-color 0.3s ease;
-}
-
-.vvjs .slide-indicators.On:hover {
-  opacity: 100;
-  outline: none;
-  background-color: transparent !important;
-}
-
-.vvjs .nav-dots-numbers > .active {
+.vvjs .nav-dots-numbers.numbers > .active {
   font-weight: bold;
   text-decoration: underline;
 }
@@ -64,21 +20,16 @@
   flex-wrap: wrap;
 }
 
-.vvjs .nav-dots-numbers .play {
-  font-weight: bold;
-}
-
 .vvjs .nav-dots-numbers .button {
   margin: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
+  padding: 6px;
+  max-height: 40px;
 }
 
-.vvjs .nav-dots-numbers.dots .button {
-  max-height: 36px;
-}
-
-.vvjs .nav-dots-numbers.numbers .button {
-  max-height: 30px;
+.vvjs .nav-dots-numbers .play {
+  font-weight: bold;
 }

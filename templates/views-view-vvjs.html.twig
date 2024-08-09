@@ -22,26 +22,17 @@
 {% set unique_id = options.unique_id %}
 {% set view_id = 'vvjs-' ~ unique_id %}
 {% set slide_id = 'vvjs-wrap-' ~ unique_id %}
+{% set nav_arrows = options.arrows %}
 {# Set the classes for the view #}
 {% set classes = [
   'vvjs',
   'vvjs-' ~ unique_id,
-  view_id,
-] %}
-
-{# Set view id #}
-{% set unique_id = options.unique_id %}
-{% set view_id = 'vvjs-' ~ unique_id %}
-{% set slide_id = 'vvjs-wrap-' ~ unique_id %}
-{# Set the classes for the view #}
-{% set classes = [
-  'vvjs',
-  'vvjs-' ~ unique_id,
+  nav_arrows == 'none' ? '' : nav_arrows,
   view_id,
 ] %}
 
 {# Slideshow fields #}
-{% set nav_arrows = options.arrows ? 'On' : 'Off' %}
+
 {% set nav_dots_numbers = options.navigation %}
 {% set animation = options.animation %}
 {% set time_in_seconds = options.time_in_seconds %}
@@ -50,7 +41,7 @@
 <div {{ attributes.addClass(classes).setAttribute('id', view_id) }}>
 
   {% set total_slides = 0 %}
-  <div id="{{ slide_id }}" class="slideshow-inner{{ nav_dots_numbers ? ' ' ~ nav_dots_numbers }}{{ time_in_seconds == 0 ? ' zero' : ' not-zero' }}">
+  <div id="{{ slide_id }}" data-time="{{ time_in_seconds }}" class="slideshow-inner{{ nav_dots_numbers ? ' ' ~ nav_dots_numbers }}{{ time_in_seconds == 0 ? ' zero' : ' not-zero' }}">
     <div id="slideshow-items-{{ unique_id }}" class="slideshow-items">
       {% for row in rows %}
         {% set total_slides = total_slides + 1 %}
@@ -62,7 +53,7 @@
       {% endfor %}
     </div>
 
-    {% if nav_dots_numbers or time_in_seconds > 0 %}
+    {% if nav_dots_numbers != 'none' or time_in_seconds > 0 %}
       <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
         {% if time_in_seconds > 0 %}
           <button id="play-pause-button-{{ unique_id }}" type="button" role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button play-pause-button display-{{ time_in_seconds }} play playing" aria-live="polite">
@@ -70,7 +61,7 @@
               <svg class="svg-pause" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="inherit"><path d="M360-320h80v-320h-80v320Zm160 0h80v-320h-80v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
           </button>
         {% endif %}
-        {% if nav_dots_numbers %}
+        {% if nav_dots_numbers != 'none' %}
           {% for row in rows %}
             <button id="dots-numbers-button-{{ loop.index }}" type="button" role="tab"
                     aria-label="{{ 'Slide @index'|t({'@index': loop.index}) }}"
@@ -85,20 +76,17 @@
       </div>
     {% endif %}
 
-    {% if nav_arrows == 'On' %}
-      <div id="slide-indicators-{{ unique_id }}" class="slide-indicators {{ nav_arrows }}" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
+    {% if nav_arrows != 'none' %}
+      <div id="slide-indicators-{{ unique_id }}" class="slide-indicators" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
         <button class="button prev-arrow" role="button" aria-controls="slideshow-items-{{ unique_id }}" aria-label="{{ 'Previous Slide'|t }}">
-          <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>❮
+          <span class="visually-hidden">{{ 'Previous Slide'|t }}</span><svg class="svg-prev" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="inherit"><path d="m480-320 56-56-64-64h168v-80H472l64-64-56-56-160 160 160 160Zm0 240q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
         </button>
         <button class="button next-arrow" role="button" aria-controls="slideshow-items-{{ unique_id }}" aria-label="{{ 'Next Slide'|t }}">
-          <span class="visually-hidden">{{ 'Next Slide'|t }}</span>❯
+          <span class="visually-hidden">{{ 'Next Slide'|t }}</span><svg class="svg-next" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="inherit"><path d="m480-320 160-160-160-160-56 56 64 64H320v80h168l-64 64 56 56Zm0 240q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
         </button>
       </div>
     {% endif %}
 
-    <div class="time-in-seconds" aria-hidden="false" aria-label="{{ 'This is the time in milliseconds for each slide transition. Current setting is ' ~ time_in_seconds ~ ' milliseconds.'|t }}">
-      {{ time_in_seconds }}
-    </div>
   </div>
 
 </div>

@@ -131,8 +131,8 @@
         updateSlideVisibility(parentId, slideId);
         updateNavigationState(parentId, slideId);
         // Resume auto-slide if it was playing
-        if (!isPaused) {
-          let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}>.time-in-seconds`).textContent);
+        let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}`).getAttribute('data-time'), 10);
+        if (!isPaused && slideTime != 0) {
           manageAutoSlideInterval('start', parentId, slideTime);
         }
       };
@@ -158,8 +158,8 @@
         slideIndex = slideId;
 
         // Restart the auto-slide interval if the slideshow is not paused
-        if (!isPaused) {
-          const slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}>.time-in-seconds`).textContent);
+        let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}`).getAttribute('data-time'), 10);
+        if (!isPaused && slideTime != 0) {
           manageAutoSlideInterval('start', parentId, slideTime);
         }
       };
@@ -187,7 +187,7 @@
       once('init-slides', slides).forEach(slide => {
         let slideId = slide.id;
         let parentId = getElementId(slideId, 2);
-        let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}>.time-in-seconds`).textContent);
+        let slideTime = parseInt(context.querySelector(`#vvjs-wrap-${parentId}`).getAttribute('data-time'), 10);
         manageAutoSlideInterval('start', parentId, slideTime);
         if (slideTime != 0) {
           let stopOnHover = context.getElementById(slideId);
@@ -232,15 +232,27 @@
         }
       });
 
-      once('init-next-arrow', '.slideshow-inner .next-arrow', context).forEach(element => {
+      once('init-next-arrow', '.slideshow-inner button.next-arrow', context).forEach(element => {
         element.addEventListener('click', function(event) {
-          handlePrevNextBtn(event.target.parentElement.id, getNextItemIndex);
+          const buttonElement = event.target.closest('button');
+          if (buttonElement) {
+            const parentElement = buttonElement.parentElement;
+            if (parentElement) {
+              handlePrevNextBtn(parentElement.id, getNextItemIndex);
+            }
+          }
         });
       });
 
-      once('init-prev-arrow', '.slideshow-inner .prev-arrow', context).forEach(element => {
+      once('init-prev-arrow', '.slideshow-inner button.prev-arrow', context).forEach(element => {
         element.addEventListener('click', function(event) {
-          handlePrevNextBtn(event.target.parentElement.id, getPreviousItemIndex);
+          const buttonElement = event.target.closest('button');
+          if (buttonElement) {
+            const parentElement = buttonElement.parentElement;
+            if (parentElement) {
+              handlePrevNextBtn(parentElement.id, getPreviousItemIndex);
+            }
+          }
         });
       });
 

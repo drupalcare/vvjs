@@ -22,16 +22,91 @@
   position: relative;
 }
 
+/* Arrows */
 .vvjs .slideshow-inner > .slide-indicators {
   background-color: transparent !important;
   width: 100%;
+}
+
+.vvjs .slide-indicators button {
+  all: unset;
+  position: absolute;
+  cursor: pointer;
+  transition: 0.4s;
+  outline: none;
+  min-height: 48px;
+  min-width: 48px;
+  font-size: 48px;
+  text-decoration: none !important;
+  background-color: transparent !important;
+}
+
+.vvjs  .slide-indicators button {
+  top: calc(50% - 24px);
+}
+
+.vvjs .slideshow-inner.not-zero > .slide-indicators button,
+.vvjs .slideshow-inner.numbers.zero > .slide-indicators button,
+.vvjs .slideshow-inner.numbers.not-zero > .slide-indicators button,
+.vvjs .slideshow-inner.dots.zero > .slide-indicators button,
+.vvjs .slideshow-inner.dots.not-zero > .slide-indicators button {
+  top: calc(50% - 48px);
+}
+
+.vvjs .slide-indicators .next-arrow {
+  right: 48px;
+}
+
+.vvjs .slide-indicators .prev-arrow {
+  left: 48px;
+}
+
+.vvjs .slide-indicators.sides {
+  opacity: 1;
+}
+
+.vvjs.top .slide-indicators {
+  opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.vvjs.top .slide-indicators:hover {
+  opacity: 100;
+  outline: none;
+  background-color: transparent !important;
+}
+
+.vvjs.sides .slideshow-inner {
+  width: calc(100% - 100px);
+  margin: 0 auto;
+}
+
+.vvjs.sides .slide-indicators .next-arrow {
+  right: -50px;
+}
+
+.vvjs.sides .slide-indicators .prev-arrow {
+  left: -50px;
 }
 
 .vvjs .display-0 {
   display: none;
 }
 
-.time-in-seconds,
+.next-arrow svg,
+.prev-arrow svg {
+  width: 50px;
+  height: 50px;
+  fill: gray;
+}
+
+/* Bottom nav */
+.play-pause-button svg {
+  width: 40px;
+  height: 40px;
+  fill: gray;
+}
+
 .nav-dots-numbers:not(.dots,
 .numbers) > .dots-numbers-button {
   opacity: 0;
@@ -41,15 +116,6 @@
   width: 0;
   font-size: 8px;
   line-height: 0;
-}
-
-.slide-indicators.Off {
-  display: none;
-}
-
-.dots-numbers-inactive {
-  display: inline;
-  width: auto;
 }
 
 .vvjs .nav-dots-numbers.dots .dots-numbers-button {
