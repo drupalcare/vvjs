@@ -55,6 +55,22 @@ function _vvjs_helper_render_readme(): string {
  */
 function vvjs_theme($existing, $type, $theme, $path) {
   return [
+    'views_view_vvjs_fields' => [
+      'variables' => [
+        'view' => NULL,
+        'options' => [],
+        'row' => NULL,
+        'field_alias' => NULL,
+        'attributes' => [],
+        'title_attributes' => [],
+        'content_attributes' => [],
+        'title_prefix' => [],
+        'title_suffix' => [],
+        'fields' => [],
+      ],
+      'template' => 'views-view-vvjs-fields',
+      'path' => $path . '/templates',
+    ],
     'views_view_vvjs' => [
       'variables' => [
         'view' => NULL,
@@ -68,12 +84,7 @@ function vvjs_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Preprocess function for views_view_vvjs template.
- *
- * Prepares variables for the views_view_vvjs template.
- *
- * @param array $variables
- *   An associative array containing the variables passed to the template.
+ * Implements hook_preprocess_HOOK() for views_view_vvjs.
  */
 function template_preprocess_views_view_vvjs(array &$variables) {
   // Load necessary views theme functions.
@@ -107,9 +118,40 @@ function template_preprocess_views_view_vvjs(array &$variables) {
     $list_attributes['data-unique-id'] = $handler->options['unique_id'];
   }
 
-  // Add the enable_css option as a data attribute.
-  if (!empty($handler->options['enable_css'])) {
-    $list_attributes['data-enable-css'] = 'true';
+  // Calculate and pass the background_rgb variable to the template.
+  if (!empty($handler->options['overlay_bg_color'])) {
+    $rgb = _vvjs_hex_to_rgb($handler->options['overlay_bg_color']);
+    $opacity = $handler->options['overlay_bg_opacity'] ?? 1;
+    $background_rgb = "rgba({$rgb['r']}, {$rgb['g']}, {$rgb['b']}, $opacity)";
+    $variables['background_rgb'] = $background_rgb;
+  }
+  else {
+    // Explicitly set to null if no color is chosen.
+    $variables['background_rgb'] = NULL;
+  }
+
+  if (!empty($handler->options['hero_slideshow'])) {
+    $list_attributes['data-hero-slideshow'] = 'true';
+  }
+
+  if (!empty($handler->options['available_breakpoints'])) {
+    $list_attributes['data-available-breakpoints'] = $handler->options['available_breakpoints'];
+  }
+
+  if (isset($handler->options['enable_css'])) {
+    $list_attributes['data-enable-css'] = $handler->options['enable_css'] ? 'true' : 'false';
+  }
+
+  if (!empty($handler->options['min_height'])) {
+    $list_attributes['data-min-height'] = $handler->options['min_height'];
+  }
+
+  if (!empty($handler->options['max_content_width'])) {
+    $list_attributes['data-max-content-width'] = $handler->options['max_content_width'];
+  }
+
+  if (!empty($handler->options['max_width'])) {
+    $list_attributes['data-max-width'] = $handler->options['max_width'];
   }
 
   // Create an Attribute object for the list.
@@ -123,9 +165,61 @@ function template_preprocess_views_view_vvjs(array &$variables) {
     'navigation' => $handler->options['navigation'],
     'arrows' => $handler->options['arrows'],
     'unique_id' => $handler->options['unique_id'],
+    'available_breakpoints' => $handler->options['available_breakpoints'],
     'enable_css' => $handler->options['enable_css'],
+    'min_height' => $handler->options['min_height'],
+    'max_content_width' => $handler->options['max_content_width'],
+    'max_width' => $handler->options['max_width'],
+    'hero_slideshow' => $handler->options['hero_slideshow'],
   ];
+
+  // Customize theme hook suggestions for rows.
+  if (!empty($variables['rows'])) {
+    foreach ($variables['rows'] as $key => $row) {
+      if (isset($row['#theme']) && is_array($row['#theme'])) {
+        foreach ($row['#theme'] as $idx => $theme_hook_suggestion) {
+          // Modify theme hook suggestions to use the custom theme function.
+          $variables['rows'][$key]['#theme'][$idx] = str_replace('views_view_fields', 'views_view_vvjs_fields', $theme_hook_suggestion);
+        }
+      }
+    }
+  }
 
   // Call the default preprocess function for unformatted views.
   template_preprocess_views_view_unformatted($variables);
+}
+
+/**
+ * Prepares variables for views_view_vvjs_fields template.
+ */
+function template_preprocess_views_view_vvjs_fields(array &$variables) {
+  // Load necessary views theme functions.
+  \Drupal::moduleHandler()->loadInclude('views', 'inc', 'views.theme');
+
+  // Preprocess views view fields.
+  template_preprocess_views_view_fields($variables);
+}
+
+/**
+ * Helper function to convert hex color to RGB.
+ *
+ * @param string $hex
+ *   The hex color code.
+ *
+ * @return array
+ *   An associative array with 'r', 'g', 'b' values.
+ */
+function _vvjs_hex_to_rgb(string $hex): array {
+  $hex = ltrim($hex, '#');
+
+  // Handle short hex format (e.g., #123)
+  if (strlen($hex) === 3) {
+    $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+  }
+
+  return [
+    'r' => hexdec(substr($hex, 0, 2)),
+    'g' => hexdec(substr($hex, 2, 2)),
+    'b' => hexdec(substr($hex, 4, 2)),
+  ];
 }

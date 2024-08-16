@@ -28,11 +28,47 @@ function vvjs_views_data_alter(array &$data): void {
       ],
       'arrows' => [
         'type' => 'string',
-        'label' => t('Top Arrows'),
+        'label' => t('Slide Navigation Arrows'),
       ],
       'unique_id' => [
         'type' => 'string',
         'label' => t('Unique ID for the view display'),
+      ],
+      'hero_slideshow' => [
+        'type' => 'boolean',
+        'label' => t('Enable Hero Slideshow'),
+      ],
+      'overlay_bg_color' => [
+        'type' => 'string',
+        'label' => t('Overlay Background Color'),
+      ],
+      'overlay_bg_opacity' => [
+        'type' => 'float',
+        'label' => t('Overlay Background Opacity'),
+      ],
+      'available_breakpoints' => [
+        'type' => 'string',
+        'label' => t('Available Breakpoints for Hero'),
+      ],
+      'enable_css' => [
+        'type' => 'boolean',
+        'label' => t('Enable CSS Library'),
+      ],
+      'min_height' => [
+        'type' => 'integer',
+        'label' => t('Min Height (vw)'),
+      ],
+      'max_content_width' => [
+        'type' => 'integer',
+        'label' => t('Max Content Width (%)'),
+      ],
+      'max_width' => [
+        'type' => 'integer',
+        'label' => t('Max Width (px)'),
+      ],
+      'overlay_position' => [
+        'type' => 'string',
+        'label' => t('Overlay Position'),
       ],
     ],
   ];

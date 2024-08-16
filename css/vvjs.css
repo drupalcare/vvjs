@@ -6,15 +6,36 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.vvjs .slideshow-items {
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
   overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
 }
 
-.vvjs .slideshow-items > .slideshow-item {
+.vvjs,
+.vvjs * {
+  box-sizing: border-box;
+}
+
+.hidden-element {
   display: none;
 }
 
-.vvjs .slideshow-items > div:first-of-type {
+.vvjs .vvjs-items {
+  overflow: hidden;
+}
+
+.vvjs .vvjs-items > .vvjs-item {
+  display: none;
+}
+
+.vvjs .vvjs-items > div:first-of-type {
   display: block;
 }
 
@@ -61,31 +82,31 @@
   left: 48px;
 }
 
-.vvjs .slide-indicators.sides {
+.vvjs .slide-indicators.arrows-sides {
   opacity: 1;
 }
 
-.vvjs.top .slide-indicators {
+.vvjs.arrows-top .slide-indicators {
   opacity: 0;
   transition: opacity 0.3s ease, background-color 0.3s ease;
 }
 
-.vvjs.top .slide-indicators:hover {
+.vvjs.arrows-top .slide-indicators:hover {
   opacity: 100;
   outline: none;
   background-color: transparent !important;
 }
 
-.vvjs.sides .slideshow-inner {
+.vvjs.arrows-sides .slideshow-inner {
   width: calc(100% - 100px);
   margin: 0 auto;
 }
 
-.vvjs.sides .slide-indicators .next-arrow {
+.vvjs.arrows-sides .slide-indicators .next-arrow {
   right: -50px;
 }
 
-.vvjs.sides .slide-indicators .prev-arrow {
+.vvjs.arrows-sides .slide-indicators .prev-arrow {
   left: -50px;
 }
 
@@ -171,7 +192,7 @@
 
 }
 
-.vvjs__animate_opacity {
+.a-fade {
   animation: opac 0.8s ease-out;
 }
 
@@ -186,7 +207,7 @@
 
 }
 
-.vvjs__animate_top {
+.a-top {
   position: relative;
   animation: animatetop 0.6s ease-out;
 }
@@ -204,7 +225,7 @@
 
 }
 
-.vvjs__animate_left {
+.a-left {
   position: relative;
   animation: animateleft 0.6s ease-out;
 }
@@ -222,7 +243,7 @@
 
 }
 
-.vvjs__animate_right {
+.a-right {
   position: relative;
   animation: animateright 0.6s ease-out;
 }
@@ -240,7 +261,7 @@
 
 }
 
-.vvjs__animate_bottom {
+.a-bottom {
   position: relative;
   animation: animatebottom 0.6s ease-out;
 }
@@ -258,7 +279,7 @@
 
 }
 
-.vvjs__animate_zoom {
+.a-zoom {
   animation: animatezoom 0.6s ease-out;
 }
 

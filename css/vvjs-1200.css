@@ -1,0 +1,121 @@
+/**
+ * @file
+ * Views Tabs
+ *
+ * Filename:     vvjs-1200.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+@media (min-width:75rem) {
+  .vvjs .vvjs-item {
+    position: relative;
+    overflow: hidden;
+    background-color: transparent;
+    width: 100%;
+  }
+
+  .vvjs-item {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    padding: 0 1rem;
+  }
+
+  .vvjs-hero-content {
+    position: relative;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .vvjs .vvjs-item > .vvjs-hero-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Display Container */
+  .vvjs .vvjs-hero-content.d-top-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .vvjs .vvjs-hero-content.d-top-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .vvjs .vvjs-hero-content.d-bottom-left {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+
+  .vvjs .vvjs-hero-content.d-bottom-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+  .vvjs .vvjs-hero-content.d-middle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+  }
+
+  .vvjs .vvjs-hero-content.d-left {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(0%, -50%);
+    -ms-transform: translate(-0%, -50%);
+  }
+
+  .vvjs .vvjs-hero-content.d-right {
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    transform: translate(0%, -50%);
+    -ms-transform: translate(0%, -50%);
+  }
+
+  .vvjs .vvjs-hero-content.d-top-middle {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%);
+  }
+
+  .vvjs .vvjs-hero-content.d-bottom-middle {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%);
+  }
+
+}
+
+@media (max-width:75rem) {
+  .vvjs .vvjs-item {
+    width: 100%;
+    margin-bottom: 1rem;
+    min-height: initial !important;
+  }
+
+  .vvjs .vvjs-hero-content {
+    background-color: transparent !important;
+    max-width: 100% !important;
+    width: 100%;
+    margin-top: 1rem;
+    transition: none !important;
+  }
+
+}

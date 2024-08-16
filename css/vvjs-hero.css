@@ -1,0 +1,20 @@
+/**
+ * @file
+ * VVJ Hero.
+ *
+ * Filename:     vvjs.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.vvjs {
+  position: relative;
+  width: 100%;
+}
+
+.vvjs .vvjs-items {
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  background-color: transparent;
+  width: 100%;
+}

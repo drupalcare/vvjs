@@ -20,73 +20,146 @@
 
 {# Set view id #}
 {% set unique_id = options.unique_id %}
-{% set view_id = 'vvjs-' ~ unique_id %}
-{% set slide_id = 'vvjs-wrap-' ~ unique_id %}
+{% set slide_id = 'vvjs-' ~ unique_id %}
+{% set slide_inner_id = 'vvjs-inner-' ~ unique_id %}
 {% set nav_arrows = options.arrows %}
 {# Set the classes for the view #}
 {% set classes = [
   'vvjs',
   'vvjs-' ~ unique_id,
   nav_arrows == 'none' ? '' : nav_arrows,
-  view_id,
+  slide_id,
+  options.hero_slideshow ? 'hero-slideshow' : '',
 ] %}
 
 {# Slideshow fields #}
+{% if options.hero_slideshow %}
+{% set max_width = options.max_width %}
+{% set min_height = options.min_height %}
+{% set max_content_width = options.max_content_width %}
+{% set overlay_position = options.overlay_position %}
+{% endif %}
 
 {% set nav_dots_numbers = options.navigation %}
 {% set animation = options.animation %}
 {% set time_in_seconds = options.time_in_seconds %}
 
-{# Main wrapper #}
-<div {{ attributes.addClass(classes).setAttribute('id', view_id) }}>
+{# Calculate total slides #}
+{% set total_slides = rows|length %}
 
-  {% set total_slides = 0 %}
-  <div id="{{ slide_id }}" data-time="{{ time_in_seconds }}" class="slideshow-inner{{ nav_dots_numbers ? ' ' ~ nav_dots_numbers }}{{ time_in_seconds == 0 ? ' zero' : ' not-zero' }}">
-    <div id="slideshow-items-{{ unique_id }}" class="slideshow-items">
-      {% for row in rows %}
-        {% set total_slides = total_slides + 1 %}
-        <div id="slideshow-item-{{ unique_id }}-{{ loop.index }}" role="tabpanel" data-index="{{ loop.index }}" aria-hidden="{{ loop.first ? 'false' : 'true' }}" {% if nav_dots_numbers %}aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %} class="slideshow-item">
-          <div class="slideshow-item-inner{{ animation ? ' ' ~ animation : '' }}" id="{{ slide_id }}-{{ loop.index }}-pane">
-            {{ row.content }}
+{# Main wrapper #}
+<div {{ attributes.addClass(classes).setAttribute('id', slide_id) }} role="region" aria-labelledby="slideshow-heading-{{ unique_id }}">
+  <h2 id="slideshow-heading-{{ unique_id }}" class="visually-hidden">{{ 'Slideshow'|t }}</h2>
+
+  <div id="{{ slide_inner_id }}" data-time="{{ time_in_seconds }}" class="slideshow-inner{{ nav_dots_numbers ? ' ' ~ nav_dots_numbers }}{{ time_in_seconds == 0 ? ' zero' : ' not-zero' }}">
+    {# Live region for slide announcements #}
+    <div id="slideshow-announcer-{{ unique_id }}" class="visually-hidden" aria-live="polite" aria-atomic="true">
+      {{ 'Slide 1 selected'|t }}
+    </div>
+    <div id="vvjs-items-{{ unique_id }}" class="vvjs-items"{% if options.hero_slideshow %} style="max-width: {{ max_width }}px;"{% endif%}>
+
+      {# Start Hero Slideshow #}
+      {% if options.hero_slideshow %}
+
+        {% for key, row in rows %}
+          {% set row_content = row.content|render %}
+
+          {# Split the content to separate front and back sides #}
+          {% set split_content = row_content|split('<div class="vvjs-separator"></div>') %}
+          {% set hero_image = split_content[0] %}
+          {% set hero_content = split_content[1]|default('') %}
+
+          <div id="vvjs-item-{{ unique_id }}-{{ loop.index }}"
+               role="tabpanel"
+               tabindex="{{ loop.first ? '0' : '-1' }}"
+               aria-hidden="{{ loop.first ? 'false' : 'true' }}"
+               {% if nav_dots_numbers %}aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %}
+               class="vvjs-item">
+
+            <div class="vvjs-item-inner{{ animation ? ' ' ~ animation : '' }}"
+                 id="{{ slide_inner_id }}-{{ loop.index }}-pane"
+                 style="min-height: {{ min_height }}vw;"
+                 role="group"
+                 aria-labelledby="{{ slide_id }}-image-{{ key + 1 }} {{ slide_id }}-content-{{ key + 1 }}">
+
+              <div class="vvjs-hero-image"
+                   role="img"
+                   aria-labelledby="{{ slide_id }}-image-{{ key + 1 }}">
+                {{ hero_image|safe_html }}
+              </div>
+
+              <div class="vvjs-hero-content {{ overlay_position }}"
+                   style="{% if background_rgb %}background-color:{{ background_rgb }};{% endif %} max-width: {{ max_content_width }}%;"
+                   role="complementary"
+                   aria-labelledby="{{ slide_id }}-content-{{ key + 1 }}">
+                {{ hero_content|safe_html }}
+              </div>
+
+            </div>
+
           </div>
-        </div>
-      {% endfor %}
+
+        {% endfor %}
+
+      {# Start Regular Slideshow #}
+      {% else %}
+
+        {% for row in rows %}
+          <div id="vvjs-item-{{ unique_id }}-{{ loop.index }}"
+               role="tabpanel"
+               tabindex="{{ loop.first ? '0' : '-1' }}"
+               aria-hidden="{{ loop.first ? 'false' : 'true' }}"
+               {% if nav_dots_numbers %}aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %}
+               class="vvjs-item">
+            <div class="vvjs-item-inner{{ animation ? ' ' ~ animation : '' }}"
+                 id="{{ slide_inner_id }}-{{ loop.index }}-pane">
+              {{ row.content }}
+            </div>
+          </div>
+        {% endfor %}
+
+      {% endif %}
+
     </div>
 
-    {% if nav_dots_numbers != 'none' or time_in_seconds > 0 %}
-      <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
-        {% if time_in_seconds > 0 %}
-          <button id="play-pause-button-{{ unique_id }}" type="button" role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button play-pause-button display-{{ time_in_seconds }} play playing" aria-live="polite">
-            <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
-              <svg class="svg-pause" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="inherit"><path d="M360-320h80v-320h-80v320Zm160 0h80v-320h-80v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-          </button>
-        {% endif %}
-        {% if nav_dots_numbers != 'none' %}
-          {% for row in rows %}
+    {# Only show navigation elements if there are more than one slide #}
+    {% if total_slides > 1 %}
+      {% if nav_dots_numbers != 'none' or time_in_seconds > 0 %}
+        <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
+          {% if time_in_seconds > 0 %}
+            <button id="play-pause-button-{{ unique_id }}" type="button" aria-label="{{ 'Stop automatic slide show'|t }}" class="button play-pause-button display-{{ time_in_seconds }} play playing" aria-live="polite">
+              <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
+              {{ include('@vvjs/svg/svg-pause.svg') }}
+            </button>
+          {% endif %}
+          {% if nav_dots_numbers != 'none' %}
+            {% for row in rows %}
             <button id="dots-numbers-button-{{ loop.index }}" type="button" role="tab"
-                    aria-label="{{ 'Slide @index'|t({'@index': loop.index}) }}"
+                    aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
                     aria-selected="{{ loop.first ? 'true' : 'false' }}"
-                    aria-controls="slideshow-item-{{ unique_id }}-{{ loop.index }}"
+                    aria-controls="vvjs-item-{{ unique_id }}-{{ loop.index }}"
                     class="button dots-numbers-button{{ loop.first ? ' active' : '' }}"
-                    {{ not loop.first ? 'tabindex=-1' }}>
+                    tabindex="{{ loop.first ? '0' : '-1' }}">
               {{ loop.index }}
             </button>
-          {% endfor %}
-        {% endif %}
-      </div>
-    {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
 
-    {% if nav_arrows != 'none' %}
-      <div id="slide-indicators-{{ unique_id }}" class="slide-indicators" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
-        <button class="button prev-arrow" role="button" aria-controls="slideshow-items-{{ unique_id }}" aria-label="{{ 'Previous Slide'|t }}">
-          <span class="visually-hidden">{{ 'Previous Slide'|t }}</span><svg class="svg-prev" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="inherit"><path d="m480-320 56-56-64-64h168v-80H472l64-64-56-56-160 160 160 160Zm0 240q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-        </button>
-        <button class="button next-arrow" role="button" aria-controls="slideshow-items-{{ unique_id }}" aria-label="{{ 'Next Slide'|t }}">
-          <span class="visually-hidden">{{ 'Next Slide'|t }}</span><svg class="svg-next" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="inherit"><path d="m480-320 160-160-160-160-56 56 64 64H320v80h168l-64 64 56 56Zm0 240q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-        </button>
-      </div>
+      {% if nav_arrows != 'none' %}
+        <div id="slide-indicators-{{ unique_id }}" class="slide-indicators" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
+          <button class="button prev-arrow" role="button" aria-controls="vvjs-items-{{ unique_id }}" aria-label="{{ 'Previous Slide'|t }}">
+            <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
+            {{ include('@vvjs/svg/svg-prev.svg') }}
+          </button>
+          <button class="button next-arrow" role="button" aria-controls="vvjs-items-{{ unique_id }}" aria-label="{{ 'Next Slide'|t }}">
+            <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
+            {{ include('@vvjs/svg/svg-next.svg') }}
+          </button>
+        </div>
+      {% endif %}
     {% endif %}
 
   </div>
-
 </div>
