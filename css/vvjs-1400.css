@@ -129,4 +129,8 @@
     transition: none !important;
   }
 
+  .vvjs .vvjs-hero-image {
+    overflow: hidden;
+  }
+
 }
