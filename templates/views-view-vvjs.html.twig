@@ -30,7 +30,8 @@
   nav_arrows == 'none' ? '' : nav_arrows,
   slide_id,
   options.animation,
-  options.hero_slideshow ? 'hero-slideshow' : 'slideshow'
+  options.hero_slideshow ? 'hero-slideshow' : 'slideshow',
+  options.available_breakpoints ? 'br-' ~ options.available_breakpoints : '',
 ] %}
 
 {# Slideshow fields #}
