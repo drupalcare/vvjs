@@ -245,7 +245,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
     $form['animation'] = [
       '#type' => 'select',
-      '#title' => $this->t('Animation Type'),
+      '#title' => $this->t('Slide Animation Type'),
       '#options' => [
         'none' => $this->t('None'),
         'a-zoom' => $this->t('Zoom'),
@@ -256,7 +256,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
         'a-right' => $this->t('Slide from Right'),
       ],
       '#default_value' => $this->options['animation'],
-      '#description' => $this->t('Choose the animation type.'),
+      '#description' => $this->t('Choose the animation type for the slides.'),
     ];
     $form['#attached']['library'][] = 'core/drupal.ajax';
 

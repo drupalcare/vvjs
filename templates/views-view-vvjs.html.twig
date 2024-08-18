@@ -29,7 +29,8 @@
   'vvjs-' ~ unique_id,
   nav_arrows == 'none' ? '' : nav_arrows,
   slide_id,
-  options.hero_slideshow ? 'hero-slideshow' : '',
+  options.animation,
+  options.hero_slideshow ? 'hero-slideshow' : 'slideshow'
 ] %}
 
 {# Slideshow fields #}
@@ -41,7 +42,6 @@
 {% endif %}
 
 {% set nav_dots_numbers = options.navigation %}
-{% set animation = options.animation %}
 {% set time_in_seconds = options.time_in_seconds %}
 
 {# Calculate total slides #}
@@ -51,12 +51,12 @@
 <div {{ attributes.addClass(classes).setAttribute('id', slide_id) }} role="region" aria-labelledby="slideshow-heading-{{ unique_id }}">
   <h2 id="slideshow-heading-{{ unique_id }}" class="visually-hidden">{{ 'Slideshow'|t }}</h2>
 
-  <div id="{{ slide_inner_id }}" data-time="{{ time_in_seconds }}" class="slideshow-inner{{ nav_dots_numbers ? ' ' ~ nav_dots_numbers }}{{ time_in_seconds == 0 ? ' zero' : ' not-zero' }}">
+  <div id="{{ slide_inner_id }}" data-time="{{ time_in_seconds }}" class="vvjs-inner{{ nav_dots_numbers ? ' ' ~ nav_dots_numbers }}{{ time_in_seconds == 0 ? ' zero' : ' not-zero' }}">
     {# Live region for slide announcements #}
     <div id="slideshow-announcer-{{ unique_id }}" class="visually-hidden" aria-live="polite" aria-atomic="true">
       {{ 'Slide 1 selected'|t }}
     </div>
-    <div id="vvjs-items-{{ unique_id }}" class="vvjs-items"{% if options.hero_slideshow %} style="max-width: {{ max_width }}px;"{% endif%}>
+    <div id="vvjs-items-{{ unique_id }}" class="vvjs-items"{% if options.hero_slideshow %} style="max-width: {{ max_width }}px; min-height: {{ min_height }}vw;"{% endif%}>
 
       {# Start Hero Slideshow #}
       {% if options.hero_slideshow %}
@@ -76,9 +76,8 @@
                {% if nav_dots_numbers %}aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %}
                class="vvjs-item">
 
-            <div class="vvjs-item-inner{{ animation ? ' ' ~ animation : '' }}"
+            <div class="vvjs-item-inner"
                  id="{{ slide_inner_id }}-{{ loop.index }}-pane"
-                 style="min-height: {{ min_height }}vw;"
                  role="group"
                  aria-labelledby="{{ slide_id }}-image-{{ key + 1 }} {{ slide_id }}-content-{{ key + 1 }}">
 
@@ -111,7 +110,7 @@
                aria-hidden="{{ loop.first ? 'false' : 'true' }}"
                {% if nav_dots_numbers %}aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %}
                class="vvjs-item">
-            <div class="vvjs-item-inner{{ animation ? ' ' ~ animation : '' }}"
+            <div class="vvjs-item-inner"
                  id="{{ slide_inner_id }}-{{ loop.index }}-pane">
               {{ row.content }}
             </div>

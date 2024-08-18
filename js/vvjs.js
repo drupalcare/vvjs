@@ -55,7 +55,7 @@
 
       const getSlideIndex = (slides) => {
         slides.forEach((slide, index) => {
-          const slideElement = context.getElementById(slide.id);
+          const slideElement = document.getElementById(slide.id);
           if (slideElement && window.getComputedStyle(slideElement).display === 'block') {
             slideIndex = index + 1;
           }
@@ -65,7 +65,7 @@
 
       const updateNavigationState = (slideshowId, activeSlideId) => {
         const allButtons = context.querySelectorAll(`#vvjs-inner-${slideshowId}>.nav-dots-numbers>.dots-numbers-button`);
-        const announcer = context.getElementById(`slideshow-announcer-${slideshowId}`);
+        const announcer = document.getElementById(`slideshow-announcer-${slideshowId}`);
 
         allButtons.forEach(button => {
           const buttonId = getElementId(button.id, 3);
@@ -74,7 +74,7 @@
             button.removeAttribute('tabindex');
             button.setAttribute('aria-selected', 'true');
             button.setAttribute('tabindex', '0');
-            announcer.textContent = `Slide ${buttonId} selected`; // Update the live region with the selected slide number
+            announcer.textContent = `Slide ${buttonId} selected`;
           } else {
             button.classList.remove('active');
             button.setAttribute('aria-selected', 'false');
@@ -88,10 +88,14 @@
         slides.forEach((slide, index) => {
           if (index + 1 === activeSlideId) {
             slide.style.display = 'block';
+            slide.classList.add('active');
+            slide.setAttribute('tabindex', '0');
             slide.setAttribute('aria-hidden', 'false');
-            slide.focus();
+
           } else {
             slide.style.display = 'none';
+            slide.classList.remove('active');
+            slide.setAttribute('tabindex', '-1');
             slide.setAttribute('aria-hidden', 'true');
           }
         });
@@ -123,10 +127,14 @@
           const currentSlideId = parseInt(slide.id.split('-').pop());
           if (currentSlideId === slideId) {
             slide.style.display = 'block';
+            slide.classList.add('active');
+            slide.setAttribute('tabindex', '0');
             slide.setAttribute('aria-hidden', 'false');
-            slide.focus();
+
           } else {
             slide.style.display = 'none';
+            slide.classList.remove('active');
+            slide.setAttribute('tabindex', '-1');
             slide.setAttribute('aria-hidden', 'true');
           }
         });
@@ -150,9 +158,13 @@
           const currentSlideId = parseInt(slide.id.split('-').pop());
           if (currentSlideId === slideId) {
             slide.style.display = 'block';
+            slide.classList.add('active');
+            slide.setAttribute('tabindex', '0');
             slide.setAttribute('aria-hidden', 'false');
           } else {
             slide.style.display = 'none';
+            slide.classList.remove('active');
+            slide.setAttribute('tabindex', '-1');
             slide.setAttribute('aria-hidden', 'true');
           }
         });
@@ -167,8 +179,8 @@
         manageAutoSlideInterval('start', slideshowId, slideTime);
 
         if (slideTime > 0) {
-          const stopOnHover = context.getElementById(slide.id);
-          const playPause = context.getElementById(`play-pause-button-${slideshowId}`);
+          const stopOnHover = document.getElementById(slide.id);
+          const playPause = document.getElementById(`play-pause-button-${slideshowId}`);
           const btnClasses = playPause?.classList;
           btnClasses?.add('dots-numbers-inactive');
 
@@ -190,29 +202,25 @@
               }
             }
           };
-
-          // Pause the slideshow on hover
           stopOnHover?.addEventListener('mouseover', () => {
             if (!isPaused) {
               manageAutoSlideInterval('clear');
             }
           });
-
-          // Resume the slideshow when hover ends
           stopOnHover?.addEventListener('mouseout', () => {
             if (!isPaused) {
               manageAutoSlideInterval('start', slideshowId, slideTime);
             }
           });
-
-          // Toggle play/pause on button click
           playPause?.addEventListener('click', togglePlayPause);
         }
       });
 
       // Initialize next arrow button
-      once('init-next-arrow', '.slideshow-inner button.next-arrow', context).forEach(element => {
+      once('init-next-arrow', '.vvjs-inner button.next-arrow', context).forEach(element => {
         element.addEventListener('click', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
           const buttonElement = event.target.closest('button');
           if (buttonElement) {
             const parentElement = buttonElement.parentElement;
@@ -224,8 +232,10 @@
       });
 
       // Initialize previous arrow button
-      once('init-prev-arrow', '.slideshow-inner button.prev-arrow', context).forEach(element => {
+      once('init-prev-arrow', '.vvjs-inner button.prev-arrow', context).forEach(element => {
         element.addEventListener('click', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
           const buttonElement = event.target.closest('button');
           if (buttonElement) {
             const parentElement = buttonElement.parentElement;
@@ -237,24 +247,25 @@
       });
 
       // Initialize bottom navigation buttons
-      once('init-bottom-nav', '.slideshow-inner .nav-dots-numbers .dots-numbers-button', context).forEach(element => {
+      once('init-bottom-nav', '.vvjs-inner .nav-dots-numbers .dots-numbers-button', context).forEach(element => {
         element.addEventListener('click', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
           handleBottomNav(event.target.id, event.target.parentElement.id);
         });
 
-        // Adding keydown event listener for keyboard navigation
         element.addEventListener('keydown', function(event) {
           if (event.key === 'Tab') {
-            const parentSlideshow = element.closest('.slideshow-inner');
+            const parentSlideshow = element.closest('.vvjs-inner');
             const allButtons = Array.from(parentSlideshow.querySelectorAll('.nav-dots-numbers .dots-numbers-button'));
             const currentIndex = allButtons.indexOf(event.target);
 
-            if (event.shiftKey) { // Shift + Tab to navigate backwards
+            if (event.shiftKey) {
               if (currentIndex > 0) {
                 allButtons[currentIndex - 1].focus();
                 event.preventDefault();
               }
-            } else { // Tab to navigate forwards
+            } else {
               if (currentIndex < allButtons.length - 1) {
                 allButtons[currentIndex + 1].focus();
                 event.preventDefault();

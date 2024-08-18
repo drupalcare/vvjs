@@ -8,8 +8,18 @@
  */
 
 @media (min-width:62rem) {
+  .vvjs.hero-slideshow .nav-dots-numbers {
+    position: absolute;
+    width: 100%;
+    min-height: 70px;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+  }
+
   .vvjs .vvjs-item {
-    position: relative;
     overflow: hidden;
     background-color: transparent;
     width: 100%;
@@ -23,18 +33,18 @@
   }
 
   .vvjs-hero-content {
-    position: relative;
     margin: 0;
     padding: 1rem;
   }
 
-  .vvjs .vvjs-item > .vvjs-hero-image img {
+  .vvjs .vvjs-item .vvjs-hero-image img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    margin-bottom: 50px;
   }
 
   /* Display Container */
