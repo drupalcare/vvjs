@@ -179,8 +179,8 @@
 
 /* For any slideshow */
 .vvjs-hero-content,
-.vvjs.slideshow.a-zoom .vvjs-item-inner,
-.vvjs.hero-slideshow.a-zoom .vvjs-item-inner img {
+.vvjs.slideshow.a-fade .vvjs-item-inner,
+.vvjs.hero-slideshow.a-fade .vvjs-item-inner img {
   animation: opac 0.8s ease-out;
 }
 
