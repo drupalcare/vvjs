@@ -12,7 +12,7 @@
   Drupal.behaviors.VVJSlideshow = {
     attach: function(context, settings) {
 
-      const slides = once('vvjs', '.vvjs-items', context);
+      const slides = once('vvjSlideshow', '.vvjs-items', context);
       if (!slides.length) {
         return;
       }

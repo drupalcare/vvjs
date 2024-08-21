@@ -14,6 +14,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\vvjs\Plugin\views\style\ViewsVanillaJavascriptSlideshow;
 
 /**
  * Implements hook_help().
@@ -198,6 +199,16 @@ function template_preprocess_views_view_vvjs_fields(array &$variables) {
 
   // Preprocess views view fields.
   template_preprocess_views_view_fields($variables);
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function vvjs_preprocess_views_view(&$variables) {
+  if ($variables['view']->style_plugin instanceof ViewsVanillaJavascriptSlideshow) {
+    // Add the custom class to the view wrapper.
+    $variables['attributes']['class'][] = 'vvj-slideshow';
+  }
 }
 
 /**
