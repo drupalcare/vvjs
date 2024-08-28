@@ -6,19 +6,18 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.vvjs {
+.vvjs.hero-slideshow {
   position: relative;
   width: 100%;
 }
 
-.vvjs .vvjs-items {
+.vvjs.hero-slideshow .vvjs-items {
   margin: 0 auto;
   display: block;
   overflow: hidden;
   background-color: transparent;
   width: 100%;
 }
-
 
 .vvjs.hero-slideshow.a-top .vvjs-item-inner img {
   animation: heroanimatetop 0.6s ease-out;

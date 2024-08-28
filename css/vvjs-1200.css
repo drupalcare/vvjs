@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 @media (min-width:75rem) {
-  .vvjs.hero-slideshow .nav-dots-numbers {
+  .vvjs.br-1200.hero-slideshow .nav-dots-numbers {
     position: absolute;
     width: 100%;
     min-height: 70px;
@@ -17,25 +17,25 @@
     right: 0;
   }
 
-  .vvjs .vvjs-item {
+  .vvjs.br-1200 .vvjs-item {
     overflow: hidden;
     background-color: transparent;
     width: 100%;
   }
 
-  .vvjs-item {
+  .br-1200 .vvjs-item {
     display: flex;
     align-items: center;
     margin: auto;
     padding: 0 1rem;
   }
 
-  .vvjs-hero-content {
+  .br-1200 .vvjs-hero-content {
     margin: 0;
     padding: 1rem;
   }
 
-  .vvjs .vvjs-item .vvjs-hero-image img {
+  .vvjs.br-1200 .vvjs-item .vvjs-hero-image img {
     position: absolute;
     top: 0;
     left: 0;
@@ -46,31 +46,31 @@
   }
 
   /* Display Container */
-  .vvjs .vvjs-hero-content.d-top-left {
+  .vvjs.br-1200 .vvjs-hero-content.d-top-left {
     position: absolute;
     left: 0;
     top: 0;
   }
 
-  .vvjs .vvjs-hero-content.d-top-right {
+  .vvjs.br-1200 .vvjs-hero-content.d-top-right {
     position: absolute;
     right: 0;
     top: 0;
   }
 
-  .vvjs .vvjs-hero-content.d-bottom-left {
+  .vvjs.br-1200 .vvjs-hero-content.d-bottom-left {
     position: absolute;
     left: 0;
     bottom: 0;
   }
 
-  .vvjs .vvjs-hero-content.d-bottom-right {
+  .vvjs.br-1200 .vvjs-hero-content.d-bottom-right {
     position: absolute;
     right: 0;
     bottom: 0;
   }
 
-  .vvjs .vvjs-hero-content.d-middle {
+  .vvjs.br-1200 .vvjs-hero-content.d-middle {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -78,7 +78,7 @@
     -ms-transform: translate(-50%, -50%);
   }
 
-  .vvjs .vvjs-hero-content.d-left {
+  .vvjs.br-1200 .vvjs-hero-content.d-left {
     position: absolute;
     top: 50%;
     left: 0%;
@@ -86,7 +86,7 @@
     -ms-transform: translate(-0%, -50%);
   }
 
-  .vvjs .vvjs-hero-content.d-right {
+  .vvjs.br-1200 .vvjs-hero-content.d-right {
     position: absolute;
     top: 50%;
     right: 0%;
@@ -94,7 +94,7 @@
     -ms-transform: translate(0%, -50%);
   }
 
-  .vvjs .vvjs-hero-content.d-top-middle {
+  .vvjs.br-1200 .vvjs-hero-content.d-top-middle {
     position: absolute;
     left: 50%;
     top: 0;
@@ -102,7 +102,7 @@
     -ms-transform: translate(-50%, 0%);
   }
 
-  .vvjs .vvjs-hero-content.d-bottom-middle {
+  .vvjs.br-1200 .vvjs-hero-content.d-bottom-middle {
     position: absolute;
     left: 50%;
     bottom: 0;
@@ -113,13 +113,13 @@
 }
 
 @media (max-width:75rem) {
-  .vvjs .vvjs-item {
+  .vvjs.br-1200 .vvjs-item {
     width: 100%;
     margin-bottom: 1rem;
     min-height: initial !important;
   }
 
-  .vvjs .vvjs-hero-content {
+  .vvjs.br-1200 .vvjs-hero-content {
     background-color: transparent !important;
     max-width: 100% !important;
     width: 100%;
@@ -127,7 +127,7 @@
     transition: none !important;
   }
 
-  .vvjs .vvjs-hero-image {
+  .vvjs.br-1200 .vvjs-hero-image {
     overflow: hidden;
   }
 
