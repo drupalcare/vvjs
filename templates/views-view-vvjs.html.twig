@@ -57,7 +57,7 @@
     <div id="slideshow-announcer-{{ unique_id }}" class="visually-hidden" aria-live="polite" aria-atomic="true">
       {{ 'Slide 1 selected'|t }}
     </div>
-    <div id="vvjs-items-{{ unique_id }}" class="vvjs-items"{% if options.hero_slideshow %} style="max-width: {{ max_width }}px; min-height: {{ min_height }}vw;"{% endif%}>
+    <div id="vvjs-items-{{ unique_id }}" class="vvjs-items"{% if options.hero_slideshow %} style="--hero-max-width: {{ max_width }}; --hero-min-height: {{ min_height }};"{% endif%}>
 
       {# Start Hero Slideshow #}
       {% if options.hero_slideshow %}
@@ -70,28 +70,15 @@
           {% set hero_image = split_content[0] %}
           {% set hero_content = split_content[1]|default('') %}
 
-          <div id="vvjs-item-{{ unique_id }}-{{ loop.index }}"
-               role="tabpanel"
-               tabindex="{{ loop.first ? '0' : '-1' }}"
-               aria-hidden="{{ loop.first ? 'false' : 'true' }}"
-               {% if nav_dots_numbers %}aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %}
-               class="vvjs-item">
+          <div id="vvjs-item-{{ unique_id }}-{{ loop.index }}" class="vvjs-item" role="tabpanel" tabindex="{{ loop.first ? '0' : '-1' }}" aria-hidden="{{ loop.first ? 'false' : 'true' }}"{% if nav_dots_numbers %} aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %}>
 
-            <div class="vvjs-item-inner"
-                 id="{{ slide_inner_id }}-{{ loop.index }}-pane"
-                 role="group"
-                 aria-labelledby="{{ slide_id }}-image-{{ key + 1 }} {{ slide_id }}-content-{{ key + 1 }}">
+            <div class="vvjs-item-inner" id="{{ slide_inner_id }}-{{ loop.index }}-pane" role="group" aria-labelledby="{{ slide_id }}-image-{{ key + 1 }} {{ slide_id }}-content-{{ key + 1 }}">
 
-              <div class="vvjs-hero-image"
-                   role="img"
-                   aria-labelledby="{{ slide_id }}-image-{{ key + 1 }}">
+              <div class="vvjs-hero-image" role="img" aria-labelledby="{{ slide_id }}-image-{{ key + 1 }}">
                 {{ hero_image|safe_html }}
               </div>
 
-              <div class="vvjs-hero-content {{ overlay_position }}"
-                   style="{% if background_rgb %}background-color:{{ background_rgb }};{% endif %} max-width: {{ max_content_width }}%;"
-                   role="complementary"
-                   aria-labelledby="{{ slide_id }}-content-{{ key + 1 }}">
+              <div class="vvjs-hero-content {{ overlay_position }}" style="{% if background_rgb %}--hero-content-bg:{{ background_rgb }};{% endif %} --hero-content-width: {{ max_content_width }};" role="complementary" aria-labelledby="{{ slide_id }}-content-{{ key + 1 }}">
                 {{ hero_content|safe_html }}
               </div>
 
@@ -105,14 +92,8 @@
       {% else %}
 
         {% for row in rows %}
-          <div id="vvjs-item-{{ unique_id }}-{{ loop.index }}"
-               role="tabpanel"
-               tabindex="{{ loop.first ? '0' : '-1' }}"
-               aria-hidden="{{ loop.first ? 'false' : 'true' }}"
-               {% if nav_dots_numbers %}aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %}
-               class="vvjs-item">
-            <div class="vvjs-item-inner"
-                 id="{{ slide_inner_id }}-{{ loop.index }}-pane">
+          <div id="vvjs-item-{{ unique_id }}-{{ loop.index }}" class="vvjs-item" role="tabpanel" tabindex="{{ loop.first ? '0' : '-1' }}" aria-hidden="{{ loop.first ? 'false' : 'true' }}"{% if nav_dots_numbers %} aria-labelledby="dots-numbers-button-{{ loop.index }}"{% endif %}>
+            <div id="{{ slide_inner_id }}-{{ loop.index }}-pane" class="vvjs-item-inner">
               {{ row.content }}
             </div>
           </div>
@@ -127,19 +108,14 @@
       {% if nav_dots_numbers != 'none' or time_in_seconds > 0 %}
         <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
           {% if time_in_seconds > 0 %}
-            <button id="play-pause-button-{{ unique_id }}" type="button" role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button play-pause-button display-{{ time_in_seconds }} play playing" aria-live="polite">
+            <button id="play-pause-button-{{ unique_id }}" type="button"  role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button play-pause-button display-{{ time_in_seconds }} play playing" aria-live="polite">
               <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
               {{ include('@vvjs/svg/svg-pause.svg') }}
             </button>
           {% endif %}
           {% if nav_dots_numbers != 'none' %}
             {% for row in rows %}
-            <button id="dots-numbers-button-{{ loop.index }}" type="button" role="tab"
-                    aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
-                    aria-selected="{{ loop.first ? 'true' : 'false' }}"
-                    aria-controls="vvjs-item-{{ unique_id }}-{{ loop.index }}"
-                    class="button dots-numbers-button{{ loop.first ? ' active' : '' }}"
-                    tabindex="{{ loop.first ? '0' : '-1' }}">
+            <button id="dots-numbers-button-{{ loop.index }}" class="button dots-numbers-button{{ loop.first ? ' active' : '' }}" type="button" role="tab" aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" aria-controls="vvjs-item-{{ unique_id }}-{{ loop.index }}" tabindex="{{ loop.first ? '0' : '-1' }}">
               {{ loop.index }}
             </button>
             {% endfor %}

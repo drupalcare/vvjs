@@ -17,6 +17,13 @@
   overflow: hidden;
   background-color: transparent;
   width: 100%;
+  max-width: calc(var(--hero-max-width) * 1px);
+  min-height: calc(var(--hero-min-height)* 1vw);
+}
+
+.vvjs.hero-slideshow .vvjs-items .vvjs-hero-content {
+  background: var(--hero-content-bg);
+  max-width: calc(var(--hero-content-width)* 1%);
 }
 
 .vvjs.hero-slideshow.a-top .vvjs-item-inner img {

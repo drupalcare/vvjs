@@ -6,6 +6,11 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+.vvjs {
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
 .vvjs .nav-dots-numbers.numbers > .active {
   font-weight: bold;
   text-decoration: underline;
