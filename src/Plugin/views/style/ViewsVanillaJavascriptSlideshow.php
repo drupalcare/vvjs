@@ -322,13 +322,18 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function validate() {
-    $errors = parent::validate();
-    if ($this->options['hero_slideshow'] && !$this->usesFields()) {
-      $form_state->setErrorByName('hero_slideshow', $this->t('Hero Slideshow option requires Fields as row style.'));
-    }
-    return $errors;
+    public function validate() {
+      // Get any errors from the parent validation.
+      $errors = parent::validate();
+      // Custom validation for Hero Slideshow.
+      if ($this->options['hero_slideshow'] && !$this->usesFields()) {
+        // Add the error directly to the errors array.
+        $errors[] = $this->t('Hero Slideshow option requires Fields as row style.');
+      }
 
-  }
+      // Return the collected errors.
+      return $errors;
+    }
+
 
 }
