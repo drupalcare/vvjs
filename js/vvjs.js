@@ -83,15 +83,20 @@
         });
       };
 
+      // Update slide visibility and adjust height dynamically
       const updateSlideVisibility = (slideshowId, activeSlideId) => {
         const slides = context.querySelectorAll(`#vvjs-items-${slideshowId}>.vvjs-item`);
+        const slideshowContainer = document.querySelector(`#vvjs-items-${slideshowId}`);
+
+        let activeSlideHeight = 0; // Variable to store the active slide's height
+
         slides.forEach((slide, index) => {
           if (index + 1 === activeSlideId) {
             slide.style.display = 'block';
             slide.classList.add('active');
             slide.setAttribute('tabindex', '0');
             slide.setAttribute('aria-hidden', 'false');
-
+            activeSlideHeight = slide.offsetHeight; // Capture height of the active slide
           } else {
             slide.style.display = 'none';
             slide.classList.remove('active');
@@ -99,6 +104,11 @@
             slide.setAttribute('aria-hidden', 'true');
           }
         });
+
+        // Apply the calculated height to the container
+        if (slideshowContainer) {
+          slideshowContainer.style.height = activeSlideHeight > 0 ? `${activeSlideHeight}px` : 'auto';
+        }
       };
 
       const handlePrevNextBtn = (elementId, itemFunction) => {
