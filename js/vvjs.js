@@ -55,7 +55,7 @@
 
       const getSlideIndex = (slides) => {
         slides.forEach((slide, index) => {
-          const slideElement = document.getElementById(slide.id);
+          const slideElement = context.querySelector(`#${slide.id}`);
           if (slideElement && window.getComputedStyle(slideElement).display === 'block') {
             slideIndex = index + 1;
           }
@@ -65,7 +65,7 @@
 
       const updateNavigationState = (slideshowId, activeSlideId) => {
         const allButtons = context.querySelectorAll(`#vvjs-inner-${slideshowId}>.nav-dots-numbers>.dots-numbers-button`);
-        const announcer = document.getElementById(`slideshow-announcer-${slideshowId}`);
+        const announcer = context.querySelector(`#slideshow-announcer-${slideshowId}`);
 
         allButtons.forEach(button => {
           const buttonId = getElementId(button.id, 3);
@@ -179,8 +179,8 @@
         manageAutoSlideInterval('start', slideshowId, slideTime);
 
         if (slideTime > 0) {
-          const stopOnHover = document.getElementById(slide.id);
-          const playPause = document.getElementById(`play-pause-button-${slideshowId}`);
+          const stopOnHover = context.querySelector(`#${slide.id}`);
+          const playPause = context.querySelector(`#play-pause-button-${slideshowId}`);
           const btnClasses = playPause?.classList;
           btnClasses?.add('dots-numbers-inactive');
 
