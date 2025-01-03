@@ -20,6 +20,8 @@
       let slideIndex = 1;
       let autoSlideIntervalId = null;
       let isPaused = false;
+      let previousWidth = window.innerWidth;
+      let resizeTimeout;
 
       const playIconSVG = `
         <svg class="svg-play" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 800" fill="currentColor">
@@ -85,12 +87,17 @@
 
       const updateSlideVisibility = (slideshowId, activeSlideId) => {
         const slides = context.querySelectorAll(`#vvjs-items-${slideshowId}>.vvjs-item`);
+        const slideshowContainer = context.querySelector(`#vvjs-items-${slideshowId}`);
+
+        let activeSlideHeight = 0;
+
         slides.forEach((slide, index) => {
           if (index + 1 === activeSlideId) {
             slide.style.display = 'block';
             slide.classList.add('active');
             slide.setAttribute('tabindex', '0');
             slide.setAttribute('aria-hidden', 'false');
+            activeSlideHeight = slide.offsetHeight;
 
           } else {
             slide.style.display = 'none';
@@ -99,6 +106,7 @@
             slide.setAttribute('aria-hidden', 'true');
           }
         });
+        slideshowContainer.style.height = `${activeSlideHeight}px`;
       };
 
       const handlePrevNextBtn = (elementId, itemFunction) => {
@@ -176,6 +184,7 @@
         const slideshowId = getElementId(slide.id, 2);
         const slideTime = parseInt(context.querySelector(`#vvjs-inner-${slideshowId}`)?.getAttribute('data-time'), 10);
 
+        updateSlideVisibility(slideshowId, slideIndex);
         manageAutoSlideInterval('start', slideshowId, slideTime);
 
         if (slideTime > 0) {
@@ -274,6 +283,32 @@
           }
         });
       });
+
+      const resetHeight = () => {
+        slides.forEach(slide => {
+          try {
+            const slideshowId = parseInt(slide.id.split('-')[2]);
+            if (slideshowId && slideIndex > 0) {
+              updateSlideVisibility(slideshowId, slideIndex);
+            }
+          } catch (error) {
+            console.warn('Error resetting height:', slide, error);
+          }
+        });
+      };
+
+      const debounceResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          const currentWidth = window.innerWidth;
+          if (Math.abs(currentWidth - previousWidth) > 10) {
+            previousWidth = currentWidth;
+            resetHeight();
+          }
+        }, 200);
+      };
+
+      window.addEventListener('resize', debounceResize);
     }
   };
 })(Drupal, drupalSettings, once);

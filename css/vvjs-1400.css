@@ -12,9 +12,13 @@
     width: 100%;
     min-height: 70px;
     display: flex;
-    bottom: 0;
+    bottom: -70px;
     left: 0;
     right: 0;
+  }
+
+  .vvjs.hero-slideshow .vvjs-items {
+    margin-bottom: 70px;
   }
 
   .vvjs.br-1400 .vvjs-item {
