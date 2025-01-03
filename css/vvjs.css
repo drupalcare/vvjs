@@ -63,6 +63,7 @@
 
 .vvjs .slide-indicators button {
   all: unset;
+  overflow: hidden;
   position: absolute;
   cursor: pointer;
   transition: 0.4s;
@@ -110,16 +111,16 @@
 }
 
 .vvjs.arrows-sides .vvjs-inner {
-  width: calc(100% - 100px);
+  width: calc(100% - 120px);
   margin: 0 auto;
 }
 
 .vvjs.arrows-sides .slide-indicators .next-arrow {
-  right: -50px;
+  right: -60px;
 }
 
 .vvjs.arrows-sides .slide-indicators .prev-arrow {
-  left: -50px;
+  left: -60px;
 }
 
 .vvjs .display-0 {
