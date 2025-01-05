@@ -121,11 +121,12 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
     $form['max_content_width'] = [
       '#type' => 'number',
-      '#title' => $this->t('Max Content Width (%)'),
+      '#title' => $this->t('Content Width (%)'),
       '#default_value' => $this->options['max_content_width'],
-      '#description' => $this->t('Determines the maximum width for the remaining fields within the hero section.'),
+      '#description' => $this->t('Determines the width for the remaining fields within the hero section.'),
       '#step' => 1,
       '#min' => 1,
+      '#max' => 100,
       '#states' => [
         'visible' => [
           ':input[name="style_options[hero_slideshow]"]' => ['checked' => TRUE],

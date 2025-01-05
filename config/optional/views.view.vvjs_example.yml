@@ -322,7 +322,7 @@ display:
           available_breakpoints: '576'
           max_width: '1200'
           min_height: '40'
-          max_content_width: '60'
+          max_content_width: '80'
           overlay_position: d-middle
           overlay_bg_color: '#000000'
           overlay_bg_opacity: '0.4'

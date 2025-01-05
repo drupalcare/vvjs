@@ -16,14 +16,15 @@
   display: block;
   overflow: hidden;
   background-color: transparent;
-  max-width: calc(var(--hero-max-width, 1200) * 1px);
-  min-height: calc(var(--hero-min-height, 40) * 1vw);
   width: 100%;
+  max-width: initial;
+  min-height: initial;
 }
 
 .vvjs.hero-slideshow .vvjs-items .vvjs-hero-content {
   background: var(--hero-content-bg);
-  max-width: calc(var(--hero-content-width)* 1%);
+  max-width: 100%;
+  width: 100%;
 }
 
 .vvjs.hero-slideshow.a-top .vvjs-item-inner img {
