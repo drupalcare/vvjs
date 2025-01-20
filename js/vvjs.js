@@ -231,7 +231,6 @@
           initializeControls();
           initializeHoverPause();
           initializeKeyboardNavigation();
-          initializeKeyboardNavigation();
           initializeSwipeNavigation();
           if (slideTime > 0) {
             startAutoSlide();
