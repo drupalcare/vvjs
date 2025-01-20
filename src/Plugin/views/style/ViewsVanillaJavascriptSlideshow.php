@@ -47,6 +47,8 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options['max_content_width'] = ['default' => 60];
     $options['max_width'] = ['default' => 1200];
     $options['overlay_position'] = ['default' => 'd-middle'];
+    $options['show_total_slides'] = ['default' => FALSE];
+    $options['show_slide_progress'] = ['default' => FALSE];
     return $options;
   }
 
@@ -190,25 +192,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       ],
     ];
 
-    $form['enable_css'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable CSS Library'),
-      '#default_value' => $this->options['enable_css'],
-      '#description' => $this->t('Check this box to include the CSS library for styling the slideshow.'),
-    ];
-
-    $form['arrows'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Slide Navigation Arrows'),
-      '#options' => [
-        'none' => $this->t('None'),
-        'arrows-sides' => $this->t('Show arrows on the sides'),
-        'arrows-top' => $this->t('Show arrows at the top of the slide'),
-      ],
-      '#default_value' => $this->options['arrows'],
-      '#description' => $this->t('Side arrows are always visible, while top arrows are hidden by default and appear when you hover over the slide.'),
-    ];
-
     $form['time_in_seconds'] = [
       '#type' => 'select',
       '#title' => $this->t('Time In Seconds'),
@@ -232,9 +215,21 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#description' => $this->t('By default, the Slideshow scrolls every 5 seconds. You can modify this interval. If set between 3-15 seconds, a play/pause button appears and the slideshow pauses on mouse hover. To stop the slideshow, set the field value to none.'),
     ];
 
+    $form['arrows'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Slide Navigation Arrows'),
+      '#options' => [
+        'none' => $this->t('None'),
+        'arrows-sides' => $this->t('Show arrows on the sides'),
+        'arrows-top' => $this->t('Show arrows at the top of the slide'),
+      ],
+      '#default_value' => $this->options['arrows'],
+      '#description' => $this->t('Side arrows are always visible, while top arrows are hidden by default and appear when you hover over the slide.'),
+    ];
+
     $form['navigation'] = [
       '#type' => 'select',
-      '#title' => $this->t('Slide Indicators'),
+      '#title' => $this->t('Slide Indicators (Bottom Navigation Dots/Numbers)'),
       '#options' => [
         'none' => $this->t('None'),
         'dots' => $this->t('Dots'),
@@ -267,6 +262,27 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     ];
 
     $form['#attached']['library'][] = 'vvjs/opacity';
+
+    $form['show_total_slides'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show Total Slide Number'),
+      '#default_value' => $this->options['show_total_slides'],
+      '#description' => $this->t('Enable this option to display the total number of slides in the slideshow. For example, "Slide 1 of 5".'),
+    ];
+
+    $form['show_slide_progress'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show Animation Progress'),
+      '#default_value' => $this->options['show_slide_progress'],
+      '#description' => $this->t('Enable this option to display a circular animation indicator that updates with each slide change. The animation duration matches the slide transition time.'),
+    ];
+
+    $form['enable_css'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable CSS Library'),
+      '#default_value' => $this->options['enable_css'],
+      '#description' => $this->t('Check this box to include the CSS library for styling the slideshow.'),
+    ];
 
   }
 

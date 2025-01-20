@@ -38,6 +38,14 @@ function vvjs_views_data_alter(array &$data): void {
         'type' => 'boolean',
         'label' => t('Enable Hero Slideshow'),
       ],
+      'show_total_slides' => [
+        'type' => 'boolean',
+        'label' => t('Show Total Slides'),
+      ],
+      'show_slide_progress' => [
+        'type' => 'boolean',
+        'label' => t('Show Slide Animation'),
+      ],
       'overlay_bg_color' => [
         'type' => 'string',
         'label' => t('Overlay Background Color'),

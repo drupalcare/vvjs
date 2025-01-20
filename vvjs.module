@@ -131,8 +131,16 @@ function template_preprocess_views_view_vvjs(array &$variables) {
     $variables['background_rgb'] = NULL;
   }
 
+  if (!empty($handler->options['show_slide_progress'])) {
+    $list_attributes['data-show-slide-animation'] = $handler->options['show_slide_progress'] ? 'true' : 'false';
+  }
+
+  if (!empty($handler->options['show_total_slides'])) {
+    $list_attributes['data-show-total-slides'] = $handler->options['show_total_slides'] ? 'true' : 'false';
+  }
+
   if (!empty($handler->options['hero_slideshow'])) {
-    $list_attributes['data-hero-slideshow'] = 'true';
+    $list_attributes['data-hero-slideshow'] = $handler->options['hero_slideshow'] ? 'true' : 'false';
   }
 
   if (!empty($handler->options['available_breakpoints'])) {
