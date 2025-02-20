@@ -135,6 +135,21 @@
 }
 
 /* Bottom nav */
+.nav-dots-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-indicators *,
+.nav-dots-numbers * {
+  line-height: 1;
+}
+
+.play-pause-button {
+  padding: 0 4px;
+}
+
 .play-pause-button svg {
   width: 40px;
   height: 40px;
@@ -159,6 +174,7 @@
 }
 
 .vvjs .nav-dots-numbers.numbers .dots-numbers-button {
+  line-height: 1.4;
   cursor: pointer;
   padding: 5px 10px;
   margin: 0 5px;
@@ -295,6 +311,7 @@
     transform: scale(1.2);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
   }
+
 }
 
 /* For any slideshow */

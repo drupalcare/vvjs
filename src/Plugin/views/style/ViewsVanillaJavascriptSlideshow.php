@@ -49,6 +49,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options['overlay_position'] = ['default' => 'd-middle'];
     $options['show_total_slides'] = ['default' => FALSE];
     $options['show_slide_progress'] = ['default' => FALSE];
+    $options['show_play_pause'] = ['default' => TRUE];
     return $options;
   }
 
@@ -275,6 +276,13 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#title' => $this->t('Show Animation Progress'),
       '#default_value' => $this->options['show_slide_progress'],
       '#description' => $this->t('Enable this option to display a circular animation indicator that updates with each slide change. The animation duration matches the slide transition time.'),
+    ];
+
+    $form['show_play_pause'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show Play/Pause Button'),
+      '#default_value' => $this->options['show_play_pause'],
+      '#description' => $this->t('Enable this option to show a play/pause button at the bottom of the slideshow.'),
     ];
 
     $form['enable_css'] = [

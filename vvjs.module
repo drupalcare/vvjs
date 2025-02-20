@@ -131,6 +131,10 @@ function template_preprocess_views_view_vvjs(array &$variables) {
     $variables['background_rgb'] = NULL;
   }
 
+  if (!empty($handler->options['show_play_pause'])) {
+    $list_attributes['data-show-play-pause'] = $handler->options['show_play_pause'] ? 'true' : 'false';
+  }
+
   if (!empty($handler->options['show_slide_progress'])) {
     $list_attributes['data-show-slide-animation'] = $handler->options['show_slide_progress'] ? 'true' : 'false';
   }

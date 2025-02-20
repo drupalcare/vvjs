@@ -47,6 +47,7 @@
 {% set nav_dots_numbers = options.navigation %}
 {% set time_in_seconds = options.time_in_seconds %}
 {% set show_total_slides = options.show_total_slides %}
+{% set show_play_pause = options.show_play_pause %}
 {% set show_slide_progress = options.show_slide_progress %}
 
 {# Calculate total slides #}
@@ -61,6 +62,7 @@
      data-navigation="{{ nav_dots_numbers != 'none' ? 'true' : 'false' }}"
      data-show-total-slides="{{ show_total_slides ? 'true' : 'false' }}"
      data-show-slide-progress="{{ show_slide_progress ? 'true' : 'false' }}"
+     data-play-pause="{{ show_play_pause ? 'true' : 'false' }}"
      data-static="{{ time_in_seconds == 0 ? 'true' : 'false' }}"
      data-time="{{ time_in_seconds }}"
      data-total-slides="{{ rows|length }}"
@@ -120,8 +122,12 @@
       {% if nav_dots_numbers != 'none' or time_in_seconds > 0 or show_total_slides or show_slide_progress %}
         <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
 
-          {% if time_in_seconds > 0 %}
-          <button id="play-pause-button-{{ unique_id }}" type="button"  role="tab" aria-label="{{ 'Stop automatic slide show'|t }}" class="button play-pause-button display-{{ time_in_seconds }} play playing" aria-live="polite">
+          {% if show_play_pause %}
+          <button id="play-pause-button-{{ unique_id }}"
+          type="button"
+          role="button"
+          aria-label="{{ 'Stop automatic slide show'|t }}"
+          class="button play-pause-button display-{{ time_in_seconds }} play playing">
             <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
             {{ include('@vvjs/svg/svg-pause.svg') }}
           </button>
@@ -130,8 +136,11 @@
           {% if show_slide_progress and time_in_seconds > 0 %}
           <div class="echo-animation">
             <div class="progressbar"
-                 aria-valuenow="0"
                  role="progressbar"
+                 aria-valuenow="0"
+                 aria-valuemin="0"
+                 aria-valuemax="{{ time_in_seconds }}"
+                 aria-label="{{ 'Slideshow progress'|t }}"
                  aria-live="polite"
                  data-total-time="{{ time_in_seconds }}"
                  data-current-progress="0">

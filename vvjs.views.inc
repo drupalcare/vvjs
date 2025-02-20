@@ -42,6 +42,10 @@ function vvjs_views_data_alter(array &$data): void {
         'type' => 'boolean',
         'label' => t('Show Total Slides'),
       ],
+      'show_play_pause' => [
+        'type' => 'boolean',
+        'label' => t('Show Play Pause Button'),
+      ],
       'show_slide_progress' => [
         'type' => 'boolean',
         'label' => t('Show Slide Animation'),
