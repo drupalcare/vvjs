@@ -47,12 +47,29 @@
             const isActive = index + 1 === activeIndex;
             slide.style.display = isActive ? 'block' : 'none';
             slide.classList.toggle('active', isActive);
-            slide.setAttribute('aria-hidden', !isActive);
+
+            if (!isActive) {
+              slide.setAttribute('inert', '');
+              slide.setAttribute('aria-hidden', 'true');
+              slide.setAttribute('tabindex', '-1');
+              slide.querySelectorAll('a, button, input, textarea, select').forEach((el) => {
+                el.setAttribute('tabindex', '-1');
+              });
+            } else {
+              slide.removeAttribute('inert');
+              slide.removeAttribute('aria-hidden');
+              slide.setAttribute('tabindex', '0');
+              slide.querySelectorAll('a, button, input, textarea, select').forEach((el) => {
+                el.removeAttribute('tabindex');
+              });
+            }
+
           });
           updateNavigationState(activeIndex);
           updateProgressBar();
           announceSlide(activeIndex);
         };
+
         const updateNavigationState = (activeIndex) => {
           const navDots = slideshowInner.querySelectorAll('.dots-numbers-button');
           navDots.forEach((dot, index) => {

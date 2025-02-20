@@ -119,8 +119,8 @@
 
     {# Only show navigation elements if there are more than one slide #}
     {% if total_slides > 1 %}
-      {% if nav_dots_numbers != 'none' or time_in_seconds > 0 or show_total_slides or show_slide_progress %}
-        <div id="nav-dots-numbers-{{ unique_id }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
+      {% if nav_dots_numbers != 'none' or show_total_slides or show_slide_progress or show_play_pause %}
+        <div id="nav-dots-numbers-{{ unique_id }}" aria-label="{{ 'Slideshow Tabs'|t }}" class="nav-dots-numbers {{ nav_dots_numbers }}">
 
           {% if show_play_pause %}
           <button id="play-pause-button-{{ unique_id }}"
@@ -149,11 +149,13 @@
           {% endif %}
 
           {% if nav_dots_numbers != 'none' %}
+          <div  class="dots-numbers-button-wrapper" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}">
           {% for row in rows %}
-          <button id="dots-numbers-button-{{ loop.index }}" class="button dots-numbers-button{{ loop.first ? ' active' : '' }}" type="button" role="tab" aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" aria-controls="vvjs-item-{{ unique_id }}-{{ loop.index }}" tabindex="{{ loop.first ? '0' : '-1' }}">
-            {{ loop.index }}
-          </button>
+            <button id="dots-numbers-button-{{ loop.index }}" class="button dots-numbers-button{{ loop.first ? ' active' : '' }}" type="button" role="tab" aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" aria-controls="vvjs-item-{{ unique_id }}-{{ loop.index }}" tabindex="{{ loop.first ? '0' : '-1' }}">
+              {{ loop.index }}
+            </button>
           {% endfor %}
+          </div>
           {% endif %}
 
           {% if show_total_slides %}
