@@ -243,14 +243,46 @@
           };
         };
 
+        function applyReducedMotionPreference() {
+          const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          if (prefersReducedMotion) {
+            isPaused = true; // Stop autoplay.
+            clearAllTimers(); // Stop any running timers (if already started).
+
+            // Apply reduced motion styles.
+            slideshow.style.transition = 'none';
+            slides.forEach(slide => slide.style.transition = 'none');
+            progressBar?.classList.add('reduced-motion');
+
+            const playPauseButton = slideshowInner.querySelector('.play-pause-button');
+            if (playPauseButton) {
+              playPauseButton.innerHTML = playIconSVG; // Set the button to 'play' state.
+              playPauseButton.setAttribute('aria-label', 'Play slideshow');
+            }
+          }
+        }
+
         const initializeSlideshow = () => {
           updateSlideVisibility(slideIndex);
           initializeControls();
           initializeHoverPause();
           initializeKeyboardNavigation();
           initializeSwipeNavigation();
-          if (slideTime > 0) {
+          applyReducedMotionPreference();
+          if (slideTime > 0 && !isPaused) {
             startAutoSlide();
+          }
+
+          if (!slideshow.vvjVisibilityAttached) {
+            slideshow.vvjVisibilityAttached = true;
+            document.addEventListener('visibilitychange', () => {
+              if (document.hidden) {
+                stopAutoSlide();
+              } else if (!isPaused) {
+                startAutoSlide();
+              }
+            });
           }
         };
 
