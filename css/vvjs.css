@@ -48,6 +48,17 @@
   transition: transform 0.5s ease-in-out;
 }
 
+/**
+ * Prevent margin collapse inside slide containers.
+ * Ensures getBoundingClientRect() captures full height.
+ */
+
+.vvjs .vvjs-items .vvjs-item-inner {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  overflow: hidden;
+}
+
 .vvjs .vvjs-items > div:first-of-type {
   display: block;
 }

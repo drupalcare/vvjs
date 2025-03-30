@@ -64,15 +64,24 @@
           startProgressBar();
         };
         const adjustHeight = () => {
+          const currentSlide = slides[slideIndex - 1];
+          if (!currentSlide) return;
+
           const computedStyle = window.getComputedStyle(slideshow);
-          const contentHeight = slides[slideIndex - 1].offsetHeight;
+          const slideRect = currentSlide.getBoundingClientRect();
+          const contentHeight = slideRect.height;
+
           const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
           const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
+          const marginTop = parseFloat(computedStyle.marginTop) || 0;
+          const marginBottom = parseFloat(computedStyle.marginBottom) || 0;
           const borderTop = parseFloat(computedStyle.borderTopWidth) || 0;
           const borderBottom = parseFloat(computedStyle.borderBottomWidth) || 0;
+
           const totalHeight = contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
           slideshow.style.height = `${totalHeight}px`;
         };
+
         const announceSlide = () => {
           announcer.textContent = `Slide ${slideIndex} of ${totalSlides}`;
         };
