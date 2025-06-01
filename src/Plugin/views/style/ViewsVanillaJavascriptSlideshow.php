@@ -29,6 +29,11 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   protected $usesRowPlugin = TRUE;
 
   /**
+   * {@inheritdoc}
+   */
+  protected $usesRowClass = TRUE;
+
+  /**
    * Set default options.
    */
   protected function defineOptions(): array {
