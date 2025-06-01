@@ -80,25 +80,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#description' => $this->t('Enable this option to create a Hero Slideshow. A Hero Slideshow is a prominent, full-width slideshow often used at the top of a webpage to showcase key content or visuals. It typically features large images with overlaying text or buttons. Note: This requires the row style to be set and the first field in the row to be an image. Additional configuration options will be available once this option is enabled.'),
     ];
 
-    $form['available_breakpoints'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Available Breakpoints for Hero'),
-      '#options' => [
-        '576' => $this->t('576px / 36rem'),
-        '768' => $this->t('768px / 48rem'),
-        '992' => $this->t('992px / 62rem'),
-        '1200' => $this->t('1200px / 75rem'),
-        '1400' => $this->t('1400px / 87.5rem'),
-      ],
-      '#default_value' => $this->options['available_breakpoints'],
-      '#description' => $this->t('Select the maximum screen width (in pixels) at which the Hero should be disabled.'),
-      '#states' => [
-        'visible' => [
-          ':input[name="style_options[hero_slideshow]"]' => ['checked' => TRUE],
-        ],
-      ],
-    ];
-
     $form['max_width'] = [
       '#type' => 'number',
       '#title' => $this->t('Max Width (px)'),
@@ -222,16 +203,32 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#description' => $this->t('By default, the Slideshow scrolls every 5 seconds. You can modify this interval. If set between 3-15 seconds, a play/pause button appears and the slideshow pauses on mouse hover. To stop the slideshow, set the field value to none.'),
     ];
 
+    $form['available_breakpoints'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Available Breakpoints'),
+      '#options' => [
+        '576' => $this->t('576px / 36rem'),
+        '768' => $this->t('768px / 48rem'),
+        '992' => $this->t('992px / 62rem'),
+        '1200' => $this->t('1200px / 75rem'),
+        '1400' => $this->t('1400px / 87.5rem'),
+      ],
+      '#default_value' => $this->options['available_breakpoints'],
+      '#description' => $this->t('Select the maximum screen width (in pixels) at which the Hero should be disabled.'),
+    ];
+
     $form['arrows'] = [
       '#type' => 'select',
       '#title' => $this->t('Slide Navigation Arrows'),
       '#options' => [
         'none' => $this->t('None'),
         'arrows-sides' => $this->t('Show arrows on the sides'),
+        'arrows-sides-big' => $this->t('Show arrows on the sides (big screen only)'),
         'arrows-top' => $this->t('Show arrows at the top of the slide'),
+        'arrows-top-big' => $this->t('Show arrows at the top of the slide (big screen only)'),
       ],
       '#default_value' => $this->options['arrows'],
-      '#description' => $this->t('Side arrows are always visible, while top arrows are hidden by default and appear when you hover over the slide.'),
+      '#description' => $this->t('Side arrows appear beside the slide. Top arrows appear above the slide with low opacity (0.3) and become fully visible on hover. Options marked "big screen only" will only display on screens wider than the selected breakpoint.'),
     ];
 
     $form['navigation'] = [
@@ -383,12 +380,13 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
     $libraries = [
       'vvjs/vvjs',
+      'vvjs/vvjs__' . $this->options['available_breakpoints'],
     ];
 
     if ($this->options['hero_slideshow']) {
       // Updated to attach the CSS library.
       $libraries[] = 'vvjs/vvjs-hero';
-      $libraries[] = 'vvjs/vvjs__' . $this->options['available_breakpoints'];
+      $libraries[] = 'vvjs/vvjs-hero__' . $this->options['available_breakpoints'];
     }
 
     // Conditionally include the CSS library based on the option.
