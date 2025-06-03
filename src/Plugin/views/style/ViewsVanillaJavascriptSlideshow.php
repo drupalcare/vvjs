@@ -330,43 +330,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function preRender($result) {
-    parent::preRender($result);
-
-    if (empty($result)) {
-      return;
-    }
-
-    $this->view->row_index = 0;
-    $this->view->style_plugin = $this;
-
-    $first_row = $result[0];
-    $replacements = [];
-
-    // Generate [vvjs:field_name] tokens for all fields.
-    foreach ($this->view->field as $field_id => $field_handler) {
-      $replacements["[vvjs:$field_id]"] = $field_handler->render($first_row);
-    }
-
-    // Replace in header/footer/empty regions.
-    $sections = ['header', 'footer', 'empty'];
-
-    foreach ($sections as $section) {
-      $options = $this->view->display_handler->getOption($section);
-      if (!empty($options) && is_array($options)) {
-        foreach ($options as &$item) {
-          if (isset($item['content']) && is_string($item['content'])) {
-            $item['content'] = strtr($item['content'], $replacements);
-          }
-        }
-        $this->view->display_handler->setOption($section, $options);
-      }
-    }
-  }
-
-  /**
    * Renders the view with the 3D carousel style.
    *
    * @return array
@@ -406,7 +369,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       ],
     ];
 
-    $build['#context']['tokens']['view'] = $this->view;
     return $build;
   }
 
