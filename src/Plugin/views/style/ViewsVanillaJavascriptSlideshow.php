@@ -278,14 +278,24 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Show Animation Progress'),
       '#default_value' => $this->options['show_slide_progress'],
-      '#description' => $this->t('Enable this option to display a circular animation indicator that updates with each slide change. The animation duration matches the slide transition time.'),
+      '#description' => $this->t('Enable this option to display a circular animation indicator that updates with each slide change. The animation duration matches the slide transition time. (Time In Seconds >= 2 s)'),
+      '#states' => [
+        'enabled' => [
+          ':input[name="style_options[time_in_seconds]"]' => ['!value' => '0'],
+        ],
+      ],
     ];
 
     $form['show_play_pause'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show Play/Pause Button'),
       '#default_value' => $this->options['show_play_pause'],
-      '#description' => $this->t('Enable this option to show a play/pause button at the bottom of the slideshow.'),
+      '#description' => $this->t('Enable this option to show a play/pause button at the bottom of the slideshow. (Time In Seconds >= 2 s)'),
+      '#states' => [
+        'enabled' => [
+          ':input[name="style_options[time_in_seconds]"]' => ['!value' => '0'],
+        ],
+      ],
     ];
 
     $form['enable_css'] = [
