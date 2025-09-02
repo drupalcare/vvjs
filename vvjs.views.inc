@@ -8,27 +8,7 @@
  * data type constraints for the VVJS slideshow configuration.
  */
 
-/**
- * Field type constants for consistency and maintainability.
- */
-const VVJS_VIEWS_TYPE_INTEGER = 'integer';
-const VVJS_VIEWS_TYPE_STRING = 'string';
-const VVJS_VIEWS_TYPE_BOOLEAN = 'boolean';
-const VVJS_VIEWS_TYPE_FLOAT = 'float';
-
-/**
- * Validation constants for field constraints.
- */
-const VVJS_VIEWS_MIN_TIME = 0;
-const VVJS_VIEWS_MAX_TIME = 15000;
-const VVJS_VIEWS_MIN_HEIGHT = 1;
-const VVJS_VIEWS_MAX_HEIGHT = 200;
-const VVJS_VIEWS_MIN_WIDTH = 1;
-const VVJS_VIEWS_MAX_WIDTH = 9999;
-const VVJS_VIEWS_MIN_CONTENT_WIDTH = 1;
-const VVJS_VIEWS_MAX_CONTENT_WIDTH = 100;
-const VVJS_VIEWS_MIN_OPACITY = 0;
-const VVJS_VIEWS_MAX_OPACITY = 1;
+use Drupal\vvjs\VvjsConstants;
 
 /**
  * Implements hook_views_data_alter().
@@ -68,13 +48,13 @@ function _vvjs_build_views_mapping(): array {
 function _vvjs_build_timing_mapping(): array {
   return [
     'time_in_seconds' => [
-      'type' => VVJS_VIEWS_TYPE_INTEGER,
+      'type' => VvjsConstants::VIEWS_TYPE_INTEGER,
       'label' => t('Auto-advance Time (milliseconds)'),
       'description' => t('Time between automatic slide transitions. Set to 0 to disable auto-advance.'),
       'constraints' => [
         'Range' => [
-          'min' => VVJS_VIEWS_MIN_TIME,
-          'max' => VVJS_VIEWS_MAX_TIME,
+          'min' => VvjsConstants::VIEWS_MIN_TIME,
+          'max' => VvjsConstants::VIEWS_MAX_TIME,
         ],
       ],
     ],
@@ -90,7 +70,7 @@ function _vvjs_build_timing_mapping(): array {
 function _vvjs_build_navigation_mapping(): array {
   return [
     'navigation' => [
-      'type' => VVJS_VIEWS_TYPE_STRING,
+      'type' => VvjsConstants::VIEWS_TYPE_STRING,
       'label' => t('Slide Indicators Type'),
       'description' => t('Type of navigation indicators to display at the bottom of the slideshow.'),
       'constraints' => [
@@ -98,7 +78,7 @@ function _vvjs_build_navigation_mapping(): array {
       ],
     ],
     'arrows' => [
-      'type' => VVJS_VIEWS_TYPE_STRING,
+      'type' => VvjsConstants::VIEWS_TYPE_STRING,
       'label' => t('Navigation Arrows Position'),
       'description' => t('Position and visibility of navigation arrows for manual slide control.'),
       'constraints' => [
@@ -117,7 +97,7 @@ function _vvjs_build_navigation_mapping(): array {
 function _vvjs_build_animation_mapping(): array {
   return [
     'animation' => [
-      'type' => VVJS_VIEWS_TYPE_STRING,
+      'type' => VvjsConstants::VIEWS_TYPE_STRING,
       'label' => t('Slide Transition Animation'),
       'description' => t('Type of animation effect used when transitioning between slides.'),
       'constraints' => [
@@ -136,12 +116,12 @@ function _vvjs_build_animation_mapping(): array {
 function _vvjs_build_hero_mapping(): array {
   return [
     'hero_slideshow' => [
-      'type' => VVJS_VIEWS_TYPE_BOOLEAN,
+      'type' => VvjsConstants::VIEWS_TYPE_BOOLEAN,
       'label' => t('Enable Hero Slideshow Mode'),
       'description' => t('Enable full-width hero slideshow with overlay content positioning.'),
     ],
     'overlay_bg_color' => [
-      'type' => VVJS_VIEWS_TYPE_STRING,
+      'type' => VvjsConstants::VIEWS_TYPE_STRING,
       'label' => t('Overlay Background Color'),
       'description' => t('Hex color code for the content overlay background (e.g., #000000).'),
       'constraints' => [
@@ -152,18 +132,18 @@ function _vvjs_build_hero_mapping(): array {
       ],
     ],
     'overlay_bg_opacity' => [
-      'type' => VVJS_VIEWS_TYPE_FLOAT,
+      'type' => VvjsConstants::VIEWS_TYPE_FLOAT,
       'label' => t('Overlay Background Opacity'),
       'description' => t('Opacity level for the overlay background, from 0 (transparent) to 1 (opaque).'),
       'constraints' => [
         'Range' => [
-          'min' => VVJS_VIEWS_MIN_OPACITY,
-          'max' => VVJS_VIEWS_MAX_OPACITY,
+          'min' => VvjsConstants::VIEWS_MIN_OPACITY,
+          'max' => VvjsConstants::VIEWS_MAX_OPACITY,
         ],
       ],
     ],
     'overlay_position' => [
-      'type' => VVJS_VIEWS_TYPE_STRING,
+      'type' => VvjsConstants::VIEWS_TYPE_STRING,
       'label' => t('Overlay Content Position'),
       'description' => t('Position of the content overlay within the hero slideshow area.'),
       'constraints' => [
@@ -171,7 +151,7 @@ function _vvjs_build_hero_mapping(): array {
       ],
     ],
     'available_breakpoints' => [
-      'type' => VVJS_VIEWS_TYPE_STRING,
+      'type' => VvjsConstants::VIEWS_TYPE_STRING,
       'label' => t('Responsive Breakpoint'),
       'description' => t('Maximum screen width at which hero slideshow features are enabled.'),
       'constraints' => [
@@ -179,35 +159,35 @@ function _vvjs_build_hero_mapping(): array {
       ],
     ],
     'min_height' => [
-      'type' => VVJS_VIEWS_TYPE_INTEGER,
+      'type' => VvjsConstants::VIEWS_TYPE_INTEGER,
       'label' => t('Minimum Height (viewport width units)'),
       'description' => t('Minimum height for hero slideshow in vw units (1-200).'),
       'constraints' => [
         'Range' => [
-          'min' => VVJS_VIEWS_MIN_HEIGHT,
-          'max' => VVJS_VIEWS_MAX_HEIGHT,
+          'min' => VvjsConstants::VIEWS_MIN_HEIGHT,
+          'max' => VvjsConstants::VIEWS_MAX_HEIGHT,
         ],
       ],
     ],
     'max_content_width' => [
-      'type' => VVJS_VIEWS_TYPE_INTEGER,
+      'type' => VvjsConstants::VIEWS_TYPE_INTEGER,
       'label' => t('Maximum Content Width (percentage)'),
       'description' => t('Maximum width for overlay content as percentage of container (1-100).'),
       'constraints' => [
         'Range' => [
-          'min' => VVJS_VIEWS_MIN_CONTENT_WIDTH,
-          'max' => VVJS_VIEWS_MAX_CONTENT_WIDTH,
+          'min' => VvjsConstants::VIEWS_MIN_CONTENT_WIDTH,
+          'max' => VvjsConstants::VIEWS_MAX_CONTENT_WIDTH,
         ],
       ],
     ],
     'max_width' => [
-      'type' => VVJS_VIEWS_TYPE_INTEGER,
+      'type' => VvjsConstants::VIEWS_TYPE_INTEGER,
       'label' => t('Maximum Container Width (pixels)'),
       'description' => t('Maximum width for the slideshow container in pixels (1-9999).'),
       'constraints' => [
         'Range' => [
-          'min' => VVJS_VIEWS_MIN_WIDTH,
-          'max' => VVJS_VIEWS_MAX_WIDTH,
+          'min' => VvjsConstants::VIEWS_MIN_WIDTH,
+          'max' => VvjsConstants::VIEWS_MAX_WIDTH,
         ],
       ],
     ],
@@ -223,17 +203,17 @@ function _vvjs_build_hero_mapping(): array {
 function _vvjs_build_display_mapping(): array {
   return [
     'show_total_slides' => [
-      'type' => VVJS_VIEWS_TYPE_BOOLEAN,
+      'type' => VvjsConstants::VIEWS_TYPE_BOOLEAN,
       'label' => t('Show Total Slide Count'),
       'description' => t('Display current slide number and total count (e.g., "1 of 5").'),
     ],
     'show_play_pause' => [
-      'type' => VVJS_VIEWS_TYPE_BOOLEAN,
+      'type' => VvjsConstants::VIEWS_TYPE_BOOLEAN,
       'label' => t('Show Play/Pause Button'),
       'description' => t('Display play/pause button for manual control of auto-advance.'),
     ],
     'show_slide_progress' => [
-      'type' => VVJS_VIEWS_TYPE_BOOLEAN,
+      'type' => VvjsConstants::VIEWS_TYPE_BOOLEAN,
       'label' => t('Show Slide Progress Indicator'),
       'description' => t('Display animated progress indicator showing slide timing progress.'),
     ],
@@ -249,7 +229,7 @@ function _vvjs_build_display_mapping(): array {
 function _vvjs_build_technical_mapping(): array {
   return [
     'unique_id' => [
-      'type' => VVJS_VIEWS_TYPE_INTEGER,
+      'type' => VvjsConstants::VIEWS_TYPE_INTEGER,
       'label' => t('Unique Slideshow Identifier'),
       'description' => t('Unique numeric identifier for this slideshow instance (auto-generated).'),
       'constraints' => [
@@ -260,7 +240,7 @@ function _vvjs_build_technical_mapping(): array {
       ],
     ],
     'enable_css' => [
-      'type' => VVJS_VIEWS_TYPE_BOOLEAN,
+      'type' => VvjsConstants::VIEWS_TYPE_BOOLEAN,
       'label' => t('Enable Default CSS Styling'),
       'description' => t('Include the default CSS library for slideshow styling and layout.'),
     ],

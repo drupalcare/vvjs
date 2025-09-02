@@ -24,73 +24,73 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   /**
    * Animation type constants.
    */
-  public const ANIMATION_NONE = 'none';
-  public const ANIMATION_ZOOM = 'a-zoom';
-  public const ANIMATION_FADE = 'a-fade';
-  public const ANIMATION_TOP = 'a-top';
-  public const ANIMATION_BOTTOM = 'a-bottom';
-  public const ANIMATION_LEFT = 'a-left';
-  public const ANIMATION_RIGHT = 'a-right';
+  public const string ANIMATION_NONE = 'none';
+  public const string ANIMATION_ZOOM = 'a-zoom';
+  public const string ANIMATION_FADE = 'a-fade';
+  public const string ANIMATION_TOP = 'a-top';
+  public const string ANIMATION_BOTTOM = 'a-bottom';
+  public const string ANIMATION_LEFT = 'a-left';
+  public const string ANIMATION_RIGHT = 'a-right';
 
   /**
    * Breakpoint constants.
    */
-  public const BREAKPOINT_576 = '576';
-  public const BREAKPOINT_768 = '768';
-  public const BREAKPOINT_992 = '992';
-  public const BREAKPOINT_1200 = '1200';
-  public const BREAKPOINT_1400 = '1400';
+  public const string BREAKPOINT_576 = '576';
+  public const string BREAKPOINT_768 = '768';
+  public const string BREAKPOINT_992 = '992';
+  public const string BREAKPOINT_1200 = '1200';
+  public const string BREAKPOINT_1400 = '1400';
 
   /**
    * Arrow position constants.
    */
-  public const ARROWS_NONE = 'none';
-  public const ARROWS_SIDES = 'arrows-sides';
-  public const ARROWS_SIDES_BIG = 'arrows-sides-big';
-  public const ARROWS_TOP = 'arrows-top';
-  public const ARROWS_TOP_BIG = 'arrows-top-big';
+  public const string ARROWS_NONE = 'none';
+  public const string ARROWS_SIDES = 'arrows-sides';
+  public const string ARROWS_SIDES_BIG = 'arrows-sides-big';
+  public const string ARROWS_TOP = 'arrows-top';
+  public const string ARROWS_TOP_BIG = 'arrows-top-big';
 
   /**
    * Navigation type constants.
    */
-  public const NAV_NONE = 'none';
-  public const NAV_DOTS = 'dots';
-  public const NAV_NUMBERS = 'numbers';
+  public const string NAV_NONE = 'none';
+  public const string NAV_DOTS = 'dots';
+  public const string NAV_NUMBERS = 'numbers';
 
   /**
    * Overlay position constants.
    */
-  public const OVERLAY_MIDDLE = 'd-middle';
-  public const OVERLAY_LEFT = 'd-left';
-  public const OVERLAY_RIGHT = 'd-right';
-  public const OVERLAY_TOP = 'd-top';
-  public const OVERLAY_BOTTOM = 'd-bottom';
-  public const OVERLAY_TOP_LEFT = 'd-top-left';
-  public const OVERLAY_TOP_RIGHT = 'd-top-right';
-  public const OVERLAY_BOTTOM_LEFT = 'd-bottom-left';
-  public const OVERLAY_BOTTOM_RIGHT = 'd-bottom-right';
-  public const OVERLAY_TOP_MIDDLE = 'd-top-middle';
-  public const OVERLAY_BOTTOM_MIDDLE = 'd-bottom-middle';
+  public const string OVERLAY_MIDDLE = 'd-middle';
+  public const string OVERLAY_LEFT = 'd-left';
+  public const string OVERLAY_RIGHT = 'd-right';
+  public const string OVERLAY_TOP = 'd-top';
+  public const string OVERLAY_BOTTOM = 'd-bottom';
+  public const string OVERLAY_TOP_LEFT = 'd-top-left';
+  public const string OVERLAY_TOP_RIGHT = 'd-top-right';
+  public const string OVERLAY_BOTTOM_LEFT = 'd-bottom-left';
+  public const string OVERLAY_BOTTOM_RIGHT = 'd-bottom-right';
+  public const string OVERLAY_TOP_MIDDLE = 'd-top-middle';
+  public const string OVERLAY_BOTTOM_MIDDLE = 'd-bottom-middle';
 
   /**
    * Timing constants.
    */
-  public const TIMING_MIN = 2000;
-  public const TIMING_MAX = 15000;
-  public const TIMING_DEFAULT = 5000;
+  public const int TIMING_MIN = 2000;
+  public const int TIMING_MAX = 15000;
+  public const int TIMING_DEFAULT = 5000;
 
   /**
    * Size constraints.
    */
-  public const MIN_WIDTH = 1;
-  public const MAX_WIDTH = 9999;
-  public const MIN_HEIGHT = 1;
-  public const MAX_HEIGHT = 200;
-  public const MIN_CONTENT_WIDTH = 1;
-  public const MAX_CONTENT_WIDTH = 100;
-  public const DEFAULT_MAX_WIDTH = 1200;
-  public const DEFAULT_MIN_HEIGHT = 40;
-  public const DEFAULT_CONTENT_WIDTH = 60;
+  public const int MIN_WIDTH = 1;
+  public const int MAX_WIDTH = 9999;
+  public const int MIN_HEIGHT = 1;
+  public const int MAX_HEIGHT = 200;
+  public const int MIN_CONTENT_WIDTH = 1;
+  public const int MAX_CONTENT_WIDTH = 100;
+  public const int DEFAULT_MAX_WIDTH = 1200;
+  public const int DEFAULT_MIN_HEIGHT = 40;
+  public const int DEFAULT_CONTENT_WIDTH = 60;
 
   /**
    * Does the style plugin use a row plugin.
@@ -140,13 +140,13 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
    * {@inheritdoc}
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state): void {
-    // Call parent first to get default Drupal settings
+    // Call parent first to get default Drupal settings.
     parent::buildOptionsForm($form, $form_state);
 
-    // Set weights for default Drupal elements to ensure they come first
+    // Set weights for default Drupal elements to ensure they come first.
     $this->setDefaultElementWeights($form);
 
-    // Now add your custom sections with higher weights
+    // Now add your custom sections with higher weights.
     $this->buildWarningMessage($form);
     $this->buildHeroSlideshowSection($form);
     $this->buildTimingSection($form);
@@ -164,12 +164,18 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   protected function setDefaultElementWeights(array &$form): void {
     // Set weights for common default elements (if they exist)
     $default_elements = [
-      'grouping' => -100,           // Grouping settings
-      'row_class' => -90,           // Row CSS classes
-      'default_row_class' => -85,   // Default row class checkbox
-      'uses_fields' => -80,         // Uses fields checkbox
-      'class' => -75,               // CSS class
-      'wrapper_class' => -70,       // Wrapper class
+    // Grouping settings.
+      'grouping' => -100,
+    // Row CSS classes.
+      'row_class' => -90,
+    // Default row class checkbox.
+      'default_row_class' => -85,
+    // Uses fields checkbox.
+      'uses_fields' => -80,
+    // CSS class.
+      'class' => -75,
+    // Wrapper class.
+      'wrapper_class' => -70,
     ];
 
     foreach ($default_elements as $element_key => $weight) {
@@ -590,7 +596,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       $identifier = ($this->view->id() ?? 'unknown') . '_' . ($this->view->current_display ?? 'default');
       $this->cachedUniqueId = (int) abs(crc32($identifier));
 
-      // Ensure 8-digit number like original
+      // Ensure 8-digit number like original.
       if ($this->cachedUniqueId < 10000000) {
         $this->cachedUniqueId += 10000000;
       }
@@ -609,12 +615,12 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $errors = [];
     $values = $form_state->getValues();
 
-    // Extract values from nested form structure
+    // Extract values from nested form structure.
     $hero_values = $values['style_options']['hero_slideshow_section'] ?? [];
     $timing_values = $values['style_options']['timing_section'] ?? [];
     $display_values = $values['style_options']['display_section'] ?? [];
 
-    // Validate numeric ranges
+    // Validate numeric ranges.
     if (isset($hero_values['layout']['max_width'])) {
       $max_width = (int) $hero_values['layout']['max_width'];
       if ($max_width < self::MIN_WIDTH || $max_width > self::MAX_WIDTH) {
@@ -645,7 +651,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
-    // Validate hex color
+    // Validate hex color.
     if (isset($hero_values['overlay']['overlay_bg_color'])) {
       $color = $hero_values['overlay']['overlay_bg_color'];
       if (!preg_match('/^#[0-9A-Fa-f]{6}$/', $color)) {
@@ -653,7 +659,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
-    // Validate opacity
+    // Validate opacity.
     if (isset($hero_values['overlay']['overlay_bg_opacity'])) {
       $opacity = (float) $hero_values['overlay']['overlay_bg_opacity'];
       if ($opacity < 0 || $opacity > 1) {
@@ -661,7 +667,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
-    // Validate timing dependencies
+    // Validate timing dependencies.
     $timing = $timing_values['time_in_seconds'] ?? '0';
     if ($timing === '0') {
       if (!empty($display_values['show_slide_progress'])) {
@@ -681,7 +687,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   protected function flattenFormValues(array $values): array {
     $flattened = [];
 
-    // Hero slideshow values
+    // Hero slideshow values.
     if (isset($values['hero_slideshow_section'])) {
       $hero = $values['hero_slideshow_section'];
       $flattened['hero_slideshow'] = $hero['hero_slideshow'] ?? FALSE;
@@ -700,23 +706,23 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
-    // Timing values
+    // Timing values.
     if (isset($values['timing_section'])) {
       $flattened['time_in_seconds'] = $values['timing_section']['time_in_seconds'] ?? self::TIMING_DEFAULT;
     }
 
-    // Navigation values
+    // Navigation values.
     if (isset($values['navigation_section'])) {
       $flattened['arrows'] = $values['navigation_section']['arrows'] ?? self::ARROWS_TOP;
       $flattened['navigation'] = $values['navigation_section']['navigation'] ?? self::NAV_DOTS;
     }
 
-    // Animation values
+    // Animation values.
     if (isset($values['animation_section'])) {
       $flattened['animation'] = $values['animation_section']['animation'] ?? self::ANIMATION_BOTTOM;
     }
 
-    // Display values
+    // Display values.
     if (isset($values['display_section'])) {
       $display = $values['display_section'];
       $flattened['show_total_slides'] = $display['show_total_slides'] ?? FALSE;
@@ -724,12 +730,12 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       $flattened['show_play_pause'] = $display['show_play_pause'] ?? TRUE;
     }
 
-    // Advanced values
+    // Advanced values.
     if (isset($values['advanced_section'])) {
       $flattened['enable_css'] = $values['advanced_section']['enable_css'] ?? TRUE;
     }
 
-    // Preserve unique_id
+    // Preserve unique_id.
     $flattened['unique_id'] = $this->options['unique_id'] ?? $this->generateUniqueId();
 
     return $flattened;
@@ -739,11 +745,11 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
    * {@inheritdoc}
    */
   public function submitOptionsForm(&$form, FormStateInterface $form_state): void {
-    // Flatten nested form values to match original structure
+    // Flatten nested form values to match original structure.
     $values = $form_state->getValue('style_options', []);
     $flattened_values = $this->flattenFormValues($values);
 
-    // Update form state with flattened values
+    // Update form state with flattened values.
     $form_state->setValue('style_options', $flattened_values);
 
     parent::submitOptionsForm($form, $form_state);
@@ -810,12 +816,12 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   public function validate(): array {
     $errors = parent::validate();
 
-    // Validate hero slideshow requirements
+    // Validate hero slideshow requirements.
     if (!empty($this->options['hero_slideshow']) && !$this->usesFields()) {
       $errors[] = $this->t('Hero Slideshow option requires Fields as row style.');
     }
 
-    // Validate timing and display option dependencies
+    // Validate timing and display option dependencies.
     $timing = $this->options['time_in_seconds'] ?? '0';
     if ($timing === '0') {
       if (!empty($this->options['show_slide_progress'])) {

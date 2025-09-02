@@ -5,7 +5,8 @@
  * Provides the module implementation for vvjs.
  *
  * Contains template preprocessing and theme definitions for Views.
- * Enhanced with security improvements, better organization, and modern PHP practices.
+ * Enhanced with security improvements, better organization, and modern
+ * PHP practices.
  *
  * Filename:     vvjs.module
  * Website:      https://www.flashwebcenter.com
@@ -19,43 +20,7 @@ use Drupal\views\ViewExecutable;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\vvjs\Plugin\views\style\ViewsVanillaJavascriptSlideshow;
-
-/**
- * Module constants for configuration and validation.
- */
-const VVJS_DATA_ATTRIBUTE_PREFIX = 'data-';
-const VVJS_DEFAULT_HEX_COLOR = '#000000';
-const VVJS_DEFAULT_OPACITY = 1;
-const VVJS_HEX_COLOR_PATTERN = '/^#[0-9A-Fa-f]{6}$/';
-const VVJS_SHORT_HEX_COLOR_PATTERN = '/^#[0-9A-Fa-f]{3}$/';
-const VVJS_TOKEN_NAMESPACE = 'vvjs';
-const VVJS_TOKEN_PLAIN_SUFFIX = ':plain';
-
-/**
- * Data attribute mapping for slideshow options.
- */
-const VVJS_DATA_ATTRIBUTE_MAP = [
-  'animation' => 'animation',
-  'navigation' => 'navigation',
-  'time_in_seconds' => 'time-in-seconds',
-  'arrows' => 'arrows',
-  'unique_id' => 'unique-id',
-  'available_breakpoints' => 'available-breakpoints',
-  'min_height' => 'min-height',
-  'max_content_width' => 'max-content-width',
-  'max_width' => 'max-width',
-];
-
-/**
- * Boolean option mapping for slideshow controls.
- */
-const VVJS_BOOLEAN_ATTRIBUTE_MAP = [
-  'show_play_pause' => 'show-play-pause',
-  'show_slide_progress' => 'show-slide-animation',
-  'show_total_slides' => 'show-total-slides',
-  'hero_slideshow' => 'hero-slideshow',
-  'enable_css' => 'enable-css',
-];
+use Drupal\vvjs\VvjsConstants;
 
 /**
  * Implements hook_help().
@@ -92,7 +57,8 @@ function _vvjs_helper_render_readme(): string {
 
     return _vvjs_render_markdown($text);
 
-  } catch (\Exception $e) {
+  }
+  catch (\Exception $e) {
     \Drupal::logger('vvjs')->error('Error rendering README.md: @message', [
       '@message' => $e->getMessage(),
     ]);
@@ -115,7 +81,8 @@ function _vvjs_render_markdown(string $text): string {
     $settings = \Drupal::config('markdown.settings')->getRawData();
     $filter = $filter_manager->createInstance('markdown', ['settings' => $settings]);
     return $filter->process($text, 'en')->getProcessedText();
-  } catch (\Exception $e) {
+  }
+  catch (\Exception $e) {
     \Drupal::logger('vvjs')->warning('Markdown processing failed: @message', [
       '@message' => $e->getMessage(),
     ]);
@@ -202,16 +169,16 @@ function _vvjs_build_data_attributes(array $options): Attribute {
   $list_attributes = [];
 
   // Process simple string/numeric data attributes.
-  foreach (VVJS_DATA_ATTRIBUTE_MAP as $option_key => $data_key) {
+  foreach (VvjsConstants::DATA_ATTRIBUTE_MAP as $option_key => $data_key) {
     if (!empty($options[$option_key])) {
-      $list_attributes[VVJS_DATA_ATTRIBUTE_PREFIX . $data_key] = $options[$option_key];
+      $list_attributes[VvjsConstants::DATA_ATTRIBUTE_PREFIX . $data_key] = $options[$option_key];
     }
   }
 
   // Process boolean data attributes.
-  foreach (VVJS_BOOLEAN_ATTRIBUTE_MAP as $option_key => $data_key) {
+  foreach (VvjsConstants::BOOLEAN_ATTRIBUTE_MAP as $option_key => $data_key) {
     if (isset($options[$option_key])) {
-      $list_attributes[VVJS_DATA_ATTRIBUTE_PREFIX . $data_key] = $options[$option_key] ? 'true' : 'false';
+      $list_attributes[VvjsConstants::DATA_ATTRIBUTE_PREFIX . $data_key] = $options[$option_key] ? 'true' : 'false';
     }
   }
 
@@ -234,13 +201,14 @@ function _vvjs_calculate_background_rgb(array $options): ?string {
 
   try {
     $rgb = _vvjs_hex_to_rgb($options['overlay_bg_color']);
-    $opacity = $options['overlay_bg_opacity'] ?? VVJS_DEFAULT_OPACITY;
+    $opacity = $options['overlay_bg_opacity'] ?? VvjsConstants::DEFAULT_OPACITY;
 
     // Validate opacity range.
     $opacity = max(0, min(1, (float) $opacity));
 
     return "rgba({$rgb['r']}, {$rgb['g']}, {$rgb['b']}, $opacity)";
-  } catch (\InvalidArgumentException $e) {
+  }
+  catch (\InvalidArgumentException $e) {
     \Drupal::logger('vvjs')->warning('Invalid overlay background color: @color', [
       '@color' => $options['overlay_bg_color'],
     ]);
@@ -398,7 +366,7 @@ function vvjs_token_info(): array {
   return [
     'tokens' => [
       'view' => [
-        VVJS_TOKEN_NAMESPACE => [
+        VvjsConstants::TOKEN_NAMESPACE => [
           'name' => t('VVJS field output'),
           'description' => t("Use these tokens when you enable 'Use replacement tokens from the first row' in Views text areas such as the header, footer, or empty text. Use [vvjs:field_name] for rendered output, or [vvjs:field_name:plain] to strip HTML and return plain text. These tokens pull values from the first row of the View result."),
         ],
@@ -432,10 +400,11 @@ function vvjs_tokens($type, $tokens, array $data = [], array $options = []): arr
     foreach ($tokens as $token => $name) {
       $replacement = _vvjs_process_single_token($token, $first_row, $field_handlers, $renderer);
       if ($replacement !== NULL) {
-        $replacements["[" . VVJS_TOKEN_NAMESPACE . ":$token]"] = $replacement;
+        $replacements["[" . VvjsConstants::TOKEN_NAMESPACE . ":$token]"] = $replacement;
       }
     }
-  } catch (\Exception $e) {
+  }
+  catch (\Exception $e) {
     \Drupal::logger('vvjs')->error('Error processing VVJS tokens: @message', [
       '@message' => $e->getMessage(),
     ]);
@@ -456,7 +425,7 @@ function vvjs_tokens($type, $tokens, array $data = [], array $options = []): arr
  *   TRUE if context is valid for processing.
  */
 function _vvjs_validate_token_context(string $type, array $data): bool {
-  $valid_types = [VVJS_TOKEN_NAMESPACE, 'global'];
+  $valid_types = [VvjsConstants::TOKEN_NAMESPACE, 'global'];
 
   return in_array($type, $valid_types, TRUE) &&
          isset($data['view']) &&
@@ -483,9 +452,9 @@ function _vvjs_process_single_token(string $token, $first_row, array $field_hand
   $field_id = $token;
 
   // Check for plain text modifier.
-  if (str_ends_with($token, VVJS_TOKEN_PLAIN_SUFFIX)) {
+  if (str_ends_with($token, VvjsConstants::TOKEN_PLAIN_SUFFIX)) {
     $plain = TRUE;
-    $field_id = substr($token, 0, -strlen(VVJS_TOKEN_PLAIN_SUFFIX));
+    $field_id = substr($token, 0, -strlen(VvjsConstants::TOKEN_PLAIN_SUFFIX));
   }
 
   // Validate field exists.
@@ -504,7 +473,8 @@ function _vvjs_process_single_token(string $token, $first_row, array $field_hand
     // Handle render arrays.
     if (is_array($value)) {
       $rendered = $renderer->renderPlain($value);
-    } else {
+    }
+    else {
       $rendered = (string) $value;
     }
 
@@ -513,7 +483,8 @@ function _vvjs_process_single_token(string $token, $first_row, array $field_hand
       ? Html::decodeEntities(strip_tags($rendered))
       : Markup::create($rendered);
 
-  } catch (\Throwable $e) {
+  }
+  catch (\Throwable $e) {
     \Drupal::logger('vvjs')->warning('Token processing failed for field @field: @message', [
       '@field' => $field_id,
       '@message' => $e->getMessage(),
