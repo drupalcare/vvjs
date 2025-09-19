@@ -24,73 +24,73 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   /**
    * Animation type constants.
    */
-  public const string ANIMATION_NONE = 'none';
-  public const string ANIMATION_ZOOM = 'a-zoom';
-  public const string ANIMATION_FADE = 'a-fade';
-  public const string ANIMATION_TOP = 'a-top';
-  public const string ANIMATION_BOTTOM = 'a-bottom';
-  public const string ANIMATION_LEFT = 'a-left';
-  public const string ANIMATION_RIGHT = 'a-right';
+  public const ANIMATION_NONE = 'none';
+  public const ANIMATION_ZOOM = 'a-zoom';
+  public const ANIMATION_FADE = 'a-fade';
+  public const ANIMATION_TOP = 'a-top';
+  public const ANIMATION_BOTTOM = 'a-bottom';
+  public const ANIMATION_LEFT = 'a-left';
+  public const ANIMATION_RIGHT = 'a-right';
 
   /**
    * Breakpoint constants.
    */
-  public const string BREAKPOINT_576 = '576';
-  public const string BREAKPOINT_768 = '768';
-  public const string BREAKPOINT_992 = '992';
-  public const string BREAKPOINT_1200 = '1200';
-  public const string BREAKPOINT_1400 = '1400';
+  public const BREAKPOINT_576 = '576';
+  public const BREAKPOINT_768 = '768';
+  public const BREAKPOINT_992 = '992';
+  public const BREAKPOINT_1200 = '1200';
+  public const BREAKPOINT_1400 = '1400';
 
   /**
    * Arrow position constants.
    */
-  public const string ARROWS_NONE = 'none';
-  public const string ARROWS_SIDES = 'arrows-sides';
-  public const string ARROWS_SIDES_BIG = 'arrows-sides-big';
-  public const string ARROWS_TOP = 'arrows-top';
-  public const string ARROWS_TOP_BIG = 'arrows-top-big';
+  public const ARROWS_NONE = 'none';
+  public const ARROWS_SIDES = 'arrows-sides';
+  public const ARROWS_SIDES_BIG = 'arrows-sides-big';
+  public const ARROWS_TOP = 'arrows-top';
+  public const ARROWS_TOP_BIG = 'arrows-top-big';
 
   /**
    * Navigation type constants.
    */
-  public const string NAV_NONE = 'none';
-  public const string NAV_DOTS = 'dots';
-  public const string NAV_NUMBERS = 'numbers';
+  public const NAV_NONE = 'none';
+  public const NAV_DOTS = 'dots';
+  public const NAV_NUMBERS = 'numbers';
 
   /**
    * Overlay position constants.
    */
-  public const string OVERLAY_MIDDLE = 'd-middle';
-  public const string OVERLAY_LEFT = 'd-left';
-  public const string OVERLAY_RIGHT = 'd-right';
-  public const string OVERLAY_TOP = 'd-top';
-  public const string OVERLAY_BOTTOM = 'd-bottom';
-  public const string OVERLAY_TOP_LEFT = 'd-top-left';
-  public const string OVERLAY_TOP_RIGHT = 'd-top-right';
-  public const string OVERLAY_BOTTOM_LEFT = 'd-bottom-left';
-  public const string OVERLAY_BOTTOM_RIGHT = 'd-bottom-right';
-  public const string OVERLAY_TOP_MIDDLE = 'd-top-middle';
-  public const string OVERLAY_BOTTOM_MIDDLE = 'd-bottom-middle';
+  public const OVERLAY_MIDDLE = 'd-middle';
+  public const OVERLAY_LEFT = 'd-left';
+  public const OVERLAY_RIGHT = 'd-right';
+  public const OVERLAY_TOP = 'd-top';
+  public const OVERLAY_BOTTOM = 'd-bottom';
+  public const OVERLAY_TOP_LEFT = 'd-top-left';
+  public const OVERLAY_TOP_RIGHT = 'd-top-right';
+  public const OVERLAY_BOTTOM_LEFT = 'd-bottom-left';
+  public const OVERLAY_BOTTOM_RIGHT = 'd-bottom-right';
+  public const OVERLAY_TOP_MIDDLE = 'd-top-middle';
+  public const OVERLAY_BOTTOM_MIDDLE = 'd-bottom-middle';
 
   /**
    * Timing constants.
    */
-  public const int TIMING_MIN = 2000;
-  public const int TIMING_MAX = 15000;
-  public const int TIMING_DEFAULT = 5000;
+  public const TIMING_MIN = 2000;
+  public const TIMING_MAX = 15000;
+  public const TIMING_DEFAULT = 5000;
 
   /**
    * Size constraints.
    */
-  public const int MIN_WIDTH = 1;
-  public const int MAX_WIDTH = 9999;
-  public const int MIN_HEIGHT = 1;
-  public const int MAX_HEIGHT = 200;
-  public const int MIN_CONTENT_WIDTH = 1;
-  public const int MAX_CONTENT_WIDTH = 100;
-  public const int DEFAULT_MAX_WIDTH = 1200;
-  public const int DEFAULT_MIN_HEIGHT = 40;
-  public const int DEFAULT_CONTENT_WIDTH = 60;
+  public const MIN_WIDTH = 1;
+  public const MAX_WIDTH = 9999;
+  public const MIN_HEIGHT = 1;
+  public const MAX_HEIGHT = 200;
+  public const MIN_CONTENT_WIDTH = 1;
+  public const MAX_CONTENT_WIDTH = 100;
+  public const DEFAULT_MAX_WIDTH = 1200;
+  public const DEFAULT_MIN_HEIGHT = 40;
+  public const DEFAULT_CONTENT_WIDTH = 60;
 
   /**
    * Does the style plugin use a row plugin.
