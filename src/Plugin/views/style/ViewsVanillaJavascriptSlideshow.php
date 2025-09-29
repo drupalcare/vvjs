@@ -60,6 +60,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   /**
    * Overlay position constants.
    */
+  public const OVERLAY_FULL = 'd-full';
   public const OVERLAY_MIDDLE = 'd-middle';
   public const OVERLAY_LEFT = 'd-left';
   public const OVERLAY_RIGHT = 'd-right';
@@ -551,6 +552,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
    */
   protected function getOverlayPositionOptions(): array {
     return [
+      self::OVERLAY_FULL => $this->t('Full Width'),
       self::OVERLAY_MIDDLE => $this->t('Middle'),
       self::OVERLAY_LEFT => $this->t('Left'),
       self::OVERLAY_RIGHT => $this->t('Right'),

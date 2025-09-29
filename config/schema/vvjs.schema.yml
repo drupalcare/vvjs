@@ -74,7 +74,7 @@ views.style.views_vvjs:
       type: string
       label: 'Overlay position'
       constraints:
-        Choice: ['d-middle', 'd-left', 'd-right', 'd-top', 'd-bottom', 'd-top-left', 'd-top-right', 'd-bottom-left', 'd-bottom-right', 'd-top-middle', 'd-bottom-middle']
+        Choice: ['d-full', d-middle', 'd-left', 'd-right', 'd-top', 'd-bottom', 'd-top-left', 'd-top-right', 'd-bottom-left', 'd-bottom-right', 'd-top-middle', 'd-bottom-middle']
     show_total_slides:
       type: boolean
       label: 'Show total slide count'

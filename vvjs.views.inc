@@ -299,6 +299,7 @@ function _vvjs_get_animation_choices(): array {
  */
 function _vvjs_get_overlay_position_choices(): array {
   return [
+    'd-full',
     'd-middle',
     'd-left',
     'd-right',
