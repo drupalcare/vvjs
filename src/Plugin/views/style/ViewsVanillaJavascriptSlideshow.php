@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\vvjs\Plugin\views\style;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -113,7 +115,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   protected ?int $cachedUniqueId = NULL;
 
   /**
-   * Set default options.
+   * {@inheritdoc}
    */
   protected function defineOptions(): array {
     $options = parent::defineOptions();
@@ -141,13 +143,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
    * {@inheritdoc}
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state): void {
-    // Call parent first to get default Drupal settings.
     parent::buildOptionsForm($form, $form_state);
 
-    // Set weights for default Drupal elements to ensure they come first.
     $this->setDefaultElementWeights($form);
-
-    // Now add your custom sections with higher weights.
     $this->buildWarningMessage($form);
     $this->buildHeroSlideshowSection($form);
     $this->buildTimingSection($form);
@@ -161,21 +159,17 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Set weights for default Drupal form elements to ensure proper order.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function setDefaultElementWeights(array &$form): void {
-    // Set weights for common default elements (if they exist)
     $default_elements = [
-    // Grouping settings.
       'grouping' => -100,
-    // Row CSS classes.
       'row_class' => -90,
-    // Default row class checkbox.
       'default_row_class' => -85,
-    // Uses fields checkbox.
       'uses_fields' => -80,
-    // CSS class.
       'class' => -75,
-    // Wrapper class.
       'wrapper_class' => -70,
     ];
 
@@ -188,6 +182,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build warning message section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildWarningMessage(array &$form): void {
     $form['warning_message'] = [
@@ -203,6 +200,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build hero slideshow configuration section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildHeroSlideshowSection(array &$form): void {
     $form['hero_slideshow_section'] = [
@@ -225,6 +225,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build hero layout options.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildHeroLayoutOptions(array &$form): void {
     $hero_visible_state = [
@@ -281,6 +284,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build hero overlay options.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildHeroOverlayOptions(array &$form): void {
     $hero_visible_state = [
@@ -328,6 +334,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build timing configuration section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildTimingSection(array &$form): void {
     $form['timing_section'] = [
@@ -348,6 +357,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build navigation configuration section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildNavigationSection(array &$form): void {
     $form['navigation_section'] = [
@@ -376,6 +388,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build animation configuration section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildAnimationSection(array &$form): void {
     $form['animation_section'] = [
@@ -396,6 +411,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build display options section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildDisplayOptionsSection(array &$form): void {
     $form['display_section'] = [
@@ -437,6 +455,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build advanced options section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildAdvancedOptionsSection(array &$form): void {
     $form['advanced_section'] = [
@@ -448,35 +469,38 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
     $form['advanced_section']['enable_css'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable CSS Library'),
+      '#title' => $this->t('Enable Default CSS'),
       '#default_value' => $this->options['enable_css'] ?? TRUE,
-      '#description' => $this->t('Check this box to include the CSS library for styling the slideshow.'),
+      '#description' => $this->t('Include the default CSS library for slideshow styling. Disable if you want to provide custom styles.'),
     ];
   }
 
   /**
    * Build token documentation section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function buildTokenDocumentation(array &$form): void {
-    $form['vvjs_token_info'] = [
+    $form['token_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('VVJS Tokens'),
+      '#title' => $this->t('Token Documentation'),
       '#open' => FALSE,
-      '#weight' => 20,
+      '#weight' => 100,
     ];
 
-    $form['vvjs_token_info']['description'] = [
+    $form['token_section']['description'] = [
       '#markup' => $this->t('<p>When using <em>Global: Text area</em> or <em>Global: Unfiltered text</em> in the Views header, footer, or empty text areas, the default Twig-style tokens (e.g., <code>{{ title }}</code>) will not work with the VVJS style plugin.</p>
         <p>Instead, use the custom VVJS token format to access field values from the <strong>first row</strong> of the View result:</p>
         <ul>
-          <li><code>[vvjs:field_name]</code> – The rendered output of the field (e.g., linked title, image, formatted text).</li>
-          <li><code>[vvjs:field_name:plain]</code> – A plain-text version of the field, with all HTML stripped.</li>
+          <li><code>[vvjs:field_name]</code> — The rendered output of the field (e.g., linked title, image, formatted text).</li>
+          <li><code>[vvjs:field_name:plain]</code> — A plain-text version of the field, with all HTML stripped.</li>
         </ul>
         <p>Examples:</p>
         <ul>
-          <li><code>{{ title }}</code> ➜ <code>[vvjs:title]</code></li>
-          <li><code>{{ field_image }}</code> ➜ <code>[vvjs:field_image]</code></li>
-          <li><code>{{ body }}</code> ➜ <code>[vvjs:body:plain]</code></li>
+          <li><code>{{ title }}</code> → <code>[vvjs:title]</code></li>
+          <li><code>{{ field_image }}</code> → <code>[vvjs:field_image]</code></li>
+          <li><code>{{ body }}</code> → <code>[vvjs:body:plain]</code></li>
         </ul>
         <p>These tokens offer safe and flexible field output for dynamic headings, summaries, and fallback messages in VVJS-enabled Views.</p>'),
     ];
@@ -484,6 +508,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Attach form assets.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
    */
   protected function attachFormAssets(array &$form): void {
     $form['#attached']['library'][] = 'core/drupal.ajax';
@@ -496,7 +523,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * Get animation type options.
+   * Get animation options for the select list.
+   *
+   * @return array
+   *   Array of animation options.
    */
   protected function getAnimationOptions(): array {
     return [
@@ -511,7 +541,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * Get breakpoint options.
+   * Get breakpoint options for the select list.
+   *
+   * @return array
+   *   Array of breakpoint options.
    */
   protected function getBreakpointOptions(): array {
     return [
@@ -524,7 +557,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * Get arrow position options.
+   * Get arrow options for the select list.
+   *
+   * @return array
+   *   Array of arrow options.
    */
   protected function getArrowOptions(): array {
     return [
@@ -537,7 +573,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * Get navigation options.
+   * Get navigation options for the select list.
+   *
+   * @return array
+   *   Array of navigation options.
    */
   protected function getNavigationOptions(): array {
     return [
@@ -548,7 +587,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * Get overlay position options.
+   * Get overlay position options for the select list.
+   *
+   * @return array
+   *   Array of overlay position options.
    */
   protected function getOverlayPositionOptions(): array {
     return [
@@ -568,7 +610,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * Get timing options.
+   * Get timing options for the select list.
+   *
+   * @return array
+   *   Array of timing options.
    */
   protected function getTimingOptions(): array {
     return [
@@ -591,38 +636,34 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * Generates a deterministic unique ID for the view display.
+   * {@inheritdoc}
    */
-  protected function generateUniqueId(): int {
-    if ($this->cachedUniqueId === NULL) {
-      $identifier = ($this->view->id() ?? 'unknown') . '_' . ($this->view->current_display ?? 'default');
-      $this->cachedUniqueId = (int) abs(crc32($identifier));
+  public function validateOptionsForm(&$form, FormStateInterface $form_state): void {
+    parent::validateOptionsForm($form, $form_state);
 
-      // Ensure 8-digit number like original.
-      if ($this->cachedUniqueId < 10000000) {
-        $this->cachedUniqueId += 10000000;
-      }
-      if ($this->cachedUniqueId > 99999999) {
-        $this->cachedUniqueId = $this->cachedUniqueId % 90000000 + 10000000;
-      }
+    $errors = $this->validateFormValues($form_state);
+    foreach ($errors as $error) {
+      $form_state->setError($form, $error);
     }
-
-    return $this->cachedUniqueId;
   }
 
   /**
    * Validate form input values.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state object.
+   *
+   * @return array
+   *   Array of validation error messages.
    */
   protected function validateFormValues(FormStateInterface $form_state): array {
     $errors = [];
     $values = $form_state->getValues();
 
-    // Extract values from nested form structure.
     $hero_values = $values['style_options']['hero_slideshow_section'] ?? [];
     $timing_values = $values['style_options']['timing_section'] ?? [];
     $display_values = $values['style_options']['display_section'] ?? [];
 
-    // Validate numeric ranges.
     if (isset($hero_values['layout']['max_width'])) {
       $max_width = (int) $hero_values['layout']['max_width'];
       if ($max_width < self::MIN_WIDTH || $max_width > self::MAX_WIDTH) {
@@ -653,7 +694,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
-    // Validate hex color.
     if (isset($hero_values['overlay']['overlay_bg_color'])) {
       $color = $hero_values['overlay']['overlay_bg_color'];
       if (!preg_match('/^#[0-9A-Fa-f]{6}$/', $color)) {
@@ -661,7 +701,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
-    // Validate opacity.
     if (isset($hero_values['overlay']['overlay_bg_opacity'])) {
       $opacity = (float) $hero_values['overlay']['overlay_bg_opacity'];
       if ($opacity < 0 || $opacity > 1) {
@@ -669,7 +708,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
-    // Validate timing dependencies.
     $timing = $timing_values['time_in_seconds'] ?? '0';
     if ($timing === '0') {
       if (!empty($display_values['show_slide_progress'])) {
@@ -684,12 +722,29 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function submitOptionsForm(&$form, FormStateInterface $form_state): void {
+    $values = $form_state->getValue('style_options', []);
+    $flattened_values = $this->flattenFormValues($values);
+
+    $form_state->setValue('style_options', $flattened_values);
+
+    parent::submitOptionsForm($form, $form_state);
+  }
+
+  /**
    * Flatten nested form values to match original structure.
+   *
+   * @param array $values
+   *   Nested form values.
+   *
+   * @return array
+   *   Flattened values array.
    */
   protected function flattenFormValues(array $values): array {
     $flattened = [];
 
-    // Hero slideshow values.
     if (isset($values['hero_slideshow_section'])) {
       $hero = $values['hero_slideshow_section'];
       $flattened['hero_slideshow'] = $hero['hero_slideshow'] ?? FALSE;
@@ -708,23 +763,19 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
-    // Timing values.
     if (isset($values['timing_section'])) {
       $flattened['time_in_seconds'] = $values['timing_section']['time_in_seconds'] ?? self::TIMING_DEFAULT;
     }
 
-    // Navigation values.
     if (isset($values['navigation_section'])) {
       $flattened['arrows'] = $values['navigation_section']['arrows'] ?? self::ARROWS_TOP;
       $flattened['navigation'] = $values['navigation_section']['navigation'] ?? self::NAV_DOTS;
     }
 
-    // Animation values.
     if (isset($values['animation_section'])) {
       $flattened['animation'] = $values['animation_section']['animation'] ?? self::ANIMATION_BOTTOM;
     }
 
-    // Display values.
     if (isset($values['display_section'])) {
       $display = $values['display_section'];
       $flattened['show_total_slides'] = $display['show_total_slides'] ?? FALSE;
@@ -732,36 +783,43 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       $flattened['show_play_pause'] = $display['show_play_pause'] ?? TRUE;
     }
 
-    // Advanced values.
     if (isset($values['advanced_section'])) {
       $flattened['enable_css'] = $values['advanced_section']['enable_css'] ?? TRUE;
     }
 
-    // Preserve unique_id.
     $flattened['unique_id'] = $this->options['unique_id'] ?? $this->generateUniqueId();
 
     return $flattened;
   }
 
   /**
-   * {@inheritdoc}
+   * Generates a unique numeric ID for the view display.
+   *
+   * @return int
+   *   A unique ID between 10000000 and 99999999.
+   *
+   * @throws \Exception
+   *   If an appropriate source of randomness cannot be found.
    */
-  public function submitOptionsForm(&$form, FormStateInterface $form_state): void {
-    // Flatten nested form values to match original structure.
-    $values = $form_state->getValue('style_options', []);
-    $flattened_values = $this->flattenFormValues($values);
+  protected function generateUniqueId(): int {
+    if ($this->cachedUniqueId !== NULL) {
+      return $this->cachedUniqueId;
+    }
 
-    // Update form state with flattened values.
-    $form_state->setValue('style_options', $flattened_values);
+    $this->cachedUniqueId = random_int(10000000, 99999999);
 
-    parent::submitOptionsForm($form, $form_state);
+    if ($this->cachedUniqueId < 10000000) {
+      $this->cachedUniqueId += 10000000;
+    }
+    if ($this->cachedUniqueId > 99999999) {
+      $this->cachedUniqueId = $this->cachedUniqueId % 90000000 + 10000000;
+    }
+
+    return $this->cachedUniqueId;
   }
 
   /**
-   * Renders the view with the slideshow style.
-   *
-   * @return array
-   *   A render array for the slideshow.
+   * {@inheritdoc}
    */
   public function render(): array {
     $rows = [];
@@ -793,6 +851,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
   /**
    * Build the list of libraries to attach.
+   *
+   * @return array
+   *   An array of library names to attach.
    */
   protected function buildLibraryList(): array {
     $libraries = [
@@ -818,12 +879,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   public function validate(): array {
     $errors = parent::validate();
 
-    // Validate hero slideshow requirements.
     if (!empty($this->options['hero_slideshow']) && !$this->usesFields()) {
       $errors[] = $this->t('Hero Slideshow option requires Fields as row style.');
     }
 
-    // Validate timing and display option dependencies.
     $timing = $this->options['time_in_seconds'] ?? '0';
     if ($timing === '0') {
       if (!empty($this->options['show_slide_progress'])) {

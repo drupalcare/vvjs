@@ -7,35 +7,10 @@ namespace Drupal\vvjs;
 /**
  * Defines constants for the VVJS module.
  *
- * This class contains all module-wide constants to avoid global namespace
- * pollution and provide better organization.
+ * This class contains constants used across the module, primarily for
+ * token processing, data attribute mapping, and Views integration.
  */
 final class VvjsConstants {
-
-  /**
-   * Data attribute prefix for HTML attributes.
-   */
-  public const DATA_ATTRIBUTE_PREFIX = 'data-';
-
-  /**
-   * Default hex color value.
-   */
-  public const DEFAULT_HEX_COLOR = '#000000';
-
-  /**
-   * Default opacity value.
-   */
-  public const DEFAULT_OPACITY = 1;
-
-  /**
-   * Regular expression pattern for 6-digit hex colors.
-   */
-  public const HEX_COLOR_PATTERN = '/^#[0-9A-Fa-f]{6}$/';
-
-  /**
-   * Regular expression pattern for 3-digit hex colors.
-   */
-  public const SHORT_HEX_COLOR_PATTERN = '/^#[0-9A-Fa-f]{3}$/';
 
   /**
    * Token namespace for VVJS tokens.
@@ -46,6 +21,23 @@ final class VvjsConstants {
    * Plain text token suffix.
    */
   public const TOKEN_PLAIN_SUFFIX = ':plain';
+
+  /**
+   * Token pattern for validation.
+   *
+   * Validates token format: alphanumeric, underscores, optional :plain suffix.
+   */
+  public const TOKEN_PATTERN = '/^[a-zA-Z0-9_]+(:plain)?$/';
+
+  /**
+   * Data attribute prefix for HTML attributes.
+   */
+  public const DATA_ATTRIBUTE_PREFIX = 'data-';
+
+  /**
+   * Default opacity value.
+   */
+  public const DEFAULT_OPACITY = 1;
 
   /**
    * Data attribute mapping for slideshow options.

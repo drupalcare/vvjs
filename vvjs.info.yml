@@ -1,4 +1,4 @@
-name: 'Views Vanilla Javascript Slideshow'
+name: 'Views Vanilla Javascript Slideshow - VVJS'
 type: module
 description: 'Provides a Vanilla Javascript Slideshow format for Views.'
 core_version_requirement: ^10 || ^11
