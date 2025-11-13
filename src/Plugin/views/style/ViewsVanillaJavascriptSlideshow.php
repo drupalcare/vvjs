@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\vvjs\Plugin\views\style;
 
+use Drupal\vvjs\VvjsConstants;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\views\Plugin\views\style\StylePluginBase;
@@ -122,6 +123,8 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options['time_in_seconds'] = ['default' => self::TIMING_DEFAULT];
     $options['navigation'] = ['default' => self::NAV_DOTS];
     $options['animation'] = ['default' => self::ANIMATION_BOTTOM];
+    $options['transition_type'] = ['default' => VvjsConstants::TRANSITION_INSTANT];
+    $options['transition_duration'] = ['default' => VvjsConstants::TRANSITION_DURATION_DEFAULT];
     $options['arrows'] = ['default' => self::ARROWS_TOP];
     $options['unique_id'] = ['default' => $this->generateUniqueId()];
     $options['hero_slideshow'] = ['default' => FALSE];
@@ -148,6 +151,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $this->setDefaultElementWeights($form);
     $this->buildWarningMessage($form);
     $this->buildHeroSlideshowSection($form);
+    $this->buildResponsiveSection($form);
     $this->buildTimingSection($form);
     $this->buildNavigationSection($form);
     $this->buildAnimationSection($form);
@@ -273,13 +277,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#max' => self::MAX_CONTENT_WIDTH,
     ];
 
-    $form['hero_slideshow_section']['layout']['available_breakpoints'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Available Breakpoints'),
-      '#options' => $this->getBreakpointOptions(),
-      '#default_value' => $this->options['available_breakpoints'] ?? self::BREAKPOINT_576,
-      '#description' => $this->t('Select the maximum screen width (in pixels) at which the Hero should be disabled.'),
-    ];
   }
 
   /**
@@ -387,7 +384,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   }
 
   /**
-   * Build animation configuration section.
+   * Build animation and transitions configuration section.
    *
    * @param array $form
    *   The form array (passed by reference).
@@ -395,7 +392,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   protected function buildAnimationSection(array &$form): void {
     $form['animation_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('Animation & Effects'),
+      '#title' => $this->t('Animation & Effects and Transitions'),
       '#open' => TRUE,
       '#weight' => -10,
     ];
@@ -405,7 +402,129 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#title' => $this->t('Slide Animation Type'),
       '#options' => $this->getAnimationOptions(),
       '#default_value' => $this->options['animation'] ?? self::ANIMATION_BOTTOM,
-      '#description' => $this->t('Choose the animation type for the slides.'),
+      '#description' => $this->t('Choose the animation type for the slides. When set to "None", transition options become available.'),
+    ];
+
+    // Transition options - only visible when animation is "none".
+    $form['animation_section']['transition_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Transition Type'),
+      '#options' => $this->getTransitionOptions(),
+      '#default_value' => $this->options['transition_type'] ?? VvjsConstants::TRANSITION_INSTANT,
+      '#description' => $this->t('Select the transition effect between slides. Available only when Slide Animation Type is set to "None".'),
+      '#states' => [
+        'visible' => [
+          ':input[name="style_options[animation_section][animation]"]' => ['value' => self::ANIMATION_NONE],
+        ],
+      ],
+    ];
+
+    $form['animation_section']['transition_duration'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Transition Duration'),
+      '#description' => $this->t('Duration of the crossfade transition in milliseconds. Recommended: 400-800ms.'),
+      '#default_value' => $this->options['transition_duration'] ?? VvjsConstants::TRANSITION_DURATION_DEFAULT,
+      '#min' => VvjsConstants::TRANSITION_DURATION_MIN,
+      '#max' => VvjsConstants::TRANSITION_DURATION_MAX,
+      '#step' => 50,
+      '#field_suffix' => $this->t('ms'),
+      '#states' => [
+        'visible' => [
+          ':input[name="style_options[animation_section][animation]"]' => ['value' => self::ANIMATION_NONE],
+          ':input[name="style_options[animation_section][transition_type]"]' => [
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_CLASSIC],
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_STAGED],
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_DYNAMIC],
+          ],
+        ],
+      ],
+    ];
+
+    $form['animation_section']['transition_help'] = [
+      '#type' => 'item',
+      '#markup' => $this->t('<div class="vvjs-transitions-help"><strong>Transition Types Explained:</strong><ul>
+        <li><strong>Instant:</strong> No transition effect (default, backward compatible)</li>
+        <li><strong>Crossfade - Classic:</strong> Both slides fade at the same speed simultaneously (most common)</li>
+        <li><strong>Crossfade - Staged:</strong> Outgoing fades quickly, incoming fades slowly with overlap (elegant, smooth)</li>
+        <li><strong>Crossfade - Dynamic:</strong> Fast fade-out, slow fade-in (energetic, attention-grabbing)</li>
+      </ul>
+      <p><strong>Performance Note:</strong> All crossfade effects use GPU-accelerated CSS transitions. Users with "prefers-reduced-motion" enabled will automatically see instant transitions.</p>
+      </div>'),
+      '#states' => [
+        'visible' => [
+          ':input[name="style_options[animation_section][animation]"]' => ['value' => self::ANIMATION_NONE],
+          ':input[name="style_options[animation_section][transition_type]"]' => [
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_CLASSIC],
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_STAGED],
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_DYNAMIC],
+          ],
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Build slide transitions section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
+   */
+  protected function buildTransitionsSection(array &$form): void {
+    $form['transitions_section'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Slide Transitions'),
+      '#description' => $this->t('Control how slides transition from one to another. Crossfade creates smooth blending between slides using CSS transitions.'),
+      '#open' => FALSE,
+      '#weight' => -9,
+    ];
+
+    $form['transitions_section']['transition_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Transition Type'),
+      '#options' => $this->getTransitionOptions(),
+      '#default_value' => $this->options['transition_type'] ?? VvjsConstants::TRANSITION_INSTANT,
+      '#description' => $this->t('Select the transition effect between slides.'),
+    ];
+
+    $form['transitions_section']['transition_duration'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Transition Duration'),
+      '#description' => $this->t('Duration of the crossfade transition in milliseconds. Recommended: 400-800ms.'),
+      '#default_value' => $this->options['transition_duration'] ?? VvjsConstants::TRANSITION_DURATION_DEFAULT,
+      '#min' => VvjsConstants::TRANSITION_DURATION_MIN,
+      '#max' => VvjsConstants::TRANSITION_DURATION_MAX,
+      '#step' => 50,
+      '#field_suffix' => $this->t('ms'),
+      '#states' => [
+        'visible' => [
+          ':input[name="style_options[transitions_section][transition_type]"]' => [
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_CLASSIC],
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_STAGED],
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_DYNAMIC],
+          ],
+        ],
+      ],
+    ];
+
+    $form['transitions_section']['transition_help'] = [
+      '#type' => 'item',
+      '#markup' => $this->t('<div class="vvjs-transitions-help"><strong>Transition Types Explained:</strong><ul>
+        <li><strong>Instant:</strong> No transition effect (default, backward compatible)</li>
+        <li><strong>Crossfade - Classic:</strong> Both slides fade at the same speed simultaneously (most common)</li>
+        <li><strong>Crossfade - Staged:</strong> Outgoing fades quickly, incoming fades slowly with overlap (elegant, smooth)</li>
+        <li><strong>Crossfade - Dynamic:</strong> Fast fade-out, slow fade-in (energetic, attention-grabbing)</li>
+      </ul>
+      <p><strong>Performance Note:</strong> All crossfade effects use GPU-accelerated CSS transitions. Users with "prefers-reduced-motion" enabled will automatically see instant transitions.</p>
+      </div>'),
+      '#states' => [
+        'visible' => [
+          ':input[name="style_options[transitions_section][transition_type]"]' => [
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_CLASSIC],
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_STAGED],
+            ['value' => VvjsConstants::TRANSITION_CROSSFADE_DYNAMIC],
+          ],
+        ],
+      ],
     ];
   }
 
@@ -537,6 +656,45 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       self::ANIMATION_BOTTOM => $this->t('Slide from Bottom'),
       self::ANIMATION_LEFT => $this->t('Slide from Left'),
       self::ANIMATION_RIGHT => $this->t('Slide from Right'),
+    ];
+  }
+
+  /**
+   * Get transition type options for the select list.
+   *
+   * @return array
+   *   Array of transition type options.
+   */
+  protected function getTransitionOptions(): array {
+    return [
+      VvjsConstants::TRANSITION_INSTANT => $this->t('Instant (no transition)'),
+      VvjsConstants::TRANSITION_CROSSFADE_CLASSIC => $this->t('Crossfade - Classic'),
+      VvjsConstants::TRANSITION_CROSSFADE_STAGED => $this->t('Crossfade - Staged (elegant)'),
+      VvjsConstants::TRANSITION_CROSSFADE_DYNAMIC => $this->t('Crossfade - Dynamic (energetic)'),
+    ];
+  }
+
+  /**
+   * Build responsive configuration section.
+   *
+   * @param array $form
+   *   The form array (passed by reference).
+   */
+  protected function buildResponsiveSection(array &$form): void {
+    $form['responsive_section'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Responsive Settings'),
+      '#open' => TRUE,
+      // Between hero (-40) and timing (-30) so it appears near the top.
+      '#weight' => -35,
+    ];
+
+    $form['responsive_section']['available_breakpoints'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Responsive breakpoint'),
+      '#options' => $this->getBreakpointOptions(),
+      '#default_value' => $this->options['available_breakpoints'] ?? self::BREAKPOINT_576,
+      '#description' => $this->t('Select the viewport width at which the slideshow switches to its compact responsive layout.'),
     ];
   }
 
@@ -753,7 +911,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
         $flattened['max_width'] = $hero['layout']['max_width'] ?? self::DEFAULT_MAX_WIDTH;
         $flattened['min_height'] = $hero['layout']['min_height'] ?? self::DEFAULT_MIN_HEIGHT;
         $flattened['max_content_width'] = $hero['layout']['max_content_width'] ?? self::DEFAULT_CONTENT_WIDTH;
-        $flattened['available_breakpoints'] = $hero['layout']['available_breakpoints'] ?? self::BREAKPOINT_576;
       }
 
       if (isset($hero['overlay'])) {
@@ -761,6 +918,10 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
         $flattened['overlay_bg_color'] = $hero['overlay']['overlay_bg_color'] ?? '#000000';
         $flattened['overlay_bg_opacity'] = $hero['overlay']['overlay_bg_opacity'] ?? '0.3';
       }
+    }
+
+    if (isset($values['responsive_section']['available_breakpoints'])) {
+      $flattened['available_breakpoints'] = $values['responsive_section']['available_breakpoints'] ?? self::BREAKPOINT_576;
     }
 
     if (isset($values['timing_section'])) {
@@ -773,7 +934,19 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     }
 
     if (isset($values['animation_section'])) {
-      $flattened['animation'] = $values['animation_section']['animation'] ?? self::ANIMATION_BOTTOM;
+      $animation = $values['animation_section']['animation'] ?? self::ANIMATION_BOTTOM;
+      $flattened['animation'] = $animation;
+
+      // Only preserve transition values when animation is "none".
+      if ($animation === self::ANIMATION_NONE) {
+        $flattened['transition_type'] = $values['animation_section']['transition_type'] ?? VvjsConstants::TRANSITION_INSTANT;
+        $flattened['transition_duration'] = $values['animation_section']['transition_duration'] ?? VvjsConstants::TRANSITION_DURATION_DEFAULT;
+      }
+      else {
+        // Clear transition values when animation is not "none".
+        $flattened['transition_type'] = VvjsConstants::TRANSITION_INSTANT;
+        $flattened['transition_duration'] = VvjsConstants::TRANSITION_DURATION_DEFAULT;
+      }
     }
 
     if (isset($values['display_section'])) {
@@ -868,6 +1041,12 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
     if (!empty($this->options['enable_css'])) {
       $libraries[] = 'vvjs/vvjs-style';
+    }
+
+    // Add transitions library if crossfade is enabled.
+    $transitionType = $this->options['transition_type'] ?? VvjsConstants::TRANSITION_INSTANT;
+    if (str_starts_with($transitionType, 'crossfade')) {
+      $libraries[] = 'vvjs/vvjs-transitions';
     }
 
     return $libraries;

@@ -65,6 +65,12 @@
   background_rgb: background_rgb|default(null),
 } %}
 
+{# Transition settings #}
+{% set transition_config = {
+  type: settings.transition_type|default('instant'),
+  duration: settings.transition_duration|default(600),
+} %}
+
 {# Calculate total slides once for efficiency #}
 {% set total_slides = rows|length %}
 
@@ -178,6 +184,8 @@
 
   {# Inner container with JavaScript data attributes - preserved exact structure #}
   <div id="{{ slideshow_config.slide_inner_id }}"
+       data-transition="{{ transition_config.type }}"
+       data-transition-duration="{{ transition_config.duration }}"
        data-arrows="{{ navigation_config.arrows != 'none' ? 'true' : 'false' }}"
        data-navigation="{{ navigation_config.navigation != 'none' ? 'true' : 'false' }}"
        data-show-total-slides="{{ navigation_config.show_total_slides ? 'true' : 'false' }}"
@@ -196,7 +204,7 @@
     {# Slides container with hero-specific styling #}
     <div id="vvjs-items-{{ slideshow_config.unique_id }}"
          class="vvjs-items"
-         {%- if hero_config.enabled %} style="--hero-max-width: {{ hero_config.max_width }}; --hero-min-height: {{ hero_config.min_height }};"{% endif %}>
+         style="{% if transition_config.type starts with 'crossfade' %}--vvjs-transition-duration: {{ transition_config.duration }}ms; {% endif %}{% if hero_config.enabled %}--hero-max-width: {{ hero_config.max_width }}; --hero-min-height: {{ hero_config.min_height }};{% endif %}">
 
       {#
         ========================================================================
@@ -242,7 +250,7 @@
                   type="button"
                   role="button"
                   aria-label="{{ 'Stop automatic slide show'|t }}"
-                  class="button play-pause-button display-{{ animation_config.time_in_seconds }} play playing">
+                  class="button play-pause-button play playing">
             <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
             {{ include('@vvjs/svg/svg-pause.svg') }}
           </button>
@@ -270,7 +278,9 @@
           {# Slide Counter Display #}
           {% if navigation_config.show_total_slides %}
           <div class="echo-total">
-            <span class="current-slide">1</span>/<span class="total-slides">{{ total_slides }}</span>
+            <span class="current-slide">1</span>
+            <span class="vvjs-counter-separator"> {{ 'of'|t }} </span>
+            <span class="total-slides">{{ total_slides }}</span>
           </div>
           {% endif %}
 

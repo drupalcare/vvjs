@@ -35,6 +35,7 @@
     validateDependencies() {
       const requiredModules = [
         'SlideshowCore',
+        'SlideshowTransitions',
         'SlideshowNavigation',
         'SlideshowAccessibility',
         'SlideshowProgress',
@@ -54,6 +55,12 @@
       try {
         // Initialize core first
         this.modules.core = new Drupal.vvjs.SlideshowCore(this.container);
+
+        // Initialize transitions module second (handles visual transitions)
+        this.modules.transitions = new Drupal.vvjs.SlideshowTransitions(
+          this.container,
+          this.modules.core
+        );
 
         // Initialize dependent modules
         this.modules.navigation = new Drupal.vvjs.SlideshowNavigation(

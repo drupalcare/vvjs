@@ -228,6 +228,8 @@ function _vvjs_build_template_settings(object $handler, array $options): array {
     'max_content_width' => $options['max_content_width'] ?? 0,
     'max_width' => $options['max_width'] ?? 0,
     'hero_slideshow' => $options['hero_slideshow'] ?? FALSE,
+    'transition_type' => $options['transition_type'] ?? VvjsConstants::TRANSITION_INSTANT,
+    'transition_duration' => $options['transition_duration'] ?? VvjsConstants::TRANSITION_DURATION_DEFAULT,
   ];
 }
 
@@ -509,6 +511,30 @@ function vvjs_views_data_alter(array &$data): void {
         'type' => VvjsConstants::VIEWS_TYPE_BOOLEAN,
         'label' => t('Enable Default CSS Styling'),
         'description' => t('Include the default CSS library for slideshow styling and layout.'),
+      ],
+      'transition_type' => [
+        'type' => VvjsConstants::VIEWS_TYPE_STRING,
+        'label' => t('Transition Type'),
+        'description' => t('The type of transition effect between slides.'),
+        'constraints' => [
+          'Choice' => [
+            VvjsConstants::TRANSITION_INSTANT,
+            VvjsConstants::TRANSITION_CROSSFADE_CLASSIC,
+            VvjsConstants::TRANSITION_CROSSFADE_STAGED,
+            VvjsConstants::TRANSITION_CROSSFADE_DYNAMIC,
+          ],
+        ],
+      ],
+      'transition_duration' => [
+        'type' => VvjsConstants::VIEWS_TYPE_INTEGER,
+        'label' => t('Transition Duration (milliseconds)'),
+        'description' => t('Duration of crossfade transition in milliseconds.'),
+        'constraints' => [
+          'Range' => [
+            'min' => VvjsConstants::TRANSITION_DURATION_MIN,
+            'max' => VvjsConstants::TRANSITION_DURATION_MAX,
+          ],
+        ],
       ],
     ],
   ];

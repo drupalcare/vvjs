@@ -148,6 +148,21 @@ final class VvjsConstants {
   public const VIEWS_MAX_OPACITY = 1;
 
   /**
+   * Transition type constants.
+   */
+  public const TRANSITION_INSTANT = 'instant';
+  public const TRANSITION_CROSSFADE_CLASSIC = 'crossfade-classic';
+  public const TRANSITION_CROSSFADE_STAGED = 'crossfade-staged';
+  public const TRANSITION_CROSSFADE_DYNAMIC = 'crossfade-dynamic';
+
+  /**
+   * Transition duration constraints (milliseconds).
+   */
+  public const TRANSITION_DURATION_MIN = 200;
+  public const TRANSITION_DURATION_MAX = 2000;
+  public const TRANSITION_DURATION_DEFAULT = 600;
+
+  /**
    * Private constructor to prevent instantiation.
    *
    * This class should only be used for its constants.
