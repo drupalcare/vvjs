@@ -35,6 +35,21 @@ final class VvjsConstants {
   public const DATA_ATTRIBUTE_PREFIX = 'data-';
 
   /**
+   * Maximum length for deep link identifier.
+   */
+  public const DEEPLINK_IDENTIFIER_MAX_LENGTH = 20;
+
+  /**
+   * Regular expression pattern for deep link identifier validation.
+   */
+  public const DEEPLINK_IDENTIFIER_PATTERN = '/^[a-z][a-z0-9-]*[a-z0-9]$/';
+
+  /**
+   * Reserved words that cannot be used as deep link identifiers.
+   */
+  public const DEEPLINK_RESERVED_WORDS = ['slideshow', 'slide', 'vvjs'];
+
+  /**
    * Default opacity value.
    */
   public const DEFAULT_OPACITY = 1;

@@ -228,6 +228,8 @@ function _vvjs_build_template_settings(object $handler, array $options): array {
     'max_content_width' => $options['max_content_width'] ?? 0,
     'max_width' => $options['max_width'] ?? 0,
     'hero_slideshow' => $options['hero_slideshow'] ?? FALSE,
+    'enable_deeplink' => $options['enable_deeplink'] ?? FALSE,
+    'deeplink_identifier' => $options['deeplink_identifier'] ?? '',
     'transition_type' => $options['transition_type'] ?? VvjsConstants::TRANSITION_INSTANT,
     'transition_duration' => $options['transition_duration'] ?? VvjsConstants::TRANSITION_DURATION_DEFAULT,
   ];

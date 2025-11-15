@@ -311,4 +311,212 @@
     });
   };
 
+/**
+   * Helper function to get slideshow container by identifier.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier (deeplink_identifier or CSS selector).
+   *
+   * @return {HTMLElement|null}
+   *   The container element or null if not found.
+   */
+  function getContainerByIdentifier(identifier) {
+    let container;
+
+    // Try deep link identifier first (if not a CSS selector)
+    if (!identifier.startsWith('.') && !identifier.startsWith('#')) {
+      container = document.querySelector(`[data-deeplink-id="${identifier}"]`);
+    }
+
+    // Fallback to CSS selector
+    if (!container) {
+      container = document.querySelector(identifier);
+    }
+
+    return container;
+  }
+
+  /**
+   * Helper function to get core module from identifier.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier.
+   *
+   * @return {Object|null}
+   *   The core module or null if not found.
+   */
+  function getCoreModule(identifier) {
+    const container = getContainerByIdentifier(identifier);
+
+    if (!container || !container.vvjsSlideshow) {
+      return null;
+    }
+
+    return container.vvjsSlideshow.getModule('core');
+  }
+
+  /**
+   * Navigate to a specific slide by identifier.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier (from deeplink_identifier or container selector).
+   * @param {number} slideIndex
+   *   The slide number to navigate to (1-based).
+   *
+   * @return {boolean}
+   *   True if navigation was successful, false otherwise.
+   *
+   * @example
+   * Drupal.vvjs.goToSlide('gallery', 3);
+   */
+  Drupal.vvjs.goToSlide = function(identifier, slideIndex) {
+    const core = getCoreModule(identifier);
+
+    if (!core) {
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn(`VVJS: Slideshow "${identifier}" not found`);
+      }
+      return false;
+    }
+
+    if (slideIndex < 1 || slideIndex > core.totalSlides) {
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn(`VVJS: Invalid slide index ${slideIndex}. Must be between 1 and ${core.totalSlides}`);
+      }
+      return false;
+    }
+
+    core.goToSlide(slideIndex);
+    core.startAutoSlide();
+    return true;
+  };
+
+  /**
+   * Get the current slide index for a slideshow.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier.
+   *
+   * @return {number|null}
+   *   The current slide index (1-based) or null if not found.
+   *
+   * @example
+   * const currentSlide = Drupal.vvjs.getCurrentSlide('gallery');
+   */
+  Drupal.vvjs.getCurrentSlide = function(identifier) {
+    const core = getCoreModule(identifier);
+    return core ? core.slideIndex : null;
+  };
+
+  /**
+   * Get total number of slides in a slideshow.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier.
+   *
+   * @return {number|null}
+   *   The total number of slides or null if not found.
+   *
+   * @example
+   * const total = Drupal.vvjs.getTotalSlides('gallery');
+   */
+  Drupal.vvjs.getTotalSlides = function(identifier) {
+    const core = getCoreModule(identifier);
+    return core ? core.totalSlides : null;
+  };
+
+  /**
+   * Navigate to next slide.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier.
+   *
+   * @return {boolean}
+   *   True if successful.
+   *
+   * @example
+   * Drupal.vvjs.nextSlide('gallery');
+   */
+  Drupal.vvjs.nextSlide = function(identifier) {
+    const core = getCoreModule(identifier);
+
+    if (core) {
+      core.nextSlide();
+      core.startAutoSlide();
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * Navigate to previous slide.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier.
+   *
+   * @return {boolean}
+   *   True if successful.
+   *
+   * @example
+   * Drupal.vvjs.prevSlide('gallery');
+   */
+  Drupal.vvjs.prevSlide = function(identifier) {
+    const core = getCoreModule(identifier);
+
+    if (core) {
+      core.prevSlide();
+      core.startAutoSlide();
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * Pause a specific slideshow.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier.
+   *
+   * @return {boolean}
+   *   True if successful.
+   *
+   * @example
+   * Drupal.vvjs.pause('gallery');
+   */
+  Drupal.vvjs.pause = function(identifier) {
+    const core = getCoreModule(identifier);
+
+    if (core && !core.isPaused) {
+      core.togglePause();
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * Resume a specific slideshow.
+   *
+   * @param {string} identifier
+   *   The slideshow identifier.
+   *
+   * @return {boolean}
+   *   True if successful.
+   *
+   * @example
+   * Drupal.vvjs.resume('gallery');
+   */
+  Drupal.vvjs.resume = function(identifier) {
+    const core = getCoreModule(identifier);
+
+    if (core && core.isPaused) {
+      core.togglePause();
+      return true;
+    }
+
+    return false;
+  };
+
 })(Drupal, drupalSettings, once);

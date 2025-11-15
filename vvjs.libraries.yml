@@ -80,9 +80,18 @@ vvjs-hero__1400:
     theme:
       css/vvjs-hero-1400.css: { }
 
-opacity:
+vvjs-opacity:
   js:
-    js/opacity.js: {}
+    js/vvjs-opacity.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once
+
+vvjs-admin:
+  js:
+    js/vvjs-admin.js: {}
   dependencies:
     - core/drupal
     - core/drupal.ajax

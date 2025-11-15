@@ -65,6 +65,12 @@
   background_rgb: background_rgb|default(null),
 } %}
 
+{# Deep linking configuration #}
+{% set deeplink_config = {
+  enabled: options.enable_deeplink|default(false),
+  identifier: options.deeplink_identifier|default(''),
+} %}
+
 {# Transition settings #}
 {% set transition_config = {
   type: settings.transition_type|default('instant'),
@@ -147,20 +153,36 @@
 {% endmacro %}
 
 {# Macro for navigation dot buttons #}
-{% macro render_navigation_dots(rows, slideshow_config, navigation_config) %}
+{% macro render_navigation_dots(rows, slideshow_config, navigation_config, deeplink_config) %}
   {% if navigation_config.navigation != 'none' %}
   <div class="dots-numbers-button-wrapper" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}">
     {% for row in rows %}
-      <button id="dots-numbers-button-{{ loop.index }}"
-              class="button dots-numbers-button{{ loop.first ? ' active' : '' }}"
-              type="button"
-              role="tab"
-              aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
-              aria-selected="{{ loop.first ? 'true' : 'false' }}"
-              aria-controls="vvjs-item-{{ slideshow_config.unique_id }}-{{ loop.index }}"
-              tabindex="{{ loop.first ? '0' : '-1' }}">
-        {{ loop.index }}
-      </button>
+      {% if deeplink_config.enabled and deeplink_config.identifier %}
+        {# Deep linking enabled - use anchor links #}
+        {% set slide_link = '#' ~ deeplink_config.identifier ~ '-' ~ loop.index %}
+        <a id="dots-numbers-button-{{ loop.index }}"
+           href="{{ slide_link }}"
+           class="button dots-numbers-button{{ loop.first ? ' active' : '' }}"
+           role="tab"
+           aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
+           aria-selected="{{ loop.first ? 'true' : 'false' }}"
+           aria-controls="vvjs-item-{{ slideshow_config.unique_id }}-{{ loop.index }}"
+           tabindex="{{ loop.first ? '0' : '-1' }}">
+          {{ loop.index }}
+        </a>
+      {% else %}
+        {# Default buttons #}
+        <button id="dots-numbers-button-{{ loop.index }}"
+                class="button dots-numbers-button{{ loop.first ? ' active' : '' }}"
+                type="button"
+                role="tab"
+                aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
+                aria-selected="{{ loop.first ? 'true' : 'false' }}"
+                aria-controls="vvjs-item-{{ slideshow_config.unique_id }}-{{ loop.index }}"
+                tabindex="{{ loop.first ? '0' : '-1' }}">
+          {{ loop.index }}
+        </button>
+      {% endif %}
     {% endfor %}
   </div>
   {% endif %}
@@ -194,6 +216,10 @@
        data-static="{{ animation_config.is_static ? 'true' : 'false' }}"
        data-time="{{ animation_config.time_in_seconds }}"
        data-total-slides="{{ total_slides }}"
+       {% if deeplink_config.enabled and deeplink_config.identifier %}
+       data-deeplink-enabled="true"
+       data-deeplink-id="{{ deeplink_config.identifier }}"
+       {% endif %}
        class="vvjs-inner{{ navigation_config.navigation ? ' ' ~ navigation_config.navigation }}{{ animation_config.is_static ? ' zero' : ' not-zero' }}">
 
     {# Live region for accessibility announcements #}
@@ -273,7 +299,7 @@
           {% endif %}
 
           {# Navigation Dots/Numbers #}
-          {{ _self.render_navigation_dots(rows, slideshow_config, navigation_config) }}
+          {{ _self.render_navigation_dots(rows, slideshow_config, navigation_config, deeplink_config) }}
 
           {# Slide Counter Display #}
           {% if navigation_config.show_total_slides %}

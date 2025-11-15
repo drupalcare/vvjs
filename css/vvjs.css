@@ -103,6 +103,8 @@
   top: calc(50% - 48px);
 }
 
+
+.dots-numbers-button-wrapper > a,
 .dots-numbers-button-wrapper > button {
   all: unset;
   cursor: pointer;
