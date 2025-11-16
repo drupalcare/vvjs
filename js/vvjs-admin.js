@@ -2,7 +2,7 @@
  * @file
  * Handles form field visibility toggles in Views UI.
  *
- * Filename:     opacity.js
+ * Filename:     vvjb-admin.js
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  *

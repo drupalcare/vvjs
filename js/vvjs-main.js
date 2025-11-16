@@ -91,6 +91,9 @@
         // IMPORTANT: Store module references on container for cross-module communication
         this.container.vvjsModules = this.modules;
 
+        // Initialize deep linking if enabled - may activate a slide from URL
+        const deepLinkActivated = this.initializeDeepLinking();
+
         // Start the slideshow
         this.modules.core.startAutoSlide();
 
@@ -210,6 +213,71 @@
           detail: { config }
         }));
       }
+    }
+
+    /**
+     * Initialize deep linking functionality.
+     * 
+     * Checks URL hash on page load and navigates to the specified slide.
+     * Also sets up hash change listener for browser back/forward.
+     */
+    initializeDeepLinking() {
+      const deeplinkEnabled = this.container.dataset.deeplinkEnabled === 'true';
+      const deeplinkId = this.container.dataset.deeplinkId;
+
+      if (!deeplinkEnabled || !deeplinkId) {
+        return false;
+      }
+
+      // Check URL hash on page load
+      let slideActivated = false;
+      const hash = window.location.hash;
+      
+      if (hash && hash.startsWith(`#${deeplinkId}-`)) {
+        const slideNumber = parseInt(hash.split('-').pop(), 10);
+        
+        if (slideNumber >= 1 && slideNumber <= this.modules.core.totalSlides) {
+          // Navigate to the slide from URL
+          this.modules.core.goToSlide(slideNumber);
+          slideActivated = true;
+        }
+      }
+
+      // Set up hash change listener (only once per slideshow)
+      if (!this.container.vvjsHashChangeHandler) {
+        const hashChangeHandler = () => {
+          const currentHash = window.location.hash;
+          
+          // Only respond to hash changes for this specific slideshow
+          if (currentHash && currentHash.startsWith(`#${deeplinkId}-`)) {
+            const slideNumber = parseInt(currentHash.split('-').pop(), 10);
+            
+            if (slideNumber >= 1 && slideNumber <= this.modules.core.totalSlides) {
+              this.modules.core.goToSlide(slideNumber);
+              this.modules.core.startAutoSlide();
+            }
+          }
+        };
+
+        this.container.vvjsHashChangeHandler = hashChangeHandler;
+        window.addEventListener('hashchange', hashChangeHandler);
+      }
+
+      // Listen for slide changes to update URL hash
+      this.container.addEventListener('vvjs:slideChanged', (e) => {
+        if (deeplinkEnabled && deeplinkId) {
+          const newHash = `#${deeplinkId}-${e.detail.slideIndex}`;
+          
+          // Use replaceState to avoid cluttering browser history
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, '', newHash);
+          } else {
+            window.location.hash = newHash;
+          }
+        }
+      });
+
+      return slideActivated;
     }
   }
 

@@ -157,7 +157,7 @@
   {% if navigation_config.navigation != 'none' %}
   <div class="dots-numbers-button-wrapper" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}">
     {% for row in rows %}
-      {% if deeplink_config.enabled and deeplink_config.identifier %}
+      {% if deeplink_config.enabled and deeplink_config.identifier and navigation_config.navigation != 'none' %}
         {# Deep linking enabled - use anchor links #}
         {% set slide_link = '#' ~ deeplink_config.identifier ~ '-' ~ loop.index %}
         <a id="dots-numbers-button-{{ loop.index }}"
@@ -216,7 +216,7 @@
        data-static="{{ animation_config.is_static ? 'true' : 'false' }}"
        data-time="{{ animation_config.time_in_seconds }}"
        data-total-slides="{{ total_slides }}"
-       {% if deeplink_config.enabled and deeplink_config.identifier %}
+       {% if deeplink_config.enabled and deeplink_config.identifier and navigation_config.navigation != 'none' %}
        data-deeplink-enabled="true"
        data-deeplink-id="{{ deeplink_config.identifier }}"
        {% endif %}

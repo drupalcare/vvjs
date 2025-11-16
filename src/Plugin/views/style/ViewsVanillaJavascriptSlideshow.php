@@ -194,6 +194,9 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
    *   The form array (passed by reference).
    */
   protected function buildWarningMessage(array &$form): void {
+    if ($this->view->storage->id() === 'vvjs_example') {
+      return;
+    }
     $form['warning_message'] = [
       '#type' => 'markup',
       '#markup' => '<div class="messages messages--status">' . $this->t(
@@ -382,7 +385,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#title' => $this->t('Slide Indicators (Bottom Navigation Dots/Numbers)'),
       '#options' => $this->getNavigationOptions(),
       '#default_value' => $this->options['navigation'] ?? self::NAV_DOTS,
-      '#description' => $this->t('Show the bottom slide navigation dots/numbers'),
+      '#description' => $this->t('Show the bottom slide navigation dots/numbers. <strong>Note: This feature is required by Deep Linking.</strong>'),
     ];
   }
 
@@ -714,12 +717,15 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#title' => $this->t('Deep Linking Settings'),
       '#open' => TRUE,
       '#weight' => -15,
+      '#attributes' => [
+        'data-vvjs-deeplink-section' => 'true',
+      ],
     ];
 
     $form['deeplink_section']['enable_deeplink'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable Deep Linking'),
-      '#description' => $this->t('Generate shareable links for each slide that appear in the browser URL.'),
+      '#description' => $this->t('Enable deep linking to create shareable URLs for specific slides. <strong>Note: This feature requires navigation (dots or numbers) to be enabled.</strong>'),
       '#default_value' => $this->options['enable_deeplink'],
       '#attributes' => [
         'data-vvjs-deeplink-toggle' => 'true',
@@ -740,8 +746,8 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       ],
       '#element_validate' => [[$this, 'validateDeeplinkIdentifier']],
     ];
-
   }
+
 
   /**
    * Validates and sanitizes the deep link identifier field.
@@ -752,17 +758,36 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
    *   The form state.
    */
   public function validateDeeplinkIdentifier(array $element, FormStateInterface $form_state): void {
-    $deeplink_values = $form_state->getValue(['style_options', 'deeplink_section']);
-    $enable_deeplink = $deeplink_values['enable_deeplink'] ?? FALSE;
-    $identifier = $deeplink_values['deeplink_identifier'] ?? '';
+    // Get deep link values.
+    $deeplink_values = $form_state->getValue(['style_options', 'deeplink_section']) ?? [];
+    $enable_deeplink = !empty($deeplink_values['enable_deeplink']);
+    $identifier = (string) ($deeplink_values['deeplink_identifier'] ?? '');
 
-    // Only validate if deep linking is enabled.
+    // Get navigation setting (Slide Indicators).
+    $navigation_values = $form_state->getValue(['style_options', 'navigation_section']) ?? [];
+    $navigation = $navigation_values['navigation'] ?? self::NAV_DOTS;
+
+    // 1. If deep linking is disabled, ignore identifier and exit early.
     if (!$enable_deeplink) {
+      // Optional: clear any stale identifier so config stays clean.
+      $form_state->setValue(['style_options', 'deeplink_section', 'deeplink_identifier'], '');
       return;
     }
 
+    // 2. Deep linking is enabled → require navigation ≠ none.
+    if ($navigation === self::NAV_NONE) {
+      $form_state->setError(
+        $element,
+        $this->t('Deep Linking requires Slide Indicators (Dots or Numbers) to be enabled. Please set "Slide Indicators (Bottom Navigation Dots/Numbers)" to Dots or Numbers, or disable Deep Linking.')
+      );
+      return;
+    }
+
+    // 3. From here, deep linking is enabled and navigation is valid,
+    //    so we enforce identifier rules.
+
     // Required when deep linking is enabled.
-    if (empty($identifier)) {
+    if ($identifier === '') {
       $form_state->setError($element, $this->t('URL Identifier is required when Deep Linking is enabled.'));
       return;
     }
@@ -790,14 +815,17 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $clean = preg_replace('/^[0-9-]+/', '', $clean);
 
     // If empty after cleaning, show error.
-    if (empty($clean)) {
+    if ($clean === '') {
       $form_state->setError($element, $this->t('URL Identifier must contain at least one letter.'));
       return;
     }
 
     // Check reserved words.
     if (in_array($clean, VvjsConstants::DEEPLINK_RESERVED_WORDS, TRUE)) {
-      $form_state->setError($element, $this->t('Please choose a more specific identifier. "@identifier" is a reserved word.', ['@identifier' => $clean]));
+      $form_state->setError(
+        $element,
+        $this->t('Please choose a more specific identifier. "@identifier" is a reserved word.', ['@identifier' => $clean])
+      );
       return;
     }
 

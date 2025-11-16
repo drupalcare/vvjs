@@ -90,6 +90,9 @@ vvjs-opacity:
     - core/once
 
 vvjs-admin:
+  css:
+    theme:
+      css/vvjs-admin.css: {}
   js:
     js/vvjs-admin.js: {}
   dependencies:
