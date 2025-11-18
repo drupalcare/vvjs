@@ -68,8 +68,8 @@
 }
 
 .vvjs .vvjs-items .vvjs-item-inner {
-  padding-top: 1px;
-  padding-bottom: 1px;
+  padding-block-start: 1px;
+  padding-block-end: 1px;
   overflow: hidden;
 }
 
@@ -186,7 +186,7 @@
 }
 
 .vvjs.hero-slideshow.arrows-sides .vvjs-inner > .nav-dots-numbers {
-  left: 50px !important;
+  inset-inline-start: 50px !important;
   margin: 0 !important;
 }
 
@@ -200,7 +200,7 @@
 
 .vvjs .nav-dots-numbers {
   min-height: calc(2 * 20px);
-  margin-top: 1rem;
+  margin-block-start: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -374,6 +374,26 @@
 
 .vvjs-is-paused .progressbar {
   opacity: 0;
+}
+
+/* ==========================================================================
+   RTL Support
+   ========================================================================== */
+
+/* Reverse navigation arrow positions in RTL */
+[dir="rtl"] .vvjs .echo-total,
+[dir="rtl"] .vvjs .slide-indicators,
+[dir="rtl"] .vvjs .nav-dots-numbers {
+  flex-direction: row-reverse;
+}
+
+/* Reverse slide animations for RTL */
+[dir="rtl"] .vvjs.slideshow.a-left .vvjs-item-inner {
+  animation: animateright 0.6s ease-out;
+}
+
+[dir="rtl"] .vvjs.slideshow.a-right .vvjs-item-inner {
+  animation: animateleft 0.6s ease-out;
 }
 
 /* ==========================================================================
