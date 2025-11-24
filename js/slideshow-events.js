@@ -78,10 +78,6 @@
         this.resetTouchState();
       });
 
-      // Pointer leave - reset state to prevent stuck gestures.
-      this.slideshow.addEventListener('pointerleave', () => {
-        this.resetTouchState();
-      });
     }
 
     /**
@@ -164,38 +160,38 @@
     /**
      * Handle pointer down event.
      */
-      handlePointerDown(e) {
-        if (!this.swipeEnabled || e.pointerType === 'mouse') {
-          return;
-        }
-
-        if (this.slideshow.setPointerCapture) {
-          this.slideshow.setPointerCapture(e.pointerId);
-        }
-
-        this.touchStartX = e.clientX;
-        this.touchStartY = e.clientY;
-        this.isDragging = false;
+    handlePointerDown(e) {
+      if (!this.swipeEnabled || e.pointerType === 'mouse') {
+        return;
       }
+
+      if (this.slideshow.setPointerCapture) {
+        this.slideshow.setPointerCapture(e.pointerId);
+      }
+
+      this.touchStartX = e.clientX;
+      this.touchStartY = e.clientY;
+      this.isDragging = false;
+    }
 
     /**
      * Handle pointer up event.
      */
-      handlePointerUp(e) {
-        if (!this.swipeEnabled || e.pointerType === 'mouse') {
-          return;
-        }
-
-        if (this.slideshow.releasePointerCapture) {
-          this.slideshow.releasePointerCapture(e.pointerId);
-        }
-
-        this.touchEndX = e.clientX;
-        this.touchEndY = e.clientY;
-
-        this.processSwipeGesture();
-        this.resetTouchState();
+    handlePointerUp(e) {
+      if (!this.swipeEnabled || e.pointerType === 'mouse') {
+        return;
       }
+
+      if (this.slideshow.releasePointerCapture) {
+        this.slideshow.releasePointerCapture(e.pointerId);
+      }
+
+      this.touchEndX = e.clientX;
+      this.touchEndY = e.clientY;
+
+      this.processSwipeGesture();
+      this.resetTouchState();
+    }
 
     /**
      * Handle touch start event (legacy fallback).
@@ -255,7 +251,7 @@
       const deltaY = Math.abs(this.touchEndY - this.touchStartY);
 
       // Only process if horizontal movement is significant and vertical is minimal.
-      if (Math.abs(deltaX) > this.dragThreshold && deltaY < this.dragThreshold * 0.5) {
+      if (Math.abs(deltaX) > this.dragThreshold && deltaY < this.dragThreshold * 1.5) {
         if (deltaX > 0) {
           // Swipe right - previous slide.
           this.core.prevSlide();
