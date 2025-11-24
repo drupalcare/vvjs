@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\vvjs\Plugin\views\style;
 
+use Drupal\views\Plugin\views\field\EntityField;
 use Drupal\vvjs\VvjsConstants;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -748,7 +749,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     ];
   }
 
-
   /**
    * Validates and sanitizes the deep link identifier field.
    *
@@ -785,7 +785,6 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
 
     // 3. From here, deep linking is enabled and navigation is valid,
     //    so we enforce identifier rules.
-
     // Required when deep linking is enabled.
     if ($identifier === '') {
       $form_state->setError($element, $this->t('URL Identifier is required when Deep Linking is enabled.'));
@@ -1195,64 +1194,65 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
   /**
    * {@inheritdoc}
    */
-public function validate(): array {
-  $errors = parent::validate();
+  public function validate(): array {
+    $errors = parent::validate();
 
-  if (!empty($this->options['hero_slideshow'])) {
-    // Check if using fields.
-    if (!$this->usesFields()) {
-      $errors[] = $this->t('Hero Slideshow option requires Fields as row style.');
-    }
-    else {
-      // Check if first field is an image.
-      $fields = $this->view->display_handler->getHandlers('field');
-
-      if (empty($fields)) {
-        $errors[] = $this->t('Hero Slideshow requires at least one field to be configured.');
+    if (!empty($this->options['hero_slideshow'])) {
+      // Check if using fields.
+      if (!$this->usesFields()) {
+        $errors[] = $this->t('Hero Slideshow option requires Fields as row style.');
       }
       else {
-        $first_field = reset($fields);
-        $is_image = FALSE;
+        // Check if first field is an image.
+        $fields = $this->view->display_handler->getHandlers('field');
 
-        // Check if it's an EntityField (not a global or custom field).
-        if ($first_field instanceof \Drupal\views\Plugin\views\field\EntityField) {
-          // Get field name from the field's definition.
-          $field_name = $first_field->definition['field_name'] ?? NULL;
+        if (empty($fields)) {
+          $errors[] = $this->t('Hero Slideshow requires at least one field to be configured.');
+        }
+        else {
+          $first_field = reset($fields);
+          $is_image = FALSE;
 
-          if ($field_name) {
-            // Get the entity type from the view.
-            $entity_type_id = $this->view->getBaseEntityType()->id();
+          // Check if it's an EntityField (not a global or custom field).
+          if ($first_field instanceof EntityField) {
+            // Get field name from the field's definition.
+            $field_name = $first_field->definition['field_name'] ?? NULL;
 
-            // Use entity field manager service to get field storage definitions.
-            $entity_field_manager = \Drupal::service('entity_field.manager');
-            $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+            if ($field_name) {
+              // Get the entity type from the view.
+              $entity_type_id = $this->view->getBaseEntityType()->id();
 
-            // Check if this field exists and is an image type.
-            if (isset($field_storage_definitions[$field_name])) {
-              $field_type = $field_storage_definitions[$field_name]->getType();
-              $is_image = ($field_type === 'image');
+              // Use entity field manager service to get
+              // field storage definitions.
+              $entity_field_manager = \Drupal::service('entity_field.manager');
+              $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+
+              // Check if this field exists and is an image type.
+              if (isset($field_storage_definitions[$field_name])) {
+                $field_type = $field_storage_definitions[$field_name]->getType();
+                $is_image = ($field_type === 'image');
+              }
             }
           }
-        }
 
-        if (!$is_image) {
-          $errors[] = $this->t('Hero Slideshow requires the first field to be an Image field. Please add an image field as the first field in your Fields configuration.');
+          if (!$is_image) {
+            $errors[] = $this->t('Hero Slideshow requires the first field to be an Image field. Please add an image field as the first field in your Fields configuration.');
+          }
         }
       }
     }
-  }
 
-  $timing = $this->options['time_in_seconds'] ?? '0';
-  if ($timing === '0') {
-    if (!empty($this->options['show_slide_progress'])) {
-      $errors[] = $this->t('Slide progress indicator requires auto-advance timing to be enabled (cannot be "None").');
+    $timing = $this->options['time_in_seconds'] ?? '0';
+    if ($timing === '0') {
+      if (!empty($this->options['show_slide_progress'])) {
+        $errors[] = $this->t('Slide progress indicator requires auto-advance timing to be enabled (cannot be "None").');
+      }
+      if (!empty($this->options['show_play_pause'])) {
+        $errors[] = $this->t('Play/pause button requires auto-advance timing to be enabled (cannot be "None").');
+      }
     }
-    if (!empty($this->options['show_play_pause'])) {
-      $errors[] = $this->t('Play/pause button requires auto-advance timing to be enabled (cannot be "None").');
-    }
-  }
 
-  return $errors;
-}
+    return $errors;
+  }
 
 }
