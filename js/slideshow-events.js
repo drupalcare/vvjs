@@ -24,7 +24,7 @@
       this.touchEndX = null;
       this.touchEndY = null;
       this.isDragging = false;
-      this.dragThreshold = 50; // Minimum distance for swipe
+      this.dragThreshold = 40;
 
       // Mouse state
       this.isMouseOver = false;
@@ -133,24 +133,6 @@
     }
 
     /**
-     * Handle pointer down event.
-     */
-    handlePointerDown(e) {
-      if (!this.swipeEnabled) {
-        return;
-      }
-
-      // Only track touch and pen input for swipe gestures.
-      if (e.pointerType === 'mouse') {
-        return;
-      }
-
-      this.touchStartX = e.clientX;
-      this.touchStartY = e.clientY;
-      this.isDragging = false;
-    }
-
-    /**
      * Handle pointer move event.
      */
     handlePointerMove(e) {
@@ -180,24 +162,40 @@
     }
 
     /**
+     * Handle pointer down event.
+     */
+      handlePointerDown(e) {
+        if (!this.swipeEnabled || e.pointerType === 'mouse') {
+          return;
+        }
+
+        if (this.slideshow.setPointerCapture) {
+          this.slideshow.setPointerCapture(e.pointerId);
+        }
+
+        this.touchStartX = e.clientX;
+        this.touchStartY = e.clientY;
+        this.isDragging = false;
+      }
+
+    /**
      * Handle pointer up event.
      */
-    handlePointerUp(e) {
-      if (!this.swipeEnabled) {
-        return;
+      handlePointerUp(e) {
+        if (!this.swipeEnabled || e.pointerType === 'mouse') {
+          return;
+        }
+
+        if (this.slideshow.releasePointerCapture) {
+          this.slideshow.releasePointerCapture(e.pointerId);
+        }
+
+        this.touchEndX = e.clientX;
+        this.touchEndY = e.clientY;
+
+        this.processSwipeGesture();
+        this.resetTouchState();
       }
-
-      // Only track touch and pen input.
-      if (e.pointerType === 'mouse') {
-        return;
-      }
-
-      this.touchEndX = e.clientX;
-      this.touchEndY = e.clientY;
-
-      this.processSwipeGesture();
-      this.resetTouchState();
-    }
 
     /**
      * Handle touch start event (legacy fallback).
