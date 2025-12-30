@@ -16,6 +16,7 @@
  *   - max_width, min_height, max_content_width: Hero layout settings.
  *   - overlay_position: Hero overlay positioning.
  *   - show_total_slides, show_play_pause, show_slide_progress: Display options.
+ *   - pause_on_hover, enable_swipe, enable_keyboard, enable_looping: Behavior settings.
  * - rows: The view result rows to be rendered.
  * - unique_id: A unique identifier for the view instance.
  * - background_rgb: Calculated background color with opacity.
@@ -46,6 +47,14 @@
   show_total_slides: options.show_total_slides|default(false),
   show_play_pause: options.show_play_pause|default(false),
   show_slide_progress: options.show_slide_progress|default(false),
+} %}
+
+{# Behavior settings - use same default pattern as navigation_config #}
+{% set behavior_config = {
+  pause_on_hover: options.pause_on_hover,
+  enable_swipe: options.enable_swipe,
+  enable_keyboard: options.enable_keyboard,
+  enable_looping: options.enable_looping,
 } %}
 
 {# Timing and animation settings #}
@@ -215,6 +224,10 @@
        data-play-pause="{{ navigation_config.show_play_pause ? 'true' : 'false' }}"
        data-static="{{ animation_config.is_static ? 'true' : 'false' }}"
        data-time="{{ animation_config.time_in_seconds }}"
+       data-pause-on-hover="{{ behavior_config.pause_on_hover ? 'true' : 'false' }}"
+       data-enable-swipe="{{ behavior_config.enable_swipe ? 'true' : 'false' }}"
+       data-enable-keyboard="{{ behavior_config.enable_keyboard ? 'true' : 'false' }}"
+       data-enable-looping="{{ behavior_config.enable_looping ? 'true' : 'false' }}"
        data-total-slides="{{ total_slides }}"
        {% if deeplink_config.enabled and deeplink_config.identifier and navigation_config.navigation != 'none' %}
        data-deeplink-enabled="true"
