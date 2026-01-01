@@ -27,7 +27,6 @@
  */
 #}
 
-
 {#
   ==============================================================================
   TEMPLATE CONFIGURATION & VARIABLES
@@ -56,6 +55,7 @@
   enable_swipe: options.enable_swipe,
   enable_keyboard: options.enable_keyboard,
   enable_looping: options.enable_looping,
+  start_index: options.start_index|default(1),
 } %}
 
 {# Timing and animation settings #}
@@ -163,33 +163,39 @@
 {% endmacro %}
 
 {# Macro for navigation dot buttons #}
-{% macro render_navigation_dots(rows, slideshow_config, navigation_config, deeplink_config) %}
+{% macro render_navigation_dots(rows, slideshow_config, navigation_config, deeplink_config, behavior_config) %}
   {% if navigation_config.navigation != 'none' %}
+  {# Calculate effective start index - clamp to total slides #}
+  {% set total = rows|length %}
+  {% set effective_start = behavior_config.start_index|default(1) %}
+  {% set effective_start = effective_start > total ? total : effective_start %}
+  {% set effective_start = effective_start < 1 ? 1 : effective_start %}
   <div class="dots-numbers-button-wrapper" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}">
     {% for row in rows %}
+      {% set is_active = loop.index == effective_start %}
       {% if deeplink_config.enabled and deeplink_config.identifier and navigation_config.navigation != 'none' %}
         {# Deep linking enabled - use anchor links #}
         {% set slide_link = '#' ~ deeplink_config.identifier ~ '-' ~ loop.index %}
         <a id="dots-numbers-button-{{ loop.index }}"
            href="{{ slide_link }}"
-           class="button dots-numbers-button{{ loop.first ? ' active' : '' }}"
+           class="button dots-numbers-button{{ is_active ? ' active' : '' }}"
            role="tab"
-           aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
-           aria-selected="{{ loop.first ? 'true' : 'false' }}"
+           aria-label="{{ is_active ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
+           aria-selected="{{ is_active ? 'true' : 'false' }}"
            aria-controls="vvjs-item-{{ slideshow_config.unique_id }}-{{ loop.index }}"
-           tabindex="{{ loop.first ? '0' : '-1' }}">
+           tabindex="{{ is_active ? '0' : '-1' }}">
           {{ loop.index }}
         </a>
       {% else %}
         {# Default buttons #}
         <button id="dots-numbers-button-{{ loop.index }}"
-                class="button dots-numbers-button{{ loop.first ? ' active' : '' }}"
+                class="button dots-numbers-button{{ is_active ? ' active' : '' }}"
                 type="button"
                 role="tab"
-                aria-label="{{ loop.first ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
-                aria-selected="{{ loop.first ? 'true' : 'false' }}"
+                aria-label="{{ is_active ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
+                aria-selected="{{ is_active ? 'true' : 'false' }}"
                 aria-controls="vvjs-item-{{ slideshow_config.unique_id }}-{{ loop.index }}"
-                tabindex="{{ loop.first ? '0' : '-1' }}">
+                tabindex="{{ is_active ? '0' : '-1' }}">
           {{ loop.index }}
         </button>
       {% endif %}
@@ -229,6 +235,7 @@
        data-enable-swipe="{{ behavior_config.enable_swipe ? 'true' : 'false' }}"
        data-enable-keyboard="{{ behavior_config.enable_keyboard ? 'true' : 'false' }}"
        data-enable-looping="{{ behavior_config.enable_looping ? 'true' : 'false' }}"
+       data-start-index="{{ behavior_config.start_index }}"
        data-total-slides="{{ total_slides }}"
        {% if deeplink_config.enabled and deeplink_config.identifier and navigation_config.navigation != 'none' %}
        data-deeplink-enabled="true"
@@ -313,7 +320,7 @@
           {% endif %}
 
           {# Navigation Dots/Numbers #}
-          {{ _self.render_navigation_dots(rows, slideshow_config, navigation_config, deeplink_config) }}
+          {{ _self.render_navigation_dots(rows, slideshow_config, navigation_config, deeplink_config, behavior_config) }}
 
           {# Slide Counter Display #}
           {% if navigation_config.show_total_slides %}

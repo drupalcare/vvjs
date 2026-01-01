@@ -69,6 +69,7 @@ final class VvjsConstants {
     'min_height' => 'min-height',
     'max_content_width' => 'max-content-width',
     'max_width' => 'max-width',
+    'start_index' => 'start-index',
   ];
 
   /**

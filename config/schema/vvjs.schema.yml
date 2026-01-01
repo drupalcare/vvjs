@@ -102,3 +102,9 @@ views.style.views_vvjs:
     enable_looping:
       type: boolean
       label: 'Enable slideshow looping'
+    start_index:
+      type: integer
+      label: 'Start index (which slide to show first)'
+      constraints:
+        Range:
+          min: 1

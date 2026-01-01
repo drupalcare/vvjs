@@ -144,6 +144,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options['enable_swipe'] = ['default' => TRUE];
     $options['enable_keyboard'] = ['default' => TRUE];
     $options['enable_looping'] = ['default' => TRUE];
+    $options['start_index'] = ['default' => 1];
     $options['enable_deeplink'] = ['default' => FALSE];
     $options['deeplink_identifier'] = ['default' => ''];
     return $options;
@@ -631,6 +632,15 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#title' => $this->t('Enable Looping'),
       '#default_value' => $this->options['enable_looping'] ?? TRUE,
       '#description' => $this->t('When enabled, the slideshow will loop back to the first slide after the last slide. When disabled, it will stop at the last slide.'),
+    ];
+
+    $form['behavior_section']['start_index'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Start Index'),
+      '#default_value' => $this->options['start_index'] ?? 1,
+      '#min' => 1,
+      '#step' => 1,
+      '#description' => $this->t('Choose which slide the slideshow should display first when it loads. For example, enter 1 to start with the first slide, 2 for the second, etc. This is useful when you have multiple slideshows side by side and want each to start at a different position for a staggered effect. If the number exceeds the total slides, the slideshow will automatically start from the last slide.'),
     ];
   }
 
@@ -1156,6 +1166,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       $flattened['enable_swipe'] = $behavior['enable_swipe'] ?? TRUE;
       $flattened['enable_keyboard'] = $behavior['enable_keyboard'] ?? TRUE;
       $flattened['enable_looping'] = $behavior['enable_looping'] ?? TRUE;
+      $flattened['start_index'] = (int) ($behavior['start_index'] ?? 1);
     }
 
     if (isset($values['advanced_section'])) {
