@@ -183,6 +183,13 @@ final class VvjsConstants {
   public const TRANSITION_DURATION_DEFAULT = 600;
 
   /**
+   * Scrollable dots configuration constants.
+   */
+  public const DEFAULT_SCROLLABLE_DOTS_WIDTH = 0;
+  public const MIN_SCROLLABLE_DOTS_WIDTH = 120;
+  public const MAX_SCROLLABLE_DOTS_WIDTH = 700;
+
+  /**
    * Private constructor to prevent instantiation.
    *
    * This class should only be used for its constants.

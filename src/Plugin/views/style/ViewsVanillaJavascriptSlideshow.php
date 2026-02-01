@@ -147,6 +147,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     $options['start_index'] = ['default' => 1];
     $options['enable_deeplink'] = ['default' => FALSE];
     $options['deeplink_identifier'] = ['default' => ''];
+    $options['scrollable_dots_width'] = ['default' => VvjsConstants::DEFAULT_SCROLLABLE_DOTS_WIDTH];
     return $options;
   }
 
@@ -393,6 +394,26 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       '#options' => $this->getNavigationOptions(),
       '#default_value' => $this->options['navigation'] ?? self::NAV_DOTS,
       '#description' => $this->t('Show the bottom slide navigation dots/numbers. <strong>Note: This feature is required by Deep Linking.</strong>'),
+    ];
+
+    $form['navigation_section']['scrollable_dots_width'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Scrollable navigation width (px)'),
+      '#default_value' => $this->options['scrollable_dots_width'] ?? VvjsConstants::DEFAULT_SCROLLABLE_DOTS_WIDTH,
+      '#min' => 0,
+      '#max' => VvjsConstants::MAX_SCROLLABLE_DOTS_WIDTH,
+      '#step' => 1,
+      '#field_suffix' => 'px',
+      '#description' => $this->t('Set a maximum width for the navigation to make it scrollable. Set to 0 to disable. Range: @min-@max px.', [
+        '@min' => VvjsConstants::MIN_SCROLLABLE_DOTS_WIDTH,
+        '@max' => VvjsConstants::MAX_SCROLLABLE_DOTS_WIDTH,
+      ]),
+      '#states' => [
+        'visible' => [
+          [':input[name="style_options[navigation_section][navigation]"]' => ['value' => self::NAV_DOTS]],
+          [':input[name="style_options[navigation_section][navigation]"]' => ['value' => self::NAV_NUMBERS]],
+        ],
+      ],
     ];
   }
 
@@ -1075,6 +1096,16 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
       }
     }
 
+    // Validate scrollable_dots_width when set.
+    $navigation_values = $values['style_options']['navigation_section'] ?? [];
+    $scrollable_dots_width = (int) ($navigation_values['scrollable_dots_width'] ?? 0);
+    if ($scrollable_dots_width > 0 && ($scrollable_dots_width < VvjsConstants::MIN_SCROLLABLE_DOTS_WIDTH || $scrollable_dots_width > VvjsConstants::MAX_SCROLLABLE_DOTS_WIDTH)) {
+      $errors[] = $this->t('Scrollable navigation width must be 0 (disabled) or between @min and @max pixels.', [
+        '@min' => VvjsConstants::MIN_SCROLLABLE_DOTS_WIDTH,
+        '@max' => VvjsConstants::MAX_SCROLLABLE_DOTS_WIDTH,
+      ]);
+    }
+
     return $errors;
   }
 
@@ -1135,6 +1166,7 @@ class ViewsVanillaJavascriptSlideshow extends StylePluginBase {
     if (isset($values['navigation_section'])) {
       $flattened['arrows'] = $values['navigation_section']['arrows'] ?? self::ARROWS_TOP;
       $flattened['navigation'] = $values['navigation_section']['navigation'] ?? self::NAV_DOTS;
+      $flattened['scrollable_dots_width'] = $values['navigation_section']['scrollable_dots_width'] ?? VvjsConstants::DEFAULT_SCROLLABLE_DOTS_WIDTH;
     }
 
     if (isset($values['animation_section'])) {

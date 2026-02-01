@@ -47,6 +47,7 @@
   show_total_slides: options.show_total_slides|default(false),
   show_play_pause: options.show_play_pause|default(false),
   show_slide_progress: options.show_slide_progress|default(false),
+  scrollable_dots_width: options.scrollable_dots_width|default(0),
 } %}
 
 {# Behavior settings - use same default pattern as navigation_config #}
@@ -83,8 +84,8 @@
 
 {# Transition settings #}
 {% set transition_config = {
-  type: settings.transition_type|default('instant'),
-  duration: settings.transition_duration|default(600),
+  type: options.transition_type|default('instant'),
+  duration: options.transition_duration|default(600),
 } %}
 
 {# Calculate total slides once for efficiency #}
@@ -170,7 +171,12 @@
   {% set effective_start = behavior_config.start_index|default(1) %}
   {% set effective_start = effective_start > total ? total : effective_start %}
   {% set effective_start = effective_start < 1 ? 1 : effective_start %}
-  <div class="dots-numbers-button-wrapper" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}">
+  <div class="dots-numbers-button-wrapper{{ navigation_config.scrollable_dots_width > 0 ? ' vvjs-scrollable-dots' : '' }}"
+       role="tablist"
+       aria-label="{{ 'Slideshow Tabs'|t }}"
+       {% if navigation_config.scrollable_dots_width > 0 %}
+       data-scrollable-dots-width="{{ navigation_config.scrollable_dots_width }}"
+       {% endif %}>
     {% for row in rows %}
       {% set is_active = loop.index == effective_start %}
       {% if deeplink_config.enabled and deeplink_config.identifier and navigation_config.navigation != 'none' %}
