@@ -11,12 +11,46 @@ choice for modern web development.
 
 ## Features
 
-- Utilizes vanilla JavaScript for improved performance and reduced dependencies.
-- Customizable options for time interval between slides, navigation type, 
-  animation type, and arrows.
-- Unique ID generation to prevent conflicts.
-- Includes accessibility features such as ARIA roles and properties for better 
-  screen reader support.
+### Core
+
+- **Vanilla JavaScript** — no jQuery; works with Drupal 10 and 11.
+- **Auto-advance** — configurable interval (none, or 2–15 seconds).
+- **Navigation** — dots, numbers, or none; optional scrollable dots for many slides.
+- **Arrows** — none, sides, sides (big screen only), top, or top (big screen only).
+- **Animations** — none, zoom, fade, or slide from top/bottom/left/right.
+- **Transitions** — when animation is “none”: instant, or crossfade (classic, staged, dynamic) with duration (200–2000 ms).
+- **Play/Pause** — button and optional progress bar when auto-advance is on.
+- **Slide counter** — optional “1 of N” display.
+- **Unique ID** per slideshow instance to avoid conflicts on multi-slideshow pages.
+
+### Hero Slideshow Mode
+
+- **Full-width hero** with overlay content; first field must be an **Image** or **Media** field.
+- **Layout** — max width, min height (vw), max content width (%).
+- **Overlay** — 12 position options, background color, and opacity.
+- **Responsive** — hero collapses to a card below the configured breakpoint.
+
+### Interaction & Behavior
+
+- **Keyboard** — arrow keys, Space (pause/play), Home/End (first/last slide); can be disabled.
+- **Touch/swipe** on mobile (can be disabled).
+- **Pause on hover** and **looping** (on/off).
+- **Start index** — choose which slide is shown first.
+
+### Deep Linking & API
+
+- **Deep linking** — shareable URLs to specific slides (e.g. `#gallery-3`); requires dots or numbers navigation.
+- **JavaScript API** — `goToSlide`, `nextSlide`, `prevSlide`, `pause`, `resume`, `getCurrentSlide`, `getTotalSlides`, `getInstance`; custom events (`vvjs:slideChanged`, `vvjs:pauseToggled`, `vvjs:initialized`).
+
+### Accessibility
+
+- ARIA roles, `aria-hidden`, focus management, live region announcements.
+- Reduced-motion handling; optional default CSS (can be disabled for custom styling).
+
+### Other
+
+- **Custom tokens** — `[vvjs:field_name]` and `[vvjs:field_name:plain]` for Views header/footer/empty text when using “Use replacement tokens from the first row.”
+- **Responsive breakpoints** — 576, 768, 992, 1200, or 1400 px for layout and arrow behavior.
 
 ## Token Support in Views Text Areas
 
@@ -64,22 +98,40 @@ designed to work seamlessly with the VVJS rendering system.
 
 ## Configuration Options
 
-- **Time in Seconds:** Set the interval for automatic slide transitions. 
-  Options include:
-  - None (0 seconds)
-  - 3 to 15 seconds
-- **Navigation:** Choose the type of bottom navigation:
-  - None
-  - Dots
-  - Numbers
-- **Animation Type:** Select the type of animation for slide transitions:
-  - Top
-  - Bottom
-  - Left
-  - Right
-  - Zoom
-  - Opacity
-- **Top Arrows:** Enable or disable the display of navigation arrows.
+All options are under **Format → Format** (Views Vanilla JavaScript Slideshow) → **Settings**.
+
+### Hero Slideshow
+
+- **Hero Slideshow** — Enable for full-width hero with overlay; requires row style **Fields** and first field **Image** or **Media**.
+- **Layout** — Max width (px), min height (vw), max content width (%).
+- **Overlay** — Position (12 options), background color, opacity (0–1).
+
+### Responsive & Deep Linking
+
+- **Responsive breakpoint** — 576, 768, 992, 1200, or 1400 px (affects layout and “big screen only” arrows).
+- **Deep linking** — Enable and set URL identifier (e.g. `gallery` → `#gallery-3`); requires dots or numbers navigation.
+
+### Timing & Navigation
+
+- **Time in seconds** — None (manual only), or 2–15 seconds for auto-advance.
+- **Arrows** — None, sides, sides (big screen only), top, top (big screen only).
+- **Navigation** — None, dots, or numbers; **scrollable dots width** when using dots.
+
+### Animation & Transitions
+
+- **Animation type** — None, zoom, fade, or slide from top/bottom/left/right.
+- **Transition type** (when animation is “none”) — Instant, or crossfade (classic, staged, dynamic).
+- **Transition duration** — 200–2000 ms (for crossfade).
+
+### Display & Behavior
+
+- **Show total slides**, **show slide progress**, **show play/pause** — On/off.
+- **Pause on hover**, **enable swipe**, **enable keyboard**, **enable looping** — On/off.
+- **Start index** — First slide to show (1-based).
+
+### Advanced
+
+- **Enable default CSS** — On/off (disable for full custom styling).
 
 ## Important Note on Pagination
 
