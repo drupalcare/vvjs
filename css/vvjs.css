@@ -176,7 +176,8 @@
 /* Global Setting for top arrows on the sides */
 .vvjs.arrows-sides .vvjs-items,
 .vvjs.arrows-sides .nav-dots-numbers,
-.vvjs.hero-slideshow.arrows-sides .vvjs-item .vvjs-hero-image img {
+.vvjs.hero-slideshow.arrows-sides .vvjs-item .vvjs-hero-image img,
+.vvjs.hero-slideshow.arrows-sides .vvjs-item .vvjs-hero-image video {
   width: calc(100% - 100px) !important;
   margin-inline-end: 50px !important;
   margin-inline-start: 50px !important;
