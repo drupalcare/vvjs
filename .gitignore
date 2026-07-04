@@ -62,3 +62,6 @@
 /drupal
 .DS_Store
 vvjs-homepage.html
+
+# Local drupal.org project page draft — not shipped with the module.
+drupal-org-project-page.html
