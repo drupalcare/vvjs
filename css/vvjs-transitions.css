@@ -27,7 +27,7 @@
 .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item {
   position: absolute !important;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   /* Override existing display:none rule from instant mode */
   display: block !important;
@@ -119,7 +119,7 @@
 .vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image {
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -140,7 +140,7 @@
 .vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image picture {
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   height: 100%;
 }
@@ -165,7 +165,7 @@
  * Performance optimization.
  * Remove will-change after transition completes to free GPU resources.
  */
-.vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item:not(.vvjs-active):not(.vvjs-previous) {
+.vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item:not(.vvjs-active, .vvjs-previous) {
   will-change: auto;
 }
 
@@ -201,6 +201,7 @@
   from {
     transform: scale(1.05);
   }
+
   to {
     transform: scale(1);
   }
@@ -219,6 +220,7 @@
   from {
     transform: translateY(-30px);
   }
+
   to {
     transform: translateY(0);
   }
@@ -233,6 +235,7 @@
   from {
     transform: translateX(-30px);
   }
+
   to {
     transform: translateX(0);
   }
@@ -247,6 +250,7 @@
   from {
     transform: translateX(30px);
   }
+
   to {
     transform: translateX(0);
   }
@@ -261,6 +265,7 @@
   from {
     transform: translateY(30px);
   }
+
   to {
     transform: translateY(0);
   }

@@ -8,6 +8,10 @@
  *
  */
 
+// phpcs:disable Drupal.NamingConventions.UpperCaseConstant
+// phpcs:disable Generic.PHP.UpperCaseConstant
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing
+
 (function (Drupal, drupalSettings) {
   'use strict';
 

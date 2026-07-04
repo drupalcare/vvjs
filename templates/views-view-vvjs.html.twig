@@ -217,7 +217,7 @@
 #}
 
 {# Main slideshow wrapper with accessibility and data attributes #}
-<div {{ attributes.addClass(slideshow_classes).setAttribute('id', slideshow_config.slide_id) }}
+<vvjs-slideshow {{ attributes.addClass(slideshow_classes).setAttribute('id', slideshow_config.slide_id) }}
      role="region"
      aria-labelledby="slideshow-heading-{{ slideshow_config.unique_id }}">
 
@@ -369,4 +369,4 @@
     {% endif %}
 
   </div>
-</div>
+</vvjs-slideshow>

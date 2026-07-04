@@ -1,567 +1,127 @@
 # Views Vanilla JavaScript Slideshow (VVJS)
 
-## Description
+A vanilla-JavaScript slideshow **Views format** for Drupal 11.3+ / 12. The most
+fully-featured of the VVJ pattern modules: regular and hero slideshow modes,
+four transition types (instant + three crossfade variants), seven animations,
+autoplay with full pause-control, arrows, dots, numbers, play/pause, progress
+bar, slide counter, deep linking, swipe + keyboard + screen-reader, and AAA-
+conformant accessibility.
 
-The **Views Vanilla JavaScript Slideshow** (VVJS) module allows you to create 
-dynamic and visually appealing slideshows for displaying various content items 
-on your Drupal site. This module integrates seamlessly with the Views module, 
-providing a new display style that you can choose when creating or editing 
-views. VVJS is lightweight and does not rely on jQuery, making it an efficient 
-choice for modern web development.
+v2.0 builds on the **`drupal/vvj_core` foundation** (composer auto-installs it).
+Behavior runs in a `<vvjs-slideshow>` custom element extending `VvjElementBase`
+— v1's seven separate JS files (`slideshow-core`, `-transitions`, `-navigation`,
+`-accessibility`, `-progress`, `-visibility`, `-events`, plus the `vvjs-main`
+orchestrator) are consolidated into a single class on the lifecycle.
 
 ## Features
 
-### Core
+### Modes
+- **Regular slideshow** — standard slide-by-slide content rotation
+- **Hero slideshow** — first field as hero background image, remaining fields as
+  overlay content; 12 overlay positions; configurable rgba overlay color from
+  hex+opacity
 
-- **Vanilla JavaScript** — no jQuery; works with Drupal 10 and 11.
-- **Auto-advance** — configurable interval (none, or 2–15 seconds).
-- **Navigation** — dots, numbers, or none; optional scrollable dots for many slides.
-- **Arrows** — none, sides, sides (big screen only), top, or top (big screen only).
-- **Animations** — none, zoom, fade, or slide from top/bottom/left/right.
-- **Transitions** — when animation is “none”: instant, or crossfade (classic, staged, dynamic) with duration (200–2000 ms).
-- **Play/Pause** — button and optional progress bar when auto-advance is on.
-- **Slide counter** — optional “1 of N” display.
-- **Unique ID** per slideshow instance to avoid conflicts on multi-slideshow pages.
+### Transitions + animations
+- 4 transition types: `instant` / `crossfade-classic` / `crossfade-staged` /
+  `crossfade-dynamic`
+- Configurable transition duration (200–2000 ms)
+- 7 animation directions (None / Fade / Zoom / four slide directions)
 
-### Hero Slideshow Mode
+### Autoplay + controls
+- Configurable interval (0 to disable; otherwise 2000–15000 ms)
+- Pause on hover, pause when tab hidden, pause when scrolled out of viewport
+  (IntersectionObserver), pause on `prefers-reduced-motion`
+- Play/pause button with SVG swap + ARIA label sync
+- RAF-quality progress bar (`role="progressbar"`, `--progress` CSS var)
+- Slide counter ("X of Y")
 
-- **Full-width hero** with overlay content; first field must be an **Image** or **Media** field.
-- **Layout** — max width, min height (vw), max content width (%).
-- **Overlay** — 12 position options, background color, and opacity.
-- **Responsive** — hero collapses to a card below the configured breakpoint.
-
-### Interaction & Behavior
-
-- **Keyboard** — arrow keys, Space (pause/play), Home/End (first/last slide); can be disabled.
-- **Touch/swipe** on mobile (can be disabled).
-- **Pause on hover** and **looping** (on/off).
-- **Start index** — choose which slide is shown first.
-
-### Deep Linking & API
-
-- **Deep linking** — shareable URLs to specific slides (e.g. `#gallery-3`); requires dots or numbers navigation.
-- **JavaScript API** — `goToSlide`, `nextSlide`, `prevSlide`, `pause`, `resume`, `getCurrentSlide`, `getTotalSlides`, `getInstance`; custom events (`vvjs:slideChanged`, `vvjs:pauseToggled`, `vvjs:initialized`).
+### Navigation
+- Arrows in 4 positions (Sides / Sides Big / Top / Top Big) or none
+- Bottom navigation: dots / numbers / none
+- Scrollable dots/numbers variant for large slide counts
+- Configurable looping toggle
+- Configurable start slide index
 
 ### Accessibility
+- Pointer Events API with Touch fallback for swipe (RTL-aware)
+- Keyboard nav: ArrowLeft/Right, Space (play/pause), Home, End
+- Screen-reader announcer via ARIA live region
+- ARIA `role="tabpanel"` / `inert` / `aria-hidden` per slide
+- `aria-selected` on dots/numbers, focus management on slide change
 
-- ARIA roles, `aria-hidden`, focus management, live region announcements.
-- Reduced-motion handling; optional default CSS (can be disabled for custom styling).
-
-### Other
-
-- **Custom tokens** — `[vvjs:field_name]` and `[vvjs:field_name:plain]` for Views header/footer/empty text when using “Use replacement tokens from the first row.”
-- **Responsive breakpoints** — 576, 768, 992, 1200, or 1400 px for layout and arrow behavior.
-
-## Token Support in Views Text Areas
-
-In Views headers, footers, or empty text areas—when using *Global: Text area* or
-*Global: Unfiltered text*—there is an option called **"Use replacement tokens
-from the first row."**
-
-The default Twig-style tokens (e.g., `{{ title }}` or `{{ field_image }}`)
-**will not work** with the VVJS style. Instead, use the custom tokens provided
-by VVJS:
-
-**Examples:**
-
-- `{{ title }}` → `[vvjs:title]`  
-- `{{ field_image }}` → `[vvjs:field_image]`
-
-To strip any HTML from the output, you can append `:plain` to the token:
-
-- `[vvjs:title:plain]`
-
-These tokens pull data from the **first row** of the View result and are
-designed to work seamlessly with the VVJS rendering system.
-
-## Requirements
-
-- Drupal 10 or 11
-- Views module
+### Architecture
+- 5 responsive breakpoints (576 / 768 / 992 / 1200 / 1400 px), separate hero
+  overrides per breakpoint
+- Deep linking via URL hash (`#identifier-{n}`)
+- Lazy IntersectionObserver hydration; AbortController-tracked listeners
+- **Views tokens** — `[vvjs:field]` / `[vvjs:field:plain]` in Views text areas
+  with *Use replacement tokens from the first row*
+- **Drupal admin help** — `/admin/help/vvjs`
 
 ## Installation
 
-1. Download and enable the **VVJS** module.
-2. Clear the cache: `drush cr` or via the Drupal admin interface.
+```bash
+composer require drupal/vvjs:^2.0
+drush en vvjs
+```
 
 ## Usage
 
-1. Create or edit a view in the Views module.
-2. In the **Format** section, select **Views Vanilla JavaScript Slideshow** 
-   from the available display styles.
-3. Configure the various options available under the **Format Settings** to 
-   customize the slideshow according to your needs.
-4. Set the number of items to display in the **Pager** settings. While 
-   pagination does not work with this display style, you can set a fixed number 
-   of items to display. It is recommended to limit the number of items to a 
-   maximum of 30 for optimal performance.
+1. Create or edit a View.
+2. Set **Format** to *Views Vanilla JavaScript Slideshow*.
+3. Set **Show** to *Fields*.
+4. For hero mode, the first field is treated as the hero background; place a
+   `<div class="vvjs-separator"></div>` field between background and overlay
+   content.
+5. Configure timing / navigation / animation / transition / display / behavior
+   in the format settings.
+6. Save.
 
-## Configuration Options
+**Sample view:** Optional config `views.view.vvjs_example` (`config/optional/`)
+installs when there is no ID conflict.
 
-All options are under **Format → Format** (Views Vanilla JavaScript Slideshow) → **Settings**.
+## Public API
 
-### Hero Slideshow
+External code can drive the slideshow via `Drupal.vvjs.*`. Pass either the
+deeplink identifier, a CSS selector, or an `Element` reference:
 
-- **Hero Slideshow** — Enable for full-width hero with overlay; requires row style **Fields** and first field **Image** or **Media**.
-- **Layout** — Max width (px), min height (vw), max content width (%).
-- **Overlay** — Position (12 options), background color, opacity (0–1).
-
-### Responsive & Deep Linking
-
-- **Responsive breakpoint** — 576, 768, 992, 1200, or 1400 px (affects layout and “big screen only” arrows).
-- **Deep linking** — Enable and set URL identifier (e.g. `gallery` → `#gallery-3`); requires dots or numbers navigation.
-
-### Timing & Navigation
-
-- **Time in seconds** — None (manual only), or 2–15 seconds for auto-advance.
-- **Arrows** — None, sides, sides (big screen only), top, top (big screen only).
-- **Navigation** — None, dots, or numbers; **scrollable dots width** when using dots.
-
-### Animation & Transitions
-
-- **Animation type** — None, zoom, fade, or slide from top/bottom/left/right.
-- **Transition type** (when animation is “none”) — Instant, or crossfade (classic, staged, dynamic).
-- **Transition duration** — 200–2000 ms (for crossfade).
-
-### Display & Behavior
-
-- **Show total slides**, **show slide progress**, **show play/pause** — On/off.
-- **Pause on hover**, **enable swipe**, **enable keyboard**, **enable looping** — On/off.
-- **Start index** — First slide to show (1-based).
-
-### Advanced
-
-- **Enable default CSS** — On/off (disable for full custom styling).
-
-## Important Note on Pagination
-
-**Pagination does not work for the VVJS display style.** To ensure the best 
-performance and user experience, it is recommended to set a fixed number of 
-items to display. The ideal number is up to 30 items. Exceeding this number may 
-affect the slideshow's performance and load times.
-
-## Accessibility
-
-The VVJS module includes several accessibility features to ensure that your 
-slideshows are usable by all visitors, including those using screen readers. 
-Features include:
-
-- **ARIA Roles and Properties:** Proper ARIA roles and properties are used to 
-  provide context and state information to screen readers.
-- **Keyboard Navigation:** Users can navigate through slides using keyboard 
-  shortcuts.
-- **Focus Management:** Ensures that the currently displayed slide is focused, 
-  providing a better experience for keyboard and screen reader users.
-
-## Deep Linking
-
-VVJS supports deep linking, allowing you to create shareable URLs that link directly to specific slides. This is perfect for:
-- Sharing specific slides on social media
-- Linking to featured content in email campaigns
-- Bookmarking favorite slides
-- Creating thumbnail navigation that controls the slideshow
-
-### Enabling Deep Linking
-
-1. Edit your view and select **Views Vanilla JavaScript Slideshow** as the format
-2. In the **Format Settings**, expand the **Deep Linking Settings** section
-3. Check **Enable Deep Linking**
-4. Enter a **URL Identifier** (e.g., "gallery", "products", "team")
-   - Must be lowercase letters, numbers, and hyphens only
-   - Must start with a letter
-   - Keep it short and descriptive (max 20 characters)
-
-When enabled, navigation dots/numbers become clickable links that update the browser URL:
-- Example: `https://example.com/page#gallery-3` (links to slide 3)
-
-### Multiple Slideshows on One Page
-
-Each slideshow needs a unique identifier:
-- First slideshow: identifier = "gallery" → `#gallery-3`
-- Second slideshow: identifier = "products" → `#products-5`
-- Third slideshow: identifier = "team" → `#team-2`
-
-The browser URL can contain multiple slide positions:
-```
-https://example.com/page#gallery-3
+```js
+Drupal.vvjs.goToSlide('gallery', 3);          // jump to slide 3 (1-based)
+Drupal.vvjs.nextSlide('gallery');             // advance one slide
+Drupal.vvjs.prevSlide('gallery');             // back one slide
+Drupal.vvjs.pause('gallery');                 // pause autoplay
+Drupal.vvjs.resume('gallery');                // resume autoplay
+Drupal.vvjs.pauseAll();                       // pause every slideshow on page
+Drupal.vvjs.resumeAll();                      // resume every slideshow on page
+Drupal.vvjs.getCurrentSlide('gallery');       // → number (1-based)
+Drupal.vvjs.getTotalSlides('gallery');        // → number
+Drupal.vvjs.getInstance('#vvjs-12345');       // → <vvjs-slideshow> element
+Drupal.vvjs.getAllInstances();                // → array of <vvjs-slideshow>
+elements
 ```
 
-## JavaScript API
+## Drop-in upgrade from 1.x
 
-VVJS provides a comprehensive JavaScript API for external control of slideshows. This allows you to build custom controls, thumbnail navigation, or integrate slideshows with other page elements.
+`composer update drupal/vvjs && drush updb && drush cr` is sufficient. v2
+preserves:
 
-### Basic Navigation
-```javascript
-// Navigate to slide 3 in the 'gallery' slideshow
-Drupal.vvjs.goToSlide('gallery', 3);
+- Plugin ID `views_vvjs`, theme hook `views_view_vvjs`
+- Twig template names
+- All 28 option keys
+- Library names (`vvjs`, `vvjs-style`, `vvjs-hero`, `vvjs-transitions`, `vvjs-
+  opacity`, `vvjs-admin`, plus 5 + 5 breakpoint variants)
+- JS behavior key `Drupal.behaviors.VVJSlideshow`
+- Public API surface `Drupal.vvjs.{getInstance, getAllInstances, goToSlide,
+  getCurrentSlide, getTotalSlides, nextSlide, prevSlide, pause, resume,
+  pauseAll, resumeAll}`
+- All CSS class names (`.vvjs`, `.vvjs-inner`, `.vvjs-items`, `.vvjs-item`,
+  `.vvjs-active`, `.vvjs-previous`, `.vvjs-hero-image`, `.vvjs-hero-content`,
+  `.dots-numbers-button-wrapper`, `.dots-numbers-button`, `.play-pause-button`,
+  `.next-arrow`, `.prev-arrow`, `.progressbar`, `.announcer`)
 
-// Navigate to next slide
-Drupal.vvjs.nextSlide('gallery');
-
-// Navigate to previous slide
-Drupal.vvjs.prevSlide('gallery');
-```
-
-### Playback Control
-```javascript
-// Pause slideshow
-Drupal.vvjs.pause('gallery');
-
-// Resume slideshow
-Drupal.vvjs.resume('gallery');
-
-// Pause all slideshows on the page
-Drupal.vvjs.pauseAll();
-
-// Resume all slideshows on the page
-Drupal.vvjs.resumeAll();
-```
-
-### Getting Information
-```javascript
-// Get current slide index (1-based)
-const currentSlide = Drupal.vvjs.getCurrentSlide('gallery');
-console.log('Currently on slide:', currentSlide);
-
-// Get total number of slides
-const totalSlides = Drupal.vvjs.getTotalSlides('gallery');
-console.log('Total slides:', totalSlides);
-```
-
-### Advanced Usage
-```javascript
-// Get slideshow instance for full control
-const slideshow = Drupal.vvjs.getInstance('gallery');
-
-// Access core module
-const core = slideshow.getModule('core');
-console.log('Slideshow state:', {
-  currentSlide: core.slideIndex,
-  totalSlides: core.totalSlides,
-  isPaused: core.isPaused,
-  isVisible: core.isVisible
-});
-
-// Get all modules
-const modules = slideshow.getAllModules();
-console.log('Available modules:', Object.keys(modules));
-```
-
-### Custom Thumbnail Navigation Example
-
-Here's a complete example of building custom thumbnail navigation that controls a VVJS slideshow:
-
-**HTML Structure:**
-```html
-<!-- VVJS Slideshow with identifier "portfolio" -->
-<div class="vvjs-slideshow-wrapper">
-  <!-- The slideshow (managed by Views) -->
-  <div id="portfolio-slideshow">
-    <!-- VVJS slideshow renders here -->
-  </div>
-  
-  <!-- Custom thumbnail navigation -->
-  <div class="custom-thumbnails">
-    <button class="thumb-btn" data-slide="1">
-      <img src="/images/thumb-1.jpg" alt="Slide 1">
-    </button>
-    <button class="thumb-btn" data-slide="2">
-      <img src="/images/thumb-2.jpg" alt="Slide 2">
-    </button>
-    <button class="thumb-btn" data-slide="3">
-      <img src="/images/thumb-3.jpg" alt="Slide 3">
-    </button>
-    <button class="thumb-btn" data-slide="4">
-      <img src="/images/thumb-4.jpg" alt="Slide 4">
-    </button>
-  </div>
-</div>
-```
-
-**JavaScript:**
-```javascript
-(function (Drupal) {
-  'use strict';
-
-  Drupal.behaviors.customThumbnailNav = {
-    attach: function (context, settings) {
-      // Get all thumbnail buttons
-      const thumbButtons = context.querySelectorAll('.thumb-btn');
-      
-      thumbButtons.forEach(function(button) {
-        // Add click handler
-        button.addEventListener('click', function() {
-          const slideIndex = parseInt(this.getAttribute('data-slide'), 10);
-          
-          // Navigate to slide using VVJS API
-          const success = Drupal.vvjs.goToSlide('portfolio', slideIndex);
-          
-          if (success) {
-            // Update active state on thumbnails
-            thumbButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-          }
-        });
-      });
-
-      // Listen for slideshow changes to update thumbnail active state
-      const slideshowContainer = context.querySelector('[data-deeplink-id="portfolio"]');
-      
-      if (slideshowContainer) {
-        slideshowContainer.addEventListener('vvjs:slideChanged', function(e) {
-          const currentSlide = e.detail.slideIndex;
-          
-          // Update thumbnail active states
-          thumbButtons.forEach(function(button) {
-            const btnSlide = parseInt(button.getAttribute('data-slide'), 10);
-            button.classList.toggle('active', btnSlide === currentSlide);
-          });
-        });
-      }
-    }
-  };
-
-})(Drupal);
-```
-
-**CSS:**
-```css
-.custom-thumbnails {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  justify-content: center;
-}
-
-.thumb-btn {
-  border: 3px solid transparent;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-  background: none;
-}
-
-.thumb-btn img {
-  display: block;
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 2px;
-}
-
-.thumb-btn:hover {
-  border-color: #007bff;
-  transform: scale(1.05);
-}
-
-.thumb-btn.active {
-  border-color: #007bff;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-}
-```
-
-### URL Parameter Navigation Example
-
-Automatically navigate to a slide based on URL parameters:
-```javascript
-(function (Drupal) {
-  'use strict';
-
-  Drupal.behaviors.urlSlideNavigation = {
-    attach: function (context, settings) {
-      // Only run once on page load
-      if (context !== document) {
-        return;
-      }
-
-      // Parse URL hash for slide navigation
-      // Example: #gallery-5 means go to slide 5 of 'gallery' slideshow
-      const hash = window.location.hash;
-      
-      if (!hash) {
-        return;
-      }
-
-      // Remove the # symbol
-      const hashValue = hash.substring(1);
-      
-      // Parse format: identifier-slideNumber
-      const parts = hashValue.split('-');
-      
-      if (parts.length >= 2) {
-        const identifier = parts.slice(0, -1).join('-'); // Handle identifiers with hyphens
-        const slideNumber = parseInt(parts[parts.length - 1], 10);
-        
-        if (!isNaN(slideNumber)) {
-          // Wait for slideshow to initialize
-          setTimeout(function() {
-            const success = Drupal.vvjs.goToSlide(identifier, slideNumber);
-            
-            if (success) {
-              console.log('Navigated to slide', slideNumber, 'of', identifier);
-            }
-          }, 500);
-        }
-      }
-    }
-  };
-
-})(Drupal);
-```
-
-### Creating a Share Button
-
-Add a button that copies the current slide URL to clipboard:
-
-**HTML:**
-```html
-<button id="share-slide-btn" class="share-button">
-  Share This Slide
-</button>
-```
-
-**JavaScript:**
-```javascript
-(function (Drupal) {
-  'use strict';
-
-  Drupal.behaviors.shareSlideButton = {
-    attach: function (context, settings) {
-      const shareBtn = context.querySelector('#share-slide-btn');
-      
-      if (!shareBtn) {
-        return;
-      }
-
-      shareBtn.addEventListener('click', function() {
-        // Get current slide
-        const currentSlide = Drupal.vvjs.getCurrentSlide('gallery');
-        
-        if (!currentSlide) {
-          alert('Slideshow not found');
-          return;
-        }
-
-        // Build URL
-        const url = window.location.origin + window.location.pathname + '#gallery-' + currentSlide;
-        
-        // Copy to clipboard
-        navigator.clipboard.writeText(url).then(function() {
-          // Show success message
-          shareBtn.textContent = 'Link Copied!';
-          setTimeout(function() {
-            shareBtn.textContent = 'Share This Slide';
-          }, 2000);
-        }).catch(function(err) {
-          console.error('Failed to copy URL:', err);
-          alert('Failed to copy link');
-        });
-      });
-    }
-  };
-
-})(Drupal);
-```
-
-### Event Listeners
-
-VVJS dispatches custom events that you can listen to:
-```javascript
-// Listen for slide changes
-const slideshow = document.querySelector('[data-deeplink-id="gallery"]');
-
-slideshow.addEventListener('vvjs:slideChanged', function(e) {
-  console.log('Slide changed to:', e.detail.slideIndex);
-  console.log('Total slides:', e.detail.totalSlides);
-});
-
-// Listen for pause/play events
-slideshow.addEventListener('vvjs:pauseToggled', function(e) {
-  console.log('Slideshow paused:', e.detail.isPaused);
-});
-
-// Listen for initialization
-slideshow.addEventListener('vvjs:initialized', function(e) {
-  console.log('Slideshow initialized');
-});
-```
-
-### Using CSS Selectors
-
-If deep linking is not enabled, you can still control slideshows using CSS selectors, but be aware that auto-generated IDs change on each page load.
-
-**Recommended approach - Use a wrapper class or ID:**
-```html
-<!-- Add a custom wrapper with stable ID/class -->
-<div id="my-gallery" class="my-gallery-wrapper">
-  <!-- VVJS slideshow renders here with random ID -->
-</div>
-```
-```javascript
-// Find the slideshow within your stable wrapper
-const wrapper = document.getElementById('my-gallery');
-const slideshowContainer = wrapper.querySelector('.vvjs-inner');
-
-// Use the found element directly
-const slideshow = Drupal.vvjs.getInstance(slideshowContainer);
-slideshow.getModule('core').goToSlide(3);
-
-// Or use your stable wrapper selector
-Drupal.vvjs.goToSlide('#my-gallery .vvjs-inner', 3);
-```
-
-**Why this is better than using the auto-generated ID:**
-```javascript
-// ❌ BAD - This ID changes every page load
-Drupal.vvjs.goToSlide('#vvjs-inner-12345678', 3);
-
-// ✅ GOOD - Use deep link identifier (best option)
-Drupal.vvjs.goToSlide('gallery', 3);
-
-// ✅ GOOD - Use stable wrapper class
-Drupal.vvjs.goToSlide('.my-gallery-wrapper .vvjs-inner', 3);
-
-// ✅ GOOD - Use view display class (if you know it)
-Drupal.vvjs.goToSlide('.view-my-gallery .vvjs-inner', 3);
-```
-
-### Best Practices
-
-1. **Always check return values** - API methods return `true`/`false` to indicate success
-2. **Wait for initialization** - Use `vvjs:initialized` event or `setTimeout()` if calling on page load
-3. **Use meaningful identifiers** - Choose descriptive deep link identifiers like "gallery", "products", "testimonials"
-4. **Handle errors gracefully** - Check for `null` returns when getting information
-5. **Respect user preferences** - The slideshow may pause automatically for users with reduced motion preferences
-
-### Browser Support
-
-The VVJS module and its API work in all modern browsers that support:
-- ES6 JavaScript
-- Custom Events
-- Intersection Observer (with fallback for older browsers)
-- CSS Custom Properties
-
-For optimal compatibility, ensure your Drupal site includes appropriate polyfills if supporting older browsers.
-
-
-## Troubleshooting
-
-If you encounter any issues or have suggestions for improvements, please open 
-an issue in the module's issue queue on Drupal.org.
-
-## Maintainers
-
-- [Alaa Haddad](https://www.drupal.org/u/flashwebcenter)
+Outer rendered tag changed from `<div>` to `<vvjs-slideshow>`. Theme selectors
+targeting `.vvjs` keep matching.
 
 ## License
 
-This project is licensed under the [GNU General Public License, version 2 or
-later](http://www.gnu.org/licenses/gpl-2.0.html).
-
----
-
-This file follows the Drupal best practices for module documentation, ensuring 
-that users have a clear understanding of the module's purpose, features, and 
-usage. It also includes important notes on pagination to guide users in setting 
-up the module correctly.
+GPL-2.0-or-later.

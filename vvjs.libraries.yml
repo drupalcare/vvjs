@@ -3,21 +3,18 @@ vvjs:
     theme:
       css/vvjs.css: { }
   js:
-    # Core slideshow functionality - must load first
-    js/slideshow-core.js: { weight: -10 }
-    # Individual modules - can load in any order after core
-    js/slideshow-transitions.js: { weight: -9 }
-    js/slideshow-navigation.js: { weight: -9 }
-    js/slideshow-accessibility.js: { weight: -9 }
-    js/slideshow-progress.js: { weight: -9 }
-    js/slideshow-visibility.js: { weight: -9 }
-    js/slideshow-events.js: { weight: -9 }
-    # Main orchestrator - must load last
-    js/vvjs-main.js: { weight: -8 }
+    js/vvjs-slideshow-element.js: {}
+    js/vvjs.js: {}
   dependencies:
     - core/drupal
     - core/drupalSettings
     - core/once
+    - vvj_core/tokens
+    - vvj_core/base
+    - vvj_core/a11y
+    - vvj_core/element-base
+    - vvj_core/keyboard-nav
+    - vvj_core/deeplink-bridge
 
 vvjs-hero:
   css:
@@ -28,6 +25,13 @@ vvjs-style:
   css:
     theme:
       css/vvjs-style.css: { }
+
+vvjs-transitions:
+  css:
+    component:
+      css/vvjs-transitions.css: { }
+  dependencies:
+    - vvjs/vvjs
 
 vvjs__576:
   css:
@@ -90,17 +94,10 @@ vvjs-opacity:
 vvjs-admin:
   css:
     theme:
-      css/vvjs-admin.css: {}
+      css/vvjs-admin.css: { }
   js:
     js/vvjs-admin.js: {}
   dependencies:
     - core/drupal
     - core/drupalSettings
     - core/once
-
-vvjs-transitions:
-  css:
-    component:
-      css/vvjs-transitions.css: {}
-  dependencies:
-    - vvjs/vvjs

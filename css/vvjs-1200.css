@@ -21,7 +21,7 @@
   }
 
   .vvjs.br-1200.hero-slideshow.arrows-sides-big .vvjs-inner > .nav-dots-numbers {
-    left: 50px !important;
+    inset-inline-start: 50px !important;
     margin: 0!important;
   }
 
@@ -32,6 +32,7 @@
   html .vvjs.br-1200.arrows-sides-big .slide-indicators {
     display: none !important;
   }
+
   html .vvjs.br-1200.arrows-top-big .slide-indicators button,
   html .vvjs.br-1200.arrows-sides-big .slide-indicators button {
     pointer-events: none !important;

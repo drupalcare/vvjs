@@ -177,7 +177,7 @@ display:
           hero_slideshow: false
           enable_css: true
           arrows: 'arrows-top'
-          time_in_seconds: '5000'
+          time_in_seconds: 5000
           navigation: 'dots'
           animation: 'a-fade'
           show_total_slides: true
@@ -234,25 +234,22 @@ display:
       title: 'VVJS Slideshow Demo'
       display_extenders: {  }
       path: vvjs-example
-      menu:
-        type: normal
-        title: 'VVJS Example'
-        description: 'See the VVJS slideshow in action'
-        weight: 0
-        enabled: true
-        menu_name: main
-        parent: ''
-        context: '0'
-      cache_metadata:
-        max-age: -1
-        contexts:
-          - 'languages:language_content'
-          - 'languages:language_interface'
-          - url.query_args
-          - 'user.node_grants:view'
-          - user.permissions
-        tags:
-          - 'config:node.type.article'
+      defaults:
+        access: false
+      access:
+        type: perm
+        options:
+          perm: 'access administration pages'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:node.type.article'
   block_1:
     id: block_1
     display_title: 'Slideshow Block'
@@ -270,12 +267,12 @@ display:
         title: false
         pager: false
       block_description: 'VVJS Articles Slideshow Block'
-      cache_metadata:
-        max-age: -1
-        contexts:
-          - 'languages:language_content'
-          - 'languages:language_interface'
-          - 'user.node_grants:view'
-          - user.permissions
-        tags:
-          - 'config:node.type.article'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:node.type.article'
