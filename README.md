@@ -58,6 +58,20 @@ orchestrator) are consolidated into a single class on the lifecycle.
   with *Use replacement tokens from the first row*
 - **Drupal admin help** — `/admin/help/vvjs`
 
+## Token Support in Views Text Areas
+
+In Views headers, footers, or empty text with *Use replacement tokens from the
+first row*, default Twig tokens (`{{ title }}`) do not work. Use VVJS tokens
+instead:
+
+- `{{ title }}` → `[vvjs:title]`
+- `{{ field_image }}` → `[vvjs:field_image]`
+- Append `:plain` for plain text: `[vvjs:title:plain]`
+
+v2 resolves tokens through the shared `vvj_core.token_resolver` service; syntax
+is unchanged from v1. Tokens read from the **first row** of rendered View
+fields. Complex field rewrites are not supported.
+
 ## Installation
 
 ```bash
@@ -91,6 +105,8 @@ Drupal.vvjs.nextSlide('gallery');             // advance one slide
 Drupal.vvjs.prevSlide('gallery');             // back one slide
 Drupal.vvjs.pause('gallery');                 // pause autoplay
 Drupal.vvjs.resume('gallery');                // resume autoplay
+Drupal.vvjs.isPaused('gallery');              // → boolean|null
+Drupal.vvjs.isInitialized('gallery');         // → boolean|null
 Drupal.vvjs.pauseAll();                       // pause every slideshow on page
 Drupal.vvjs.resumeAll();                      // resume every slideshow on page
 Drupal.vvjs.getCurrentSlide('gallery');       // → number (1-based)
@@ -113,7 +129,7 @@ preserves:
 - JS behavior key `Drupal.behaviors.VVJSlideshow`
 - Public API surface `Drupal.vvjs.{getInstance, getAllInstances, goToSlide,
   getCurrentSlide, getTotalSlides, nextSlide, prevSlide, pause, resume,
-  pauseAll, resumeAll}`
+  pauseAll, resumeAll, isPaused, isInitialized}`
 - All CSS class names (`.vvjs`, `.vvjs-inner`, `.vvjs-items`, `.vvjs-item`,
   `.vvjs-active`, `.vvjs-previous`, `.vvjs-hero-image`, `.vvjs-hero-content`,
   `.dots-numbers-button-wrapper`, `.dots-numbers-button`, `.play-pause-button`,
