@@ -57,7 +57,13 @@ final class VvjsJavascriptSmokeTest extends VvjPatternJavascriptTestBase {
    */
   public function testIsPausedApiIsExposed(): void {
     $this->drupalGet('<front>');
-    $this->assertSession()->statusCodeEquals(200);
+    // NOT statusCodeEquals(). A WebDriver test drives a real browser through
+    // DrupalSelenium2Driver, which cannot report an HTTP status code — it
+    // throws UnsupportedDriverActionException. Checking for the error page is
+    // the equivalent that works here.
+    $this->assertSession()->pageTextNotContains(
+      'The website encountered an unexpected error',
+    );
 
     // The custom element exposes isPaused().
     $this->assertJsCondition(
