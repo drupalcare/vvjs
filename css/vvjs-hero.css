@@ -12,19 +12,19 @@
 }
 
 .vvjs.hero-slideshow .vvjs-items {
-  margin: 0 auto;
   display: block;
   overflow: hidden;
-  background-color: transparent;
   width: 100%;
   max-width: initial;
   min-height: initial;
+  margin: 0 auto;
+  background-color: transparent;
 }
 
 .vvjs.hero-slideshow .vvjs-items .vvjs-hero-content {
-  background: var(--hero-content-bg);
-  max-width: 100%;
   width: 100%;
+  max-width: 100%;
+  background: var(--hero-content-bg);
 }
 
 .vvjs.hero-slideshow.a-top .vvjs-item-inner img {
@@ -41,7 +41,6 @@
     transform: translateY(0);
     opacity: 1;
   }
-
 }
 
 .vvjs.hero-slideshow.a-left .vvjs-item-inner img {
@@ -58,7 +57,6 @@
     transform: translateX(0);
     opacity: 1;
   }
-
 }
 
 .vvjs.hero-slideshow.a-right .vvjs-item-inner img {
@@ -75,7 +73,6 @@
     transform: translateX(0);
     opacity: 1;
   }
-
 }
 
 .vvjs.hero-slideshow.a-bottom .vvjs-item-inner img {
@@ -92,5 +89,4 @@
     transform: translateY(0);
     opacity: 1;
   }
-
 }

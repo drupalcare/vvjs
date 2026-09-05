@@ -6,14 +6,14 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-@media (min-width:75rem) {
+@media (min-width: 75rem) {
   .vvjs.br-1200.arrows-sides-big .vvjs-items,
   .vvjs.br-1200.arrows-sides-big .nav-dots-numbers,
   .vvjs.br-1200.hero-slideshow.arrows-sides-big .vvjs-item .vvjs-hero-image img,
   .vvjs.br-1200.hero-slideshow.arrows-sides-big .vvjs-item .vvjs-hero-image video {
     width: calc(100% - 100px) !important;
-    margin-inline-end: 50px !important;
     margin-inline-start: 50px !important;
+    margin-inline-end: 50px !important;
   }
 
   .vvjs.br-1200.arrows-sides-big .slide-indicators button {
@@ -22,12 +22,11 @@
 
   .vvjs.br-1200.hero-slideshow.arrows-sides-big .vvjs-inner > .nav-dots-numbers {
     inset-inline-start: 50px !important;
-    margin: 0!important;
+    margin: 0 !important;
   }
-
 }
 
-@media (max-width:74.99875rem) {
+@media (max-width: 74.99875rem) {
   html .vvjs.br-1200.arrows-top-big .slide-indicators,
   html .vvjs.br-1200.arrows-sides-big .slide-indicators {
     display: none !important;

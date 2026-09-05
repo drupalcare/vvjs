@@ -13,18 +13,24 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 (function (Drupal, drupalSettings, once) {
-  'use strict';
-
   /**
    * Sync overlay opacity range input value to the displayed span (CSP-safe).
    */
   Drupal.behaviors.vvjsOpacityRange = {
-    attach: function (context) {
-      const rangeInputs = once('vvjs-opacity-range', '[data-vvjs-opacity-range="true"]', context);
+    attach(context) {
+      const rangeInputs = once(
+        'vvjs-opacity-range',
+        '[data-vvjs-opacity-range="true"]',
+        context,
+      );
 
       rangeInputs.forEach(function (input) {
-        const valueEl = input.closest('.form-item')?.querySelector('.opacity-value')
-          || context.querySelector(drupalSettings.vvjs?.opacityValueSelector || '#background-opacity-value');
+        const valueEl =
+          input.closest('.form-item')?.querySelector('.opacity-value') ||
+          context.querySelector(
+            drupalSettings.vvjs?.opacityValueSelector ||
+              '#background-opacity-value',
+          );
         if (!valueEl) {
           return;
         }
@@ -41,15 +47,21 @@
    * Toggle deep link identifier field visibility.
    */
   Drupal.behaviors.vvjsDeeplinkToggle = {
-    attach: function (context, settings) {
-      const toggleCheckbox = once('vvjs-deeplink-toggle', '[data-vvjs-deeplink-toggle="true"]', context);
+    attach(context, settings) {
+      const toggleCheckbox = once(
+        'vvjs-deeplink-toggle',
+        '[data-vvjs-deeplink-toggle="true"]',
+        context,
+      );
 
       if (!toggleCheckbox.length) {
         return;
       }
 
       toggleCheckbox.forEach(function (checkbox) {
-        const wrapper = context.querySelector('[data-vvjs-deeplink-field="true"]');
+        const wrapper = context.querySelector(
+          '[data-vvjs-deeplink-field="true"]',
+        );
 
         if (!wrapper) {
           return;
@@ -63,6 +75,7 @@
 
         /**
          * Update field visibility and required state.
+         * @param isEnabled
          */
         const updateVisibility = function (isEnabled) {
           const input = wrapper.querySelector('input[type="text"]');
@@ -75,8 +88,7 @@
               input.removeAttribute('tabindex');
               input.setAttribute('required', 'required');
             }
-          }
-          else {
+          } else {
             wrapper.classList.add('hidden-element');
             wrapper.setAttribute('aria-hidden', 'true');
 
@@ -95,7 +107,6 @@
           updateVisibility(this.checked);
         });
       });
-    }
+    },
   };
-
 })(Drupal, drupalSettings, once);

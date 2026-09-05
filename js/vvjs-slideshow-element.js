@@ -41,8 +41,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal) => {
-  'use strict';
-
   const { ElementBase } = Drupal.Vvj;
 
   const PLAY_SVG = `<svg class="svg-play" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 800" fill="currentColor"><path d="m380-300 280-180-280-180v360ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>`;
@@ -59,9 +57,9 @@
   }
 
   class VvjsSlideshowElement extends ElementBase {
-
     static get patternSlug() {
- return 'vvjs'; }
+      return 'vvjs';
+    }
 
     constructor() {
       super();
@@ -113,16 +111,19 @@
 
     onHydrate() {
       this._inner = this.querySelector('.vvjs-inner');
-      if (!this._inner) { return;
+      if (!this._inner) {
+        return;
       }
 
       this._slideshow = this._inner.querySelector('.vvjs-items');
-      if (!this._slideshow) { return;
+      if (!this._slideshow) {
+        return;
       }
 
       this._slides = this._slideshow.querySelectorAll('.vvjs-item');
       this._totalSlides = this._slides.length;
-      if (this._totalSlides === 0) { return;
+      if (this._totalSlides === 0) {
+        return;
       }
 
       this._readConfig();
@@ -180,11 +181,16 @@
       this._playPauseButton = this._inner.querySelector('.play-pause-button');
       this._nextButton = this.querySelector('.next-arrow');
       this._prevButton = this.querySelector('.prev-arrow');
-      this._dotsWrapper = this._inner.querySelector('.dots-numbers-button-wrapper');
-      this._dots = this._dotsWrapper?.querySelectorAll('.dots-numbers-button') ?? [];
+      this._dotsWrapper = this._inner.querySelector(
+        '.dots-numbers-button-wrapper',
+      );
+      this._dots =
+        this._dotsWrapper?.querySelectorAll('.dots-numbers-button') ?? [];
       this._currentSlideEl = this._inner.querySelector('.current-slide');
       this._progressBar = this._inner.querySelector('.progressbar');
-      this._scrollableDotsWidth = parseInt(this._dotsWrapper?.dataset.scrollableDotsWidth ?? '0', 10) || 0;
+      this._scrollableDotsWidth =
+        parseInt(this._dotsWrapper?.dataset.scrollableDotsWidth ?? '0', 10) ||
+        0;
     }
 
     // -----------------------------------------------------------------
@@ -226,135 +232,214 @@
     // -----------------------------------------------------------------
 
     _bindNavigation() {
-      this._playPauseButton?.addEventListener('click', () => {
-        // Stop progress before toggling, matches v1 behavior.
-        if (!this._isPaused) { this._immediateStopProgress();
-        }
-        this._togglePause();
-      }, { signal: this.signal });
+      this._playPauseButton?.addEventListener(
+        'click',
+        () => {
+          // Stop progress before toggling, matches v1 behavior.
+          if (!this._isPaused) {
+            this._immediateStopProgress();
+          }
+          this._togglePause();
+        },
+        { signal: this.signal },
+      );
 
-      this._nextButton?.addEventListener('click', () => {
-        this._goToNextSlide();
-        this._startAutoSlide();
-      }, { signal: this.signal });
+      this._nextButton?.addEventListener(
+        'click',
+        () => {
+          this._goToNextSlide();
+          this._startAutoSlide();
+        },
+        { signal: this.signal },
+      );
 
-      this._prevButton?.addEventListener('click', () => {
-        this._goToPrevSlide();
-        this._startAutoSlide();
-      }, { signal: this.signal });
+      this._prevButton?.addEventListener(
+        'click',
+        () => {
+          this._goToPrevSlide();
+          this._startAutoSlide();
+        },
+        { signal: this.signal },
+      );
 
       this._dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-          this._goToSlide(index + 1);
-          this._startAutoSlide();
-        }, { signal: this.signal });
+        dot.addEventListener(
+          'click',
+          () => {
+            this._goToSlide(index + 1);
+            this._startAutoSlide();
+          },
+          { signal: this.signal },
+        );
       });
     }
 
     _bindKeyboard() {
-      if (!this._keyboardEnabled) { return;
+      if (!this._keyboardEnabled) {
+        return;
       }
-      document.addEventListener('keydown', (e) => {
-        if (e.target.closest('input, textarea, [contenteditable="true"]')) { return;
-        }
-        if (!this._isFocusedOrVisible()) { return;
-        }
-        switch (e.key) {
-          case 'ArrowRight':
-            e.preventDefault();
-            this._goToNextSlide();
-            this._startAutoSlide();
-            break;
+      document.addEventListener(
+        'keydown',
+        (e) => {
+          if (e.target.closest('input, textarea, [contenteditable="true"]')) {
+            return;
+          }
+          if (!this._isFocusedOrVisible()) {
+            return;
+          }
+          switch (e.key) {
+            case 'ArrowRight':
+              e.preventDefault();
+              this._goToNextSlide();
+              this._startAutoSlide();
+              break;
 
-          case 'ArrowLeft':
-            e.preventDefault();
-            this._goToPrevSlide();
-            this._startAutoSlide();
-            break;
+            case 'ArrowLeft':
+              e.preventDefault();
+              this._goToPrevSlide();
+              this._startAutoSlide();
+              break;
 
-          case ' ':
-          case 'Spacebar':
-            e.preventDefault();
-            this._togglePause();
-            break;
+            case ' ':
+            case 'Spacebar':
+              e.preventDefault();
+              this._togglePause();
+              break;
 
-          case 'Home':
-            e.preventDefault();
-            this._goToSlide(1);
-            this._startAutoSlide();
-            break;
+            case 'Home':
+              e.preventDefault();
+              this._goToSlide(1);
+              this._startAutoSlide();
+              break;
 
-          case 'End':
-            e.preventDefault();
-            this._goToSlide(this._totalSlides);
-            this._startAutoSlide();
-            break;
+            case 'End':
+              e.preventDefault();
+              this._goToSlide(this._totalSlides);
+              this._startAutoSlide();
+              break;
 
-          default:
-            break;
-        }
-      }, { signal: this.signal });
+            default:
+              break;
+          }
+        },
+        { signal: this.signal },
+      );
     }
 
     _isFocusedOrVisible() {
-      if (this.contains(document.activeElement)) { return true;
+      if (this.contains(document.activeElement)) {
+        return true;
       }
       const rect = this.getBoundingClientRect();
       return rect.top < window.innerHeight && rect.bottom > 0;
     }
 
     _bindPointerEvents() {
-      if (!this._swipeEnabled || !this._slideshow) { return;
+      if (!this._swipeEnabled || !this._slideshow) {
+        return;
       }
       if ('PointerEvent' in window) {
-        this._slideshow.addEventListener('pointerdown', (e) => this._handlePointerDown(e), { signal: this.signal });
-        this._slideshow.addEventListener('pointermove', (e) => this._handlePointerMove(e), { passive: false, signal: this.signal });
-        this._slideshow.addEventListener('pointerup', (e) => this._handlePointerUp(e), { signal: this.signal });
-        this._slideshow.addEventListener('pointercancel', () => this._resetTouchState(), { signal: this.signal });
-      }
-      else {
-        this._slideshow.addEventListener('touchstart', (e) => this._handleTouchStart(e), { passive: true, signal: this.signal });
-        this._slideshow.addEventListener('touchmove', (e) => this._handleTouchMove(e), { passive: false, signal: this.signal });
-        this._slideshow.addEventListener('touchend', (e) => this._handleTouchEnd(e), { passive: true, signal: this.signal });
-        this._slideshow.addEventListener('touchcancel', () => this._resetTouchState(), { signal: this.signal });
+        this._slideshow.addEventListener(
+          'pointerdown',
+          (e) => this._handlePointerDown(e),
+          { signal: this.signal },
+        );
+        this._slideshow.addEventListener(
+          'pointermove',
+          (e) => this._handlePointerMove(e),
+          { passive: false, signal: this.signal },
+        );
+        this._slideshow.addEventListener(
+          'pointerup',
+          (e) => this._handlePointerUp(e),
+          { signal: this.signal },
+        );
+        this._slideshow.addEventListener(
+          'pointercancel',
+          () => this._resetTouchState(),
+          { signal: this.signal },
+        );
+      } else {
+        this._slideshow.addEventListener(
+          'touchstart',
+          (e) => this._handleTouchStart(e),
+          { passive: true, signal: this.signal },
+        );
+        this._slideshow.addEventListener(
+          'touchmove',
+          (e) => this._handleTouchMove(e),
+          { passive: false, signal: this.signal },
+        );
+        this._slideshow.addEventListener(
+          'touchend',
+          (e) => this._handleTouchEnd(e),
+          { passive: true, signal: this.signal },
+        );
+        this._slideshow.addEventListener(
+          'touchcancel',
+          () => this._resetTouchState(),
+          { signal: this.signal },
+        );
       }
     }
 
     _bindMouseHover() {
-      if (!this._slideshow) { return;
+      if (!this._slideshow) {
+        return;
       }
-      this._slideshow.addEventListener('mouseenter', () => {
-        if (!this._pauseOnHover) { return;
-        }
-        this._isMouseOver = true;
-        this._immediateStopProgress();
-        this._stopAutoSlide();
-      }, { signal: this.signal });
-      this._slideshow.addEventListener('mouseleave', () => {
-        if (!this._pauseOnHover) { return;
-        }
-        this._isMouseOver = false;
-        this._startAutoSlide();
-      }, { signal: this.signal });
+      this._slideshow.addEventListener(
+        'mouseenter',
+        () => {
+          if (!this._pauseOnHover) {
+            return;
+          }
+          this._isMouseOver = true;
+          this._immediateStopProgress();
+          this._stopAutoSlide();
+        },
+        { signal: this.signal },
+      );
+      this._slideshow.addEventListener(
+        'mouseleave',
+        () => {
+          if (!this._pauseOnHover) {
+            return;
+          }
+          this._isMouseOver = false;
+          this._startAutoSlide();
+        },
+        { signal: this.signal },
+      );
     }
 
     _bindVisibility() {
       if ('IntersectionObserver' in window) {
-        this._intersectionObserver = new IntersectionObserver((entries) => {
-          const isVisible = entries[0].isIntersecting;
-          this._isVisible = isVisible;
-          if (isVisible && !this._isPaused) { this._startAutoSlide();
-          } else { this._stopAutoSlide();
-          }
-        }, { threshold: 0.5, rootMargin: '50px' });
+        this._intersectionObserver = new IntersectionObserver(
+          (entries) => {
+            const isVisible = entries[0].isIntersecting;
+            this._isVisible = isVisible;
+            if (isVisible && !this._isPaused) {
+              this._startAutoSlide();
+            } else {
+              this._stopAutoSlide();
+            }
+          },
+          { threshold: 0.5, rootMargin: '50px' },
+        );
         this._intersectionObserver.observe(this);
       }
 
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { this._stopAutoSlide();
-        } else if (this._isVisible && !this._isPaused) { this._startAutoSlide();
-        }
-      }, { signal: this.signal });
+      document.addEventListener(
+        'visibilitychange',
+        () => {
+          if (document.hidden) {
+            this._stopAutoSlide();
+          } else if (this._isVisible && !this._isPaused) {
+            this._startAutoSlide();
+          }
+        },
+        { signal: this.signal },
+      );
 
       const onResize = debounce(() => this._adjustHeight(), 200);
       window.addEventListener('resize', onResize, { signal: this.signal });
@@ -365,20 +450,26 @@
     // -----------------------------------------------------------------
 
     _handlePointerDown(e) {
-      if (e.pointerType === 'mouse') { return;
+      if (e.pointerType === 'mouse') {
+        return;
       }
       if (this._slideshow.setPointerCapture) {
-        try { this._slideshow.setPointerCapture(e.pointerId); }
-        catch { /* ignore */ }
+        try {
+          this._slideshow.setPointerCapture(e.pointerId);
+        } catch {
+          /* ignore */
+        }
       }
       this._touchStartX = e.clientX;
       this._touchStartY = e.clientY;
     }
 
     _handlePointerMove(e) {
-      if (e.pointerType === 'mouse') { return;
+      if (e.pointerType === 'mouse') {
+        return;
       }
-      if (this._touchStartX === null || this._touchStartY === null) { return;
+      if (this._touchStartX === null || this._touchStartY === null) {
+        return;
       }
       const deltaX = Math.abs(e.clientX - this._touchStartX);
       const deltaY = Math.abs(e.clientY - this._touchStartY);
@@ -388,11 +479,15 @@
     }
 
     _handlePointerUp(e) {
-      if (e.pointerType === 'mouse') { return;
+      if (e.pointerType === 'mouse') {
+        return;
       }
       if (this._slideshow.releasePointerCapture) {
-        try { this._slideshow.releasePointerCapture(e.pointerId); }
-        catch { /* ignore */ }
+        try {
+          this._slideshow.releasePointerCapture(e.pointerId);
+        } catch {
+          /* ignore */
+        }
       }
       this._touchEndX = e.clientX;
       this._touchEndY = e.clientY;
@@ -410,7 +505,8 @@
       const t = e.touches[0];
       const deltaX = Math.abs(t.clientX - this._touchStartX);
       const deltaY = Math.abs(t.clientY - this._touchStartY);
-      if (deltaX > deltaY && deltaX > 10) { e.preventDefault();
+      if (deltaX > deltaY && deltaX > 10) {
+        e.preventDefault();
       }
     }
 
@@ -423,13 +519,19 @@
     }
 
     _processSwipe() {
-      if (this._touchStartX === null || this._touchEndX === null) { return;
+      if (this._touchStartX === null || this._touchEndX === null) {
+        return;
       }
       const deltaX = this._touchEndX - this._touchStartX;
       const deltaY = Math.abs(this._touchEndY - this._touchStartY);
-      if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaY < SWIPE_THRESHOLD * 1.5) {
-        if (deltaX > 0) { this._goToPrevSlide();
-        } else { this._goToNextSlide();
+      if (
+        Math.abs(deltaX) > SWIPE_THRESHOLD &&
+        deltaY < SWIPE_THRESHOLD * 1.5
+      ) {
+        if (deltaX > 0) {
+          this._goToPrevSlide();
+        } else {
+          this._goToNextSlide();
         }
         this._startAutoSlide();
       }
@@ -449,11 +551,9 @@
     _goToNextSlide() {
       if (this._loopingEnabled) {
         this._slideIndex = (this._slideIndex % this._totalSlides) + 1;
-      }
-      else if (this._slideIndex < this._totalSlides) {
+      } else if (this._slideIndex < this._totalSlides) {
         this._slideIndex++;
-      }
-      else {
+      } else {
         this._stopAutoSlide();
         return;
       }
@@ -463,12 +563,11 @@
 
     _goToPrevSlide() {
       if (this._loopingEnabled) {
-        this._slideIndex = (this._slideIndex === 1) ? this._totalSlides : this._slideIndex - 1;
-      }
-      else if (this._slideIndex > 1) {
+        this._slideIndex =
+          this._slideIndex === 1 ? this._totalSlides : this._slideIndex - 1;
+      } else if (this._slideIndex > 1) {
         this._slideIndex--;
-      }
-      else {
+      } else {
         return;
       }
       this._updateSlideVisibility();
@@ -476,7 +575,8 @@
     }
 
     _goToSlide(index) {
-      if (index < 1 || index > this._totalSlides) { return;
+      if (index < 1 || index > this._totalSlides) {
+        return;
       }
       this._slideIndex = index;
       this._updateSlideVisibility();
@@ -531,7 +631,8 @@
 
     _adjustHeight() {
       const currentSlide = this._slides[this._slideIndex - 1];
-      if (!currentSlide || !this._slideshow) { return;
+      if (!currentSlide || !this._slideshow) {
+        return;
       }
 
       let contentHeight;
@@ -543,8 +644,7 @@
         contentHeight = currentSlide.getBoundingClientRect().height;
         currentSlide.style.opacity = prevOpacity;
         currentSlide.style.zIndex = prevZ;
-      }
-      else {
+      } else {
         contentHeight = currentSlide.getBoundingClientRect().height;
       }
 
@@ -564,9 +664,11 @@
       this._cleanupActiveTransition();
       const outgoing = fromIndex ? this._slides[fromIndex - 1] : null;
       const incoming = this._slides[toIndex - 1];
-      if (!incoming) { return;
+      if (!incoming) {
+        return;
       }
-      if (this._transitionType === 'instant') { return;
+      if (this._transitionType === 'instant') {
+        return;
       }
       if (this._transitionType.startsWith('crossfade')) {
         this._applyCrossfade(outgoing, incoming);
@@ -590,21 +692,27 @@
     _setupTransitionCompletion(element) {
       let ended = false;
       const cleanup = () => {
-        if (ended) { return;
+        if (ended) {
+          return;
         }
         ended = true;
         if (this._activeTransition?.listener) {
-          element.removeEventListener('transitionend', this._activeTransition.listener);
+          element.removeEventListener(
+            'transitionend',
+            this._activeTransition.listener,
+          );
         }
         this._cleanupActiveTransition();
         this._updateAccessibility();
         this._adjustHeight();
       };
       let totalDuration = this._transitionDuration;
-      if (this._transitionType === 'crossfade-staged') { totalDuration = Math.round(totalDuration * 1.3);
+      if (this._transitionType === 'crossfade-staged') {
+        totalDuration = Math.round(totalDuration * 1.3);
       }
       const listener = (e) => {
-        if (e.propertyName === 'opacity' && e.target === element) { cleanup();
+        if (e.propertyName === 'opacity' && e.target === element) {
+          cleanup();
         }
       };
       this._activeTransition = {
@@ -628,9 +736,18 @@
 
     _startAutoSlide() {
       this._stopAutoSlide();
-      if (this._slideTime > 0 && !this._isPaused && this._isVisible && !this._isMouseOver) {
-        this._autoSlideId = setInterval(() => this._goToNextSlide(), this._slideTime);
-        if (this._showProgress) { this._startProgress();
+      if (
+        this._slideTime > 0 &&
+        !this._isPaused &&
+        this._isVisible &&
+        !this._isMouseOver
+      ) {
+        this._autoSlideId = setInterval(
+          () => this._goToNextSlide(),
+          this._slideTime,
+        );
+        if (this._showProgress) {
+          this._startProgress();
         }
       }
     }
@@ -647,13 +764,16 @@
       this._isPaused = !this._isPaused;
       this._inner.classList.toggle('vvjs-is-paused', this._isPaused);
       this._updatePlayPauseButton();
-      if (this._isPaused) { this._stopAutoSlide();
-      } else { this._startAutoSlide();
+      if (this._isPaused) {
+        this._stopAutoSlide();
+      } else {
+        this._startAutoSlide();
       }
     }
 
     _startProgress() {
-      if (!this._showProgress || !this._progressBar || this._slideTime <= 0) { return;
+      if (!this._showProgress || !this._progressBar || this._slideTime <= 0) {
+        return;
       }
       this._immediateStopProgress();
       this._progressStart = Date.now();
@@ -661,7 +781,8 @@
     }
 
     _restartProgress() {
-      if (!this._showProgress || this._isPaused) { return;
+      if (!this._showProgress || this._isPaused) {
+        return;
       }
       this._immediateStopProgress();
       this._startProgress();
@@ -675,8 +796,12 @@
       const elapsed = Date.now() - this._progressStart;
       const progress = Math.min(100, (elapsed / this._slideTime) * 100);
       this._progressBar.style.setProperty('--progress', `${progress}%`);
-      this._progressBar.setAttribute('aria-valuenow', String(Math.round(progress)));
-      if (progress >= 100) { this._immediateStopProgress();
+      this._progressBar.setAttribute(
+        'aria-valuenow',
+        String(Math.round(progress)),
+      );
+      if (progress >= 100) {
+        this._immediateStopProgress();
       }
     }
 
@@ -698,33 +823,44 @@
         dot.setAttribute('aria-selected', String(isActive));
         dot.setAttribute('tabindex', isActive ? '0' : '-1');
       });
-      if (this._scrollableDotsWidth > 0 && this._dotsWrapper) { this._centerActiveDot();
+      if (this._scrollableDotsWidth > 0 && this._dotsWrapper) {
+        this._centerActiveDot();
       }
     }
 
     _centerActiveDot() {
-      if (!this._dotsWrapper || this._scrollableDotsWidth <= 0) { return;
+      if (!this._dotsWrapper || this._scrollableDotsWidth <= 0) {
+        return;
       }
-      const activeDot = this._dotsWrapper.querySelector('.dots-numbers-button.active');
-      if (!activeDot) { return;
+      const activeDot = this._dotsWrapper.querySelector(
+        '.dots-numbers-button.active',
+      );
+      if (!activeDot) {
+        return;
       }
       const containerWidth = this._dotsWrapper.offsetWidth;
-      const target = activeDot.offsetLeft - (containerWidth / 2) + (activeDot.offsetWidth / 2);
+      const target =
+        activeDot.offsetLeft - containerWidth / 2 + activeDot.offsetWidth / 2;
       const maxScroll = this._dotsWrapper.scrollWidth - containerWidth;
       const clamped = Math.max(0, Math.min(target, maxScroll));
       this._dotsWrapper.scrollTo({ left: clamped, behavior: 'smooth' });
     }
 
     _updateSlideCounter() {
-      if (this._currentSlideEl) { this._currentSlideEl.textContent = String(this._slideIndex);
+      if (this._currentSlideEl) {
+        this._currentSlideEl.textContent = String(this._slideIndex);
       }
     }
 
     _updatePlayPauseButton() {
-      if (!this._playPauseButton) { return;
+      if (!this._playPauseButton) {
+        return;
       }
       this._playPauseButton.innerHTML = this._isPaused ? PLAY_SVG : PAUSE_SVG;
-      this._playPauseButton.setAttribute('aria-label', this._isPaused ? 'Play slideshow' : 'Pause slideshow');
+      this._playPauseButton.setAttribute(
+        'aria-label',
+        this._isPaused ? 'Play slideshow' : 'Pause slideshow',
+      );
     }
 
     // -----------------------------------------------------------------
@@ -732,13 +868,16 @@
     // -----------------------------------------------------------------
 
     _applyReducedMotion() {
-      if (!this.reducedMotion) { return;
+      if (!this.reducedMotion) {
+        return;
       }
       this._isPaused = true;
       this._stopAutoSlide();
       this._inner.classList.add('reduced-motion');
       this._updatePlayPauseButton();
-      this._announceMessage('Slideshow paused due to reduced motion preference');
+      this._announceMessage(
+        'Slideshow paused due to reduced motion preference',
+      );
       // Force transition type to instant (matches v1 behavior).
       this._transitionType = 'instant';
       this._inner.dataset.transition = 'instant';
@@ -751,11 +890,14 @@
     }
 
     _announceMessage(message) {
-      if (!this._announcer) { return;
+      if (!this._announcer) {
+        return;
       }
       const original = this._announcer.textContent;
       this._announcer.textContent = message;
-      setTimeout(() => { this._announcer.textContent = original; }, 1000);
+      setTimeout(() => {
+        this._announcer.textContent = original;
+      }, 1000);
     }
 
     // -----------------------------------------------------------------
@@ -763,22 +905,32 @@
     // -----------------------------------------------------------------
 
     _initDeepLinking() {
-      if (!this._deeplinkId) { return;
+      if (!this._deeplinkId) {
+        return;
       }
       const apply = (hash) => {
-        if (!hash || !hash.startsWith(`#${this._deeplinkId}-`)) { return;
+        if (!hash || !hash.startsWith(`#${this._deeplinkId}-`)) {
+          return;
         }
         const slideNumber = parseInt(hash.split('-').pop(), 10);
-        if (!Number.isFinite(slideNumber) || slideNumber < 1 || slideNumber > this._totalSlides) { return;
+        if (
+          !Number.isFinite(slideNumber) ||
+          slideNumber < 1 ||
+          slideNumber > this._totalSlides
+        ) {
+          return;
         }
         this._goToSlide(slideNumber);
       };
       apply(window.location.hash);
-      window.addEventListener('hashchange', () => apply(window.location.hash), { signal: this.signal });
+      window.addEventListener('hashchange', () => apply(window.location.hash), {
+        signal: this.signal,
+      });
     }
 
     _updateDeepLinkHash() {
-      if (!this._deeplinkId) { return;
+      if (!this._deeplinkId) {
+        return;
       }
       const newHash = `#${this._deeplinkId}-${this._slideIndex}`;
       if (window.location.hash !== newHash && window.history?.replaceState) {
@@ -792,7 +944,9 @@
 
     goToSlide(slideIndex) {
       if (slideIndex < 1 || slideIndex > this._totalSlides) {
-        console.warn(`VVJS: Invalid slide ${slideIndex}. Must be between 1 and ${this._totalSlides}`);
+        console.warn(
+          `VVJS: Invalid slide ${slideIndex}. Must be between 1 and ${this._totalSlides}`,
+        );
         return false;
       }
       this._goToSlide(slideIndex);
@@ -821,14 +975,16 @@
     }
 
     pause() {
-      if (this._isPaused) { return false;
+      if (this._isPaused) {
+        return false;
       }
       this._togglePause();
       return true;
     }
 
     resume() {
-      if (!this._isPaused) { return false;
+      if (!this._isPaused) {
+        return false;
       }
       this._togglePause();
       return true;
@@ -860,11 +1016,9 @@
     isInitialized() {
       return this._isHydrated === true;
     }
-
   }
 
   if (!customElements.get('vvjs-slideshow')) {
     customElements.define('vvjs-slideshow', VvjsSlideshowElement);
   }
-
 })(Drupal);

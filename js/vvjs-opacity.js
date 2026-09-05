@@ -13,8 +13,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 (function (Drupal, drupalSettings) {
-  'use strict';
-
   /**
    * Toggle opacity controls based on hero slideshow state.
    *
@@ -23,11 +21,13 @@
    *   Attaches the opacity toggle behavior to hero slideshow checkbox.
    */
   Drupal.behaviors.vvjsToggleOpacity = {
-    attach: function (context, settings) {
+    attach(context, settings) {
       // Early validation - check if required settings exist
       if (!drupalSettings || !drupalSettings.vvjs) {
         if (typeof console !== 'undefined' && console.warn) {
-          console.warn('VVJS: drupalSettings.vvjs not found. Opacity toggle disabled.');
+          console.warn(
+            'VVJS: drupalSettings.vvjs not found. Opacity toggle disabled.',
+          );
         }
         return;
       }
@@ -35,16 +35,25 @@
       const vvjsSettings = drupalSettings.vvjs;
 
       // Validate required selectors
-      if (!vvjsSettings.heroSlideshowSelector || !vvjsSettings.opacityValueSelector) {
+      if (
+        !vvjsSettings.heroSlideshowSelector ||
+        !vvjsSettings.opacityValueSelector
+      ) {
         if (typeof console !== 'undefined' && console.warn) {
-          console.warn('VVJS: Required selectors missing in drupalSettings.vvjs');
+          console.warn(
+            'VVJS: Required selectors missing in drupalSettings.vvjs',
+          );
         }
         return;
       }
 
       // Cache DOM elements with context support for AJAX
-      const heroSlideshowCheckbox = context.querySelector(vvjsSettings.heroSlideshowSelector);
-      const opacityValueContainer = context.querySelector(vvjsSettings.opacityValueSelector);
+      const heroSlideshowCheckbox = context.querySelector(
+        vvjsSettings.heroSlideshowSelector,
+      );
+      const opacityValueContainer = context.querySelector(
+        vvjsSettings.opacityValueSelector,
+      );
 
       // Exit early if elements don't exist
       if (!heroSlideshowCheckbox || !opacityValueContainer) {
@@ -67,7 +76,8 @@
           opacityValueContainer.removeAttribute('aria-hidden');
 
           // Focus management for better UX
-          const opacityInput = opacityValueContainer.querySelector('input, select');
+          const opacityInput =
+            opacityValueContainer.querySelector('input, select');
           if (opacityInput) {
             opacityInput.removeAttribute('tabindex');
           }
@@ -76,7 +86,8 @@
           opacityValueContainer.setAttribute('aria-hidden', 'true');
 
           // Remove from tab order when hidden
-          const opacityInput = opacityValueContainer.querySelector('input, select');
+          const opacityInput =
+            opacityValueContainer.querySelector('input, select');
           if (opacityInput) {
             opacityInput.setAttribute('tabindex', '-1');
           }
@@ -85,10 +96,10 @@
         // Trigger custom event for other scripts to listen to
         const event = new CustomEvent('vvjs:opacityToggle', {
           detail: {
-            isHeroMode: isHeroMode,
-            container: opacityValueContainer
+            isHeroMode,
+            container: opacityValueContainer,
           },
-          bubbles: true
+          bubbles: true,
         });
         heroSlideshowCheckbox.dispatchEvent(event);
       };
@@ -113,7 +124,9 @@
       updateOpacityVisibility(heroSlideshowCheckbox.checked);
 
       // Add event listener with passive option for better performance
-      heroSlideshowCheckbox.addEventListener('change', handleCheckboxChange, { passive: true });
+      heroSlideshowCheckbox.addEventListener('change', handleCheckboxChange, {
+        passive: true,
+      });
 
       // Mark as processed to prevent duplicate processing
       heroSlideshowCheckbox.setAttribute('data-vvjs-opacity-processed', 'true');
@@ -134,15 +147,16 @@
      * @param {string} trigger
      *   One of 'unload', 'move', or 'serialize'.
      */
-    detach: function (context, settings, trigger) {
+    detach(context, settings, trigger) {
       if (trigger === 'unload') {
         // Clean up processed markers and event listeners if needed
-        const processedElements = context.querySelectorAll('[data-vvjs-opacity-processed]');
-        processedElements.forEach(element => {
+        const processedElements = context.querySelectorAll(
+          '[data-vvjs-opacity-processed]',
+        );
+        processedElements.forEach((element) => {
           element.removeAttribute('data-vvjs-opacity-processed');
         });
       }
-    }
+    },
   };
-
 })(Drupal, drupalSettings);

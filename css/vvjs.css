@@ -13,14 +13,14 @@
 
 .vvj-slideshow .visually-hidden {
   position: absolute;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
   width: 1px;
   height: 1px;
   margin: -1px;
   padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
   white-space: nowrap;
+  border: 0;
 }
 
 .hidden-element {
@@ -41,9 +41,9 @@
 
 .vvj-slideshow,
 .vvj-slideshow .view-content {
+  display: block !important;
   width: 100%;
   min-width: 100%;
-  display: block !important;
 }
 
 .vvjs .vvjs-inner {
@@ -69,30 +69,30 @@
 }
 
 .vvjs .vvjs-items .vvjs-item-inner {
+  overflow: hidden;
   padding-block-start: 1px;
   padding-block-end: 1px;
-  overflow: hidden;
 }
 
 /* ==========================================================================
    Navigation Arrows
    ========================================================================== */
 .vvjs .vvjs-inner > .slide-indicators {
-  pointer-events: none;
-  background-color: transparent !important;
-  height: 40px;
+  position: absolute;
+  z-index: 999;
+  top: 50%;
   display: flex;
-  justify-content: space-between;
   flex-direction: row;
   align-items: center;
-  z-index: 999;
+  justify-content: space-between;
   width: 100%;
-  position: absolute;
+  height: 40px;
+  pointer-events: none;
+  background-color: transparent !important;
   inset-inline-start: 0;
-  top: 50%;
 }
 
-.vvjs  .slide-indicators {
+.vvjs .slide-indicators {
   top: calc(50% - 24px);
 }
 
@@ -104,55 +104,54 @@
   top: calc(50% - 48px);
 }
 
-
 .dots-numbers-button-wrapper > a,
 .dots-numbers-button-wrapper > button {
-  all: unset;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   transition: all 0.3s ease;
+  all: unset;
 }
 
 .vvjs .slide-indicators > button,
 .vvjs .nav-dots-numbers > button {
-  all: unset;
-  width: 28px;
-  height: 28px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  width: 28px;
+  height: 28px;
   margin: 0;
+  padding: 0;
+  cursor: pointer;
   transition: all 0.3s ease;
   color: #fff;
+  border: 2px solid rgb(255, 255, 255, 0.8);
+  border-radius: 50%;
+  background: rgb(0, 0, 0, 0.6);
+  all: unset;
   backdrop-filter: blur(4px);
 }
 
 .vvjs .slide-indicators button {
-  margin: 0 8px;
-  pointer-events: auto !important;
-  text-decoration: none !important;
   z-index: 1000;
+  margin: 0 8px;
+  text-decoration: none !important;
+  pointer-events: auto !important;
   opacity: 0.5;
 }
 
 .vvjs .slide-indicators > button:hover,
 .vvjs .nav-dots-numbers > button:hover {
-  background: rgba(0, 0, 0, 0.8);
-  border-color: #fff;
   transform: scale(1.05);
   opacity: 1;
+  border-color: #fff;
+  background: rgb(0, 0, 0, 0.8);
 }
 
 .vvjs .slide-indicators > button:focus-visible,
 .vvjs .nav-dots-numbers > button:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 4px;
 }
 
@@ -161,9 +160,9 @@
   transform: scale(0.95);
 }
 
-.vvjs .slide-indicators > button[style*='visibility:hidden'] {
-  opacity: 0;
+.vvjs .slide-indicators > button[style*="visibility:hidden"] {
   pointer-events: none;
+  opacity: 0;
 }
 
 .vvjs .slide-indicators button svg,
@@ -179,8 +178,8 @@
 .vvjs.hero-slideshow.arrows-sides .vvjs-item .vvjs-hero-image img,
 .vvjs.hero-slideshow.arrows-sides .vvjs-item .vvjs-hero-image video {
   width: calc(100% - 100px) !important;
-  margin-inline-end: 50px !important;
   margin-inline-start: 50px !important;
+  margin-inline-end: 50px !important;
 }
 
 .vvjs.arrows-sides .slide-indicators button {
@@ -201,12 +200,12 @@
 }
 
 .vvjs .nav-dots-numbers {
-  min-height: calc(2 * 20px);
-  margin-block-start: 1rem;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  min-height: calc(2 * 20px);
+  margin-block-start: 1rem;
   gap: 1rem;
 }
 
@@ -232,22 +231,22 @@
 }
 
 .vvjs .nav-dots-numbers .dots-numbers-button.active {
-  pointer-events: none;
   cursor: none;
+  pointer-events: none;
 }
 
 /* Numbers Navigation Style */
 .vvjs .nav-dots-numbers.numbers .dots-numbers-button {
-  line-height: 1;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
   margin: 0 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: currentcolor;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transform: scale(1);
+  color: currentColor;
   border: 2px solid transparent;
   border-radius: 0.25rem;
-  transform: scale(1);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
 }
 
 .vvjs .nav-dots-numbers.numbers .dots-numbers-button:hover {
@@ -255,38 +254,38 @@
 }
 
 .vvjs .nav-dots-numbers.numbers .dots-numbers-button.active {
-  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
   transform: scale(1.2);
-  animation: activeBounce 0.6s ease-in-out;
+  animation: active-bounce 0.6s ease-in-out;
+  box-shadow: 0 2px 5px rgb(0, 123, 255, 0.2);
 }
 
 /* Dots Navigation Style */
 .vvjs .nav-dots-numbers.dots .dots-numbers-button {
-  border: none;
-  cursor: pointer;
-  padding: 0 !important;
-  margin: 0.625rem 0.5rem !important;
   width: 0.625rem !important;
   height: 0.625rem !important;
+  margin: 0.625rem 0.5rem !important;
+  padding: 0 !important;
+  cursor: pointer;
+  border: none;
+  border-width: 2px;
+  border-style: solid;
+  border-color: currentColor;
   border-radius: 50% !important;
   font-size: 0 !important;
   line-height: initial !important;
-  border-width: 2px;
-  border-style: solid;
-  border-color: currentcolor;
 }
 
 .vvjs .nav-dots-numbers.dots .dots-numbers-button:hover {
   transform: scale(1.2);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
 }
 
 .vvjs .nav-dots-numbers.dots .dots-numbers-button.active {
   width: calc(2 * 10px) !important;
-  border-radius: 50% !important;
+  animation: active-pulse 1.5s infinite alternate;
   border-width: 2px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  animation: activePulse 1.5s infinite alternate;
+  border-radius: 50% !important;
+  box-shadow: 0 0 15px rgb(0, 0, 0, 0.5);
 }
 
 /* ==========================================================================
@@ -294,26 +293,26 @@
    ========================================================================== */
 
 .vvjs .dots-numbers-button-wrapper.vvjs-scrollable-dots {
+  position: relative;
   display: flex;
-  flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  max-width: 100%;
+  margin: 0;
+  padding: 4px 0;
+  background: transparent;
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  max-width: 100%;
-  padding: 4px 0;
-  margin: 0;
   gap: 0 16px;
-  justify-content: flex-start;
-  position: relative;
-  background: transparent;
 }
 
 .vvjs .dots-numbers-button-wrapper.vvjs-scrollable-dots::-webkit-scrollbar {
   display: none;
-  height: 0;
   width: 0;
+  height: 0;
 }
 
 /* Ensure dots don't shrink in scrollable container */
@@ -335,11 +334,11 @@
 /* Container styling for the animation */
 .echo-total,
 .echo-animation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 32px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
 }
 
 .echo-animation {
@@ -348,22 +347,22 @@
 
 /* Page Counter Styles */
 .vvjs .echo-total {
+  flex-direction: row;
+  margin: 0;
   padding: 0 0.75rem;
-  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
   color: #fff;
   border-radius: 999px;
+  background: rgb(0, 0, 0, 0.5);
   font-size: 0.875rem;
   backdrop-filter: blur(4px);
-  flex-direction: row;
   gap: 0.25rem;
-  transition: all 0.3s ease;
-  margin: 0;
 }
 
 .vvjs .echo-total > * {
   display: inline-flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   line-height: 1;
 }
 
@@ -373,43 +372,45 @@
 
 /* Progress Bar */
 .progressbar {
-  opacity: 1;
-  overflow: hidden;
-
   --progress: 0%;
   --size: 32px;
   --bar-width: 6px;
 
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
   width: var(--size);
   height: var(--size);
+  transition:
+    background 0.3s linear,
+    transform 0.3s ease,
+    opacity 0.3s ease-in-out;
+  opacity: 1;
   border-radius: 50%;
   background: conic-gradient(#007bff var(--progress), #e6e6e6 0%);
-  display: grid;
-  place-items: center;
-  position: relative;
-  transition: background 0.3s linear, transform 0.3s ease, opacity 0.3s ease-in-out;
 }
 
 .progressbar::after {
- font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace!important;
-  content: attr(aria-valuenow) "%";
-  width: calc(100% - var(--bar-width));
-  height: calc(100% - var(--bar-width));
-  border-radius: 50%;
-  background: #fff;
+  position: absolute;
   display: grid;
   place-items: center;
   justify-content: center;
-  font-size: 0.625rem;
-  color: #007bff;
-  line-height: 1;
-  position: absolute;
+  width: calc(100% - var(--bar-width));
+  height: calc(100% - var(--bar-width));
+  content: attr(aria-valuenow) "%";
   transition: color 0.3s ease-in-out;
+  color: #007bff;
+  border-radius: 50%;
+  background: #fff;
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace !important;
+  font-size: 0.625rem;
+  line-height: 1;
 }
 
 .progressbar[aria-valuenow="100"] {
-  background: conic-gradient(#007bff 100%, #007bff 0%);
   transform: scale(1.05);
+  background: conic-gradient(#007bff 100%, #007bff 0%);
 }
 
 .progressbar[aria-valuenow="100"]::after {
@@ -460,7 +461,6 @@
   to {
     opacity: 1;
   }
-
 }
 
 /* Zoom Animation */
@@ -479,7 +479,6 @@
     transform: scale(1);
     opacity: 1;
   }
-
 }
 
 /* Top Animation (For NOT hero slideshow) */
@@ -498,7 +497,6 @@
     top: 0;
     opacity: 1;
   }
-
 }
 
 /* Left Animation */
@@ -517,7 +515,6 @@
     inset-inline-start: 0;
     opacity: 1;
   }
-
 }
 
 /* Right Animation */
@@ -536,7 +533,6 @@
     inset-inline-end: 0;
     opacity: 1;
   }
-
 }
 
 /* Bottom Animation */
@@ -555,13 +551,12 @@
     bottom: 0;
     opacity: 1;
   }
-
 }
 
 /* ==========================================================================
    Animations - Navigation States
    ========================================================================== */
-@keyframes activeBounce {
+@keyframes active-bounce {
   0% {
     transform: scale(1.2);
   }
@@ -573,18 +568,16 @@
   100% {
     transform: scale(1.2);
   }
-
 }
 
-@keyframes activePulse {
+@keyframes active-pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 3px rgb(0, 0, 0, 0.1);
   }
 
   100% {
     transform: scale(1.2);
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 12px rgb(0, 0, 0, 0.6);
   }
-
 }

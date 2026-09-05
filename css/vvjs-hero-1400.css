@@ -6,7 +6,7 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-@media (min-width:87.5rem) {
+@media (min-width: 87.5rem) {
   .vvjs.br-1400.hero-slideshow .vvjs-items {
     max-width: calc(var(--hero-max-width, 1200) * 1px);
     min-height: calc(var(--hero-min-height, 40) * 1vw);
@@ -24,15 +24,15 @@
 
   .vvjs.br-1400.hero-slideshow .nav-dots-numbers {
     position: absolute;
-    width: 100%;
-    min-height: 70px;
-    display: flex;
     bottom: -70px;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
-    margin: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    min-height: 70px;
+    margin: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
   }
 
   .vvjs.br-1400.hero-slideshow .vvjs-items {
@@ -41,8 +41,8 @@
 
   .vvjs.br-1400.hero-slideshow .vvjs-item {
     overflow: hidden;
-    background-color: transparent;
     width: 100%;
+    background-color: transparent;
   }
 
   .vvjs.br-1400.hero-slideshow .vvjs-item {
@@ -61,11 +61,11 @@
   .vvjs.br-1400.hero-slideshow .vvjs-item .vvjs-hero-image video {
     position: absolute;
     top: 0;
-    inset-inline-start: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
     margin-block-end: 50px;
+    object-fit: cover;
+    inset-inline-start: 0;
   }
 
   /* Media entity wrapper pass-through for hero image/video */
@@ -107,15 +107,15 @@
   .vvjs.br-1400.hero-slideshow .vvjs-hero-content.d-full {
     position: absolute;
     top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    height: 100% !important;
     inset-inline-start: 0;
     inset-inline-end: 0;
-    bottom: 0;
-    width: 100%!important;
-    height: 100%!important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
   }
 
   .vvjs.br-1400.hero-slideshow .vvjs-hero-content.d-middle {
@@ -129,7 +129,6 @@
     position: absolute;
     top: 50%;
     inset-inline-start: 0%;
-    transform: translate(0%, -50%);
     transform: translate(-0%, -50%);
   }
 
@@ -153,26 +152,24 @@
     bottom: 0;
     transform: translate(-50%, 0%);
   }
-
 }
 
-@media (max-width:87.49875rem) {
+@media (max-width: 87.49875rem) {
   .vvjs.br-1400.hero-slideshow .vvjs-item {
     width: 100%;
-    margin-block-end: 1rem;
     min-height: initial !important;
+    margin-block-end: 1rem;
   }
 
   .vvjs.br-1400.hero-slideshow .vvjs-hero-content {
-    background-color: transparent !important;
-    max-width: 100% !important;
     width: 100%;
+    max-width: 100% !important;
     margin-block-start: 1rem;
     transition: none !important;
+    background-color: transparent !important;
   }
 
   .vvjs.br-1400.hero-slideshow .vvjs-hero-image {
     overflow: hidden;
   }
-
 }

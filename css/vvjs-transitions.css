@@ -27,33 +27,33 @@
 .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item {
   position: absolute !important;
   top: 0;
-  inset-inline-start: 0;
-  width: 100%;
   /* Override existing display:none rule from instant mode */
   display: block !important;
-  /* Default to hidden */
-  opacity: 0;
-  /* GPU acceleration for smooth transitions */
-  will-change: opacity;
-  transform: translateZ(0);
+  width: 100%;
   /* Default transition timing - overridden by variants */
   transition: opacity var(--vvjs-transition-duration, 600ms) ease-in-out;
+  transform: translateZ(0);
+  /* Default to hidden */
+  opacity: 0;
+  inset-inline-start: 0;
+  /* GPU acceleration for smooth transitions */
+  will-change: opacity;
 }
 
 /**
  * Active slide state - fully visible on top.
  */
 .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active {
-  opacity: 1;
   z-index: 2;
+  opacity: 1;
 }
 
 /**
  * Previous/outgoing slide state - fading out below.
  */
 .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-previous {
-  opacity: 0;
   z-index: 1;
+  opacity: 0;
 }
 
 /**
@@ -77,14 +77,14 @@
  * - Total duration: ~1000ms with dramatic pause
  */
 .vvjs-inner[data-transition="crossfade-staged"] .vvjs-items > .vvjs-item.vvjs-previous {
-  transition-duration: calc(var(--vvjs-transition-duration, 600ms) * 0.33);
   transition-timing-function: ease-in;
+  transition-duration: calc(var(--vvjs-transition-duration, 600ms) * 0.33);
 }
 
 .vvjs-inner[data-transition="crossfade-staged"] .vvjs-items > .vvjs-item.vvjs-active {
-  transition-duration: calc(var(--vvjs-transition-duration, 600ms) * 1.33);
   transition-delay: calc(var(--vvjs-transition-duration, 600ms) * 0.5);
   transition-timing-function: ease-out;
+  transition-duration: calc(var(--vvjs-transition-duration, 600ms) * 1.33);
 }
 
 /**
@@ -98,13 +98,13 @@
  * - Total overlaps for smooth transition
  */
 .vvjs-inner[data-transition="crossfade-dynamic"] .vvjs-items > .vvjs-item.vvjs-previous {
-  transition-duration: calc(var(--vvjs-transition-duration, 600ms) * 0.25);
   transition-timing-function: ease-in;
+  transition-duration: calc(var(--vvjs-transition-duration, 600ms) * 0.25);
 }
 
 .vvjs-inner[data-transition="crossfade-dynamic"] .vvjs-items > .vvjs-item.vvjs-active {
-  transition-duration: calc(var(--vvjs-transition-duration, 600ms) * 1.5);
   transition-timing-function: ease-out;
+  transition-duration: calc(var(--vvjs-transition-duration, 600ms) * 1.5);
 }
 
 /**
@@ -119,19 +119,19 @@
 .vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image {
   position: absolute;
   top: 0;
-  inset-inline-start: 0;
+  overflow: hidden;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  inset-inline-start: 0;
 }
 
 .vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image img,
 .vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   /* Inherit opacity transition from parent slide */
   transition: inherit;
+  object-fit: cover;
 }
 
 /* Media entity wrapper pass-through for crossfade hero */
