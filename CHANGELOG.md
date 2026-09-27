@@ -40,6 +40,8 @@ JS behavior key, and the full Drupal.vvjs.* public API surface from 1.x.
 
 ### Fixed
 
+- Update 10002 converts v1 views to the v2 option shape (value types:
+  strings and integers stored where v2 declares integer, boolean and float).
 - Regular (non-hero) slideshows again work with **any** row plugin (e.g. an
   `entity:node` teaser), matching v1. The shared base was requiring — and force-
   switching the view to — the Fields row style in every mode; it now only does
