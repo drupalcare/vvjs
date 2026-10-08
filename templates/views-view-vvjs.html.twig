@@ -184,7 +184,7 @@
         {% set slide_link = '#' ~ deeplink_config.identifier ~ '-' ~ loop.index %}
         <a id="dots-numbers-button-{{ loop.index }}"
            href="{{ slide_link }}"
-           class="button dots-numbers-button{{ is_active ? ' active' : '' }}"
+           class="button dots-numbers-button{{ is_active ? ' active' : '' }} control-btn"
            role="tab"
            aria-label="{{ is_active ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
            aria-selected="{{ is_active ? 'true' : 'false' }}"
@@ -195,7 +195,7 @@
       {% else %}
         {# Default buttons #}
         <button id="dots-numbers-button-{{ loop.index }}"
-                class="button dots-numbers-button{{ is_active ? ' active' : '' }}"
+                class="button dots-numbers-button{{ is_active ? ' active' : '' }} control-btn"
                 type="button"
                 role="tab"
                 aria-label="{{ is_active ? 'Slide @index selected'|t({'@index': loop.index}) : 'Go to slide @index'|t({'@index': loop.index}) }}"
@@ -303,7 +303,7 @@
                   type="button"
                   role="button"
                   aria-label="{{ 'Stop automatic slide show'|t }}"
-                  class="button play-pause-button play playing">
+                  class="button play-pause-button play playing control-btn">
             <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
             {{ include('@vvjs/svg/svg-pause.svg') }}
           </button>
@@ -347,7 +347,7 @@
              role="navigation"
              aria-label="{{ 'Slideshow Navigation'|t }}">
 
-          <button class="button prev-arrow"
+          <button class="button prev-arrow control-btn"
                   role="button"
                   aria-controls="vvjs-items-{{ slideshow_config.unique_id }}"
                   aria-label="{{ 'Previous Slide'|t }}">
@@ -355,7 +355,7 @@
             {{ include('@vvjs/svg/svg-prev.svg') }}
           </button>
 
-          <button class="button next-arrow"
+          <button class="button next-arrow control-btn"
                   role="button"
                   aria-controls="vvjs-items-{{ slideshow_config.unique_id }}"
                   aria-label="{{ 'Next Slide'|t }}">
