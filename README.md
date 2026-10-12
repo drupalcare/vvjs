@@ -16,8 +16,8 @@ orchestrator) are consolidated into a single class on the lifecycle.
 ## Features
 
 ### Modes
-- **Regular slideshow** — standard slide-by-slide content rotation
-- **Hero slideshow** — first field as hero background image, remaining fields as
+- **Regular slideshow**: standard slide-by-slide content rotation
+- **Hero slideshow**: first field as hero background image, remaining fields as
   overlay content; 12 overlay positions; configurable rgba overlay color from
   hex+opacity
 
@@ -54,9 +54,9 @@ orchestrator) are consolidated into a single class on the lifecycle.
   overrides per breakpoint
 - Deep linking via URL hash (`#identifier-{n}`)
 - Lazy IntersectionObserver hydration; AbortController-tracked listeners
-- **Views tokens** — `[vvjs:field]` / `[vvjs:field:plain]` in Views text areas
+- **Views tokens**: `[vvjs:field]` / `[vvjs:field:plain]` in Views text areas
   with *Use replacement tokens from the first row*
-- **Drupal admin help** — `/admin/help/vvjs`
+- **Drupal admin help**: `/admin/help/vvjs`
 
 ## Token Support in Views Text Areas
 
@@ -155,10 +155,10 @@ export SIMPLETEST_DB="mysql://user:pass@localhost/dbname"
 ../vendor/bin/phpunit -c core modules/contrib/vvjs/tests/src/Kernel
 ```
 
-The **Functional** and **FunctionalJavascript** suites additionally need
+The **Functional** and **FunctionalJavascript** suites also need
 `SIMPLETEST_BASE_URL` pointing at a running web server, and the JavaScript ones
 need chromedriver. Without those they error rather than fail, and the errors
-name missing infrastructure rather than anything about this module — so don't
+name missing infrastructure rather than anything about this module, so don't
 read them as test failures. The drupal.org pipeline provides both.
 
 ## License
