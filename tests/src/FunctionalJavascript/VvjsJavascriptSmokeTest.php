@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\vvjs\FunctionalJavascript;
 
 use Drupal\Tests\vvj_core\FunctionalJavascript\VvjPatternJavascriptTestBase;
+use Drupal\views\Entity\View;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -77,6 +78,91 @@ final class VvjsJavascriptSmokeTest extends VvjPatternJavascriptTestBase {
       "typeof Drupal.vvjs.isPaused(document.querySelector('vvjs-slideshow'))"
       . " === 'boolean'",
     );
+  }
+
+  /**
+   * Without looping, the arrow at an end stays in place but is disabled.
+   *
+   * Before this the arrows at the ends looked active and did nothing. Now the
+   * arrow keeps focus, a click on it does nothing, and it carries
+   * `aria-disabled="true"` plus `vvjs-disabled`.
+   */
+  public function testArrowsDisabledAtTheEndsWithoutLooping(): void {
+    $this->setExampleStyleOptions(['enable_looping' => FALSE]);
+    $this->drupalGet('<front>');
+    $this->assertJsCondition("document.querySelector('vvjs-slideshow')._isHydrated === true", 10000);
+    $page = $this->getSession()->getPage();
+
+    $this->assertArrowDisabled('.prev-arrow', TRUE);
+    $this->assertArrowDisabled('.next-arrow', FALSE);
+    $page->find('css', 'vvjs-slideshow .prev-arrow')->click();
+    $this->assertJsCondition("document.querySelector('vvjs-slideshow')._slideIndex === 1");
+
+    // Three slides: two steps reach the end.
+    $next = $page->find('css', 'vvjs-slideshow .next-arrow');
+    $next->click();
+    $next->click();
+    $this->assertJsCondition("document.querySelector('vvjs-slideshow')._slideIndex === 3");
+    $this->assertArrowDisabled('.next-arrow', TRUE);
+    $this->assertArrowDisabled('.prev-arrow', FALSE);
+    $this->assertJsCondition("document.activeElement === document.querySelector('vvjs-slideshow .next-arrow')");
+    $next->click();
+    $this->assertJsCondition("document.querySelector('vvjs-slideshow')._slideIndex === 3");
+  }
+
+  /**
+   * A looping slideshow never disables either arrow.
+   */
+  public function testLoopingNeverDisablesArrows(): void {
+    $this->setExampleStyleOptions(['enable_looping' => TRUE]);
+    $this->drupalGet('<front>');
+    $this->assertJsCondition("document.querySelector('vvjs-slideshow')._isHydrated === true", 10000);
+    $this->assertArrowDisabled('.prev-arrow', FALSE);
+    $this->getSession()->getPage()->find('css', 'vvjs-slideshow .prev-arrow')->click();
+    $this->assertJsCondition("document.querySelector('vvjs-slideshow')._slideIndex === 3");
+    $this->assertArrowDisabled('.prev-arrow', FALSE);
+    $this->assertArrowDisabled('.next-arrow', FALSE);
+  }
+
+  /**
+   * Turns autoplay off and keeps the arrows, plus the overrides.
+   *
+   * @param array<string, mixed> $overrides
+   *   Style options to set on the example view's default display.
+   */
+  private function setExampleStyleOptions(array $overrides): void {
+    $view = View::load('vvjs_example');
+    $this->assertNotNull($view);
+    $default = &$view->getDisplay('default');
+    $display_options = $default['display_options'];
+    $this->assertIsArray($display_options);
+    $style = $display_options['style'];
+    $this->assertIsArray($style);
+    $options = $style['options'] ?? [];
+    $this->assertIsArray($options);
+    $options = $overrides + ['time_in_seconds' => '0'] + $options;
+    if (($options['arrows'] ?? 'none') === 'none') {
+      $options['arrows'] = 'arrows-top';
+    }
+    $style['options'] = $options;
+    $display_options['style'] = $style;
+    $default['display_options'] = $display_options;
+    $view->save();
+  }
+
+  /**
+   * Asserts an arrow's disabled state, by class and by aria-disabled.
+   *
+   * @param string $selector
+   *   The arrow selector inside the slideshow.
+   * @param bool $disabled
+   *   The expected state.
+   */
+  private function assertArrowDisabled(string $selector, bool $disabled): void {
+    $element = "document.querySelector('vvjs-slideshow " . $selector . "')";
+    $this->assertJsCondition($disabled
+      ? $element . ".getAttribute('aria-disabled') === 'true' && " . $element . ".classList.contains('vvjs-disabled')"
+      : "!" . $element . ".hasAttribute('aria-disabled') && !" . $element . ".classList.contains('vvjs-disabled')");
   }
 
 }

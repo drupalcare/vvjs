@@ -160,9 +160,16 @@
   transform: scale(0.95);
 }
 
-.vvjs .slide-indicators > button[style*="visibility:hidden"] {
-  pointer-events: none;
-  opacity: 0;
+/* At the end of a slideshow that does not loop, the arrow stays in place, dimmed and inactive (aria-disabled).
+   0.2, not the 0.4 of the other VVJ carousels: these arrows already rest at 0.5, so 0.4 looked the same. */
+.vvjs .slide-indicators > button.vvjs-disabled,
+.vvjs .slide-indicators > button.vvjs-disabled:hover,
+.vvjs .slide-indicators > button.vvjs-disabled:active {
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.2;
+  border-color: rgb(255, 255, 255, 0.8);
+  background: rgb(0, 0, 0, 0.6);
 }
 
 .vvjs .slide-indicators button svg,

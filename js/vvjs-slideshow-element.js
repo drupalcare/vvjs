@@ -208,6 +208,7 @@
         });
       }
       this._updateAccessibility();
+      this._updateArrows();
       this._adjustHeight();
     }
 
@@ -247,6 +248,9 @@
       this._nextButton?.addEventListener(
         'click',
         () => {
+          if (this._nextButton.getAttribute('aria-disabled') === 'true') {
+            return;
+          }
           this._goToNextSlide();
           this._startAutoSlide();
         },
@@ -256,6 +260,9 @@
       this._prevButton?.addEventListener(
         'click',
         () => {
+          if (this._prevButton.getAttribute('aria-disabled') === 'true') {
+            return;
+          }
           this._goToPrevSlide();
           this._startAutoSlide();
         },
@@ -583,6 +590,30 @@
       this._adjustHeight();
     }
 
+    _updateArrows() {
+      // Without looping, an arrow at the end stays in place but is disabled,
+      // so the visitor can see there is nothing further. aria-disabled (not
+      // the disabled attribute) keeps a focused arrow focused when the last
+      // click brings it to the end.
+      const atStart = !this._loopingEnabled && this._slideIndex <= 1;
+      const atEnd =
+        !this._loopingEnabled && this._slideIndex >= this._totalSlides;
+      this._setArrowDisabled(this._prevButton, atStart);
+      this._setArrowDisabled(this._nextButton, atEnd);
+    }
+
+    _setArrowDisabled(button, disabled) {
+      if (!button) {
+        return;
+      }
+      button.classList.toggle('vvjs-disabled', disabled);
+      if (disabled) {
+        button.setAttribute('aria-disabled', 'true');
+      } else {
+        button.removeAttribute('aria-disabled');
+      }
+    }
+
     _updateSlideVisibility() {
       const previousIndex = this._currentSlideIndex;
       const newIndex = this._slideIndex;
@@ -596,6 +627,7 @@
 
       // Update navigation visuals.
       this._updateDots();
+      this._updateArrows();
       this._updateSlideCounter();
       this._announceSlide(newIndex, this._totalSlides);
       this._restartProgress();

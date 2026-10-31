@@ -40,6 +40,12 @@ JS behavior key, and the full Drupal.vvjs.* public API surface from 1.x.
 
 ### Fixed
 
+- **The arrows show when there is nothing further.** On a slideshow that does
+  not loop, the previous arrow on the first slide and the next arrow on the
+  last looked active but did nothing. They now stay in place, dimmed and
+  marked `aria-disabled="true"`, with the new `vvjs-disabled` class. Keyboard
+  focus stays on an arrow that becomes disabled. Looping slideshows are
+  unchanged.
 - Update 10002 converts v1 views to the v2 option shape (value types:
   strings and integers stored where v2 declares integer, boolean and float).
 - Regular (non-hero) slideshows again work with **any** row plugin (e.g. an
