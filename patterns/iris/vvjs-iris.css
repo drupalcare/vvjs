@@ -3,16 +3,16 @@
  * vvjs Pattern Iris.
  */
 /* Hero, full bleed: the next photo opens as a circle from the pressed control. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris { background: var(--vvj-stage-bg); color: var(--vvj-stage-color); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner { position: relative; }
+.vvj-pattern--vvjs-iris { background: var(--vvj-stage-bg); color: var(--vvj-stage-color); }
+.vvj-pattern--vvjs-iris .vvjs-inner { position: relative; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-items { min-height: max(46vw, 560px); overflow: hidden; background: var(--vvj-stage-bg); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item,
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item-inner { position: relative; min-height: inherit; }
+.vvj-pattern--vvjs-iris .vvjs-item,
+.vvj-pattern--vvjs-iris .vvjs-item-inner { position: relative; min-height: inherit; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-hero-image::after { content: ""; position: absolute; inset: 0; background: var(--vvj-stage-scrim); }
 
 /* The iris opens from --vvjs-origin-x/-y (written on a click), else the centre. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-image { animation: vvjs-iris-open var(--vvjs-transition-duration, 1400ms) var(--vvj-ease-io) both; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-image img { animation: vvjs-iris-settle 2.4s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) .vvjs-hero-image { animation: vvjs-iris-open var(--vvjs-transition-duration, 1400ms) var(--vvj-ease-io) both; }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-image) img { animation: vvjs-iris-settle 2.4s var(--vvj-ease-out) both; }
 @keyframes vvjs-iris-open {
   from { clip-path: circle(0 at var(--vvjs-origin-x, 50%) var(--vvjs-origin-y, 50%)); }
   to { clip-path: circle(150% at var(--vvjs-origin-x, 50%) var(--vvjs-origin-y, 50%)); }
@@ -27,11 +27,11 @@
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-summary { margin: 18px 0 0; max-width: 46ch; font-size: clamp(1rem, 1.3vw, 1.2rem); line-height: 1.5; color: var(--vvj-stage-muted); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-link { margin: 14px 0 0; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-link a { color: var(--vvj-stage-color); font-weight: 600; text-underline-offset: 6px; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-content > * { animation: vvjs-iris-rise .9s var(--vvj-ease-out) both; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-content > :nth-child(1) { animation-delay: .45s; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-content > :nth-child(2) { animation-delay: .55s; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-content > :nth-child(3) { animation-delay: .68s; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-content > :nth-child(4) { animation-delay: .8s; }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > * { animation: vvjs-iris-rise .9s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(1) { animation-delay: .45s; }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(2) { animation-delay: .55s; }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(3) { animation-delay: .68s; }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(4) { animation-delay: .8s; }
 @keyframes vvjs-iris-rise { from { clip-path: inset(0 0 100% 0); transform: translateY(60%); } to { clip-path: inset(0 0 -20% 0); transform: none; } }
 
 /* The glass dock: pause with its time ring, then 01 02 03. */

@@ -7,10 +7,10 @@
  * cannot reach into a Pattern. Each Pattern then sets only its own values.
  */
 .vvj-pattern.vvjs,
-.vvj-pattern.vvjs *,
-.vvj-pattern.vvjs *::before,
-.vvj-pattern.vvjs *::after { box-sizing: border-box; }
-.vvj-pattern.vvjs :is(h1, h2, h3, h4, h5, h6, p) {
+:where(.vvj-pattern.vvjs) *,
+:where(.vvj-pattern.vvjs) *::before,
+:where(.vvj-pattern.vvjs) *::after { box-sizing: border-box; }
+:where(.vvj-pattern.vvjs) :is(h1, h2, h3, h4, h5, h6, p) {
   margin: 0;
   padding: 0;
   font-size: inherit;
@@ -20,8 +20,8 @@
   overflow-wrap: normal;
   word-break: normal;
 }
-.vvj-pattern.vvjs :is(ul, ol, li) { list-style: none; margin: 0; padding: 0; }
-.vvj-pattern.vvjs :is(img, svg) { display: block; max-width: 100%; height: auto; }
+:where(.vvj-pattern.vvjs) :is(ul, ol, li) { list-style: none; margin: 0; padding: 0; }
+:where(.vvj-pattern.vvjs) :is(img, svg) { display: block; max-width: 100%; height: auto; }
 .vvj-pattern.vvjs .vvj-link { margin: 0; padding: 0; }
 .vvj-pattern.vvjs .vvj-link a {
   appearance: none;
@@ -48,7 +48,7 @@
 
 /* A crossfade slide that is neither showing nor fading out is already inert
    and aria-hidden; hide it from pointers and layout checks as well. */
-.vvj-pattern.vvjs .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item:not(.active, .vvjs-active, .vvjs-previous) {
+:where(.vvj-pattern.vvjs) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > .vvjs-item:not(.active, .vvjs-active, .vvjs-previous) {
   visibility: hidden;
 }
 
@@ -107,7 +107,7 @@
 }
 
 /* The counter is plain text in every Pattern, not vvjs's dark pill. */
-.vvj-pattern.vvjs .vvjs-inner .echo-total {
+:where(.vvj-pattern.vvjs) .vvjs-inner .echo-total {
   height: auto;
   padding: 0;
   color: inherit;
@@ -155,7 +155,7 @@
   object-fit: cover;
 }
 
-.vvj-pattern.vvjs .vvjs-hero-image {
+:where(.vvj-pattern.vvjs) .vvjs-hero-image {
   position: absolute;
   inset: 0;
   overflow: hidden;

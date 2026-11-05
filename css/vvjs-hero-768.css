@@ -58,7 +58,7 @@
   }
 
   .vvjs.br-768.hero-slideshow .vvjs-item .vvjs-hero-image img,
-  .vvjs.br-768.hero-slideshow .vvjs-item .vvjs-hero-image video {
+  :where(.vvjs.br-768.hero-slideshow) :where(.vvjs-item) .vvjs-hero-image video {
     position: absolute;
     top: 0;
     width: 100%;
@@ -69,9 +69,9 @@
   }
 
   /* Media entity wrapper pass-through for hero image/video */
-  .vvjs.br-768.hero-slideshow .vvjs-item .vvjs-hero-image article,
-  .vvjs.br-768.hero-slideshow .vvjs-item .vvjs-hero-image .field,
-  .vvjs.br-768.hero-slideshow .vvjs-item .vvjs-hero-image picture {
+  :where(.vvjs.br-768.hero-slideshow) :where(.vvjs-item) :where(.vvjs-hero-image) article,
+  :where(.vvjs.br-768.hero-slideshow) :where(.vvjs-item) :where(.vvjs-hero-image) .field,
+  :where(.vvjs.br-768.hero-slideshow) :where(.vvjs-item) :where(.vvjs-hero-image) picture {
     position: absolute;
     top: 0;
     inset-inline-start: 0;
@@ -169,7 +169,7 @@
     background-color: transparent !important;
   }
 
-  .vvjs.br-768.hero-slideshow .vvjs-hero-image {
+  :where(.vvjs.br-768.hero-slideshow) .vvjs-hero-image {
     overflow: hidden;
   }
 }

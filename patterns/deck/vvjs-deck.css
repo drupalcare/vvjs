@@ -3,23 +3,23 @@
  * vvjs Pattern Deck.
  */
 /* Regular slideshow, stories format: a portrait card on two ghost cards. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck { --vvjs-deck-card: min(400px, calc(100vw - 40px)); max-width: 1200px; margin: 0 auto; padding: clamp(28px, 5vw, 72px) 20px; background: var(--vvj-surface); color: var(--vvj-ink); }
+.vvj-pattern--vvjs-deck { --vvjs-deck-card: min(400px, calc(100vw - 40px)); max-width: 1200px; margin: 0 auto; padding: clamp(28px, 5vw, 72px) 20px; background: var(--vvj-surface); color: var(--vvj-ink); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner { position: relative; display: grid; grid-template-columns: var(--vvjs-deck-card) 1fr; column-gap: clamp(32px, 6vw, 96px); align-items: center; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items { grid-column: 1 / -1; grid-row: 1; display: grid; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items > .vvjs-item { grid-area: 1 / 1; }
+.vvj-pattern--vvjs-deck :where(.vvjs-items) > .vvjs-item { grid-area: 1 / 1; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items .vvjs-item-inner { display: grid; grid-template-columns: var(--vvjs-deck-card) 1fr; column-gap: clamp(32px, 6vw, 96px); align-items: start; padding: 0; animation: none; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvj-text { align-self: center; }
+.vvj-pattern--vvjs-deck .vvj-text { align-self: center; }
 
 /* The two ghost cards. */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items::before,
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items::after { content: ""; grid-area: 1 / 1; z-index: 0; align-self: start; width: var(--vvjs-deck-card); aspect-ratio: 4 / 5; border-radius: 26px; background: color-mix(in srgb, var(--vvj-ink) 10%, var(--vvj-surface)); transform: rotate(-5deg) translateX(-14px); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items::after { background: color-mix(in srgb, var(--vvj-ink) 18%, var(--vvj-surface)); transform: rotate(3.5deg) translateX(10px); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-item { position: relative; z-index: 1; }
+.vvj-pattern--vvjs-deck .vvjs-item { position: relative; z-index: 1; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvj-media { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 26px; box-shadow: var(--vvj-glass-shadow); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvj-media::after { content: ""; position: absolute; inset: 0 0 auto; height: 30%; background: linear-gradient(var(--vvj-glass-bg), transparent); }
 
 /* The card deals in from the right. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-item.active .vvj-media { animation: vvjs-deck-deal .85s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-deck :where(.vvjs-item.active) .vvj-media { animation: vvjs-deck-deal .85s var(--vvj-ease-out) both; }
 @keyframes vvjs-deck-deal { from { opacity: 0; transform: translateX(42%) rotate(9deg) scale(.94); } to { opacity: 1; transform: none; } }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvj-kicker { margin: 0 0 12px; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--vvj-muted); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvj-title { color: var(--vvj-ink); margin: 0; font-family: var(--vvj-font-display); font-weight: 500; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -.02em; text-wrap: balance; }
@@ -52,10 +52,10 @@
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .slide-indicators .next-arrow { flex: 1; display: flex; align-items: center; padding: 0 14px; font-size: 18px; color: var(--vvj-ink); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .slide-indicators .next-arrow { justify-content: flex-end; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .slide-indicators svg { box-sizing: content-box; padding: 13px; border-radius: 50%; background: var(--vvj-surface); opacity: 0; scale: .7; transition: opacity .25s, scale .35s var(--vvj-ease-out); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .slide-indicators button:hover svg,
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .slide-indicators button:focus-visible svg { opacity: 1; scale: 1; }
+.vvj-pattern--vvjs-deck :where(.vvjs-inner) :where(.slide-indicators) :where(button:hover) svg,
+.vvj-pattern--vvjs-deck :where(.vvjs-inner) :where(.slide-indicators) :where(button:focus-visible) svg { opacity: 1; scale: 1; }
 @media (hover: none) {
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .slide-indicators svg { opacity: .85; scale: .85; }
+  .vvj-pattern--vvjs-deck :where(.vvjs-inner) :where(.slide-indicators) svg { opacity: .85; scale: .85; }
 }
 
 @media (max-width: 767px) {

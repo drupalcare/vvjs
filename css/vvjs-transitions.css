@@ -126,7 +126,7 @@
 }
 
 .vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image img,
-.vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image video {
+:where(.vvjs-inner[data-transition^="crossfade"].hero-slideshow) .vvjs-hero-image video {
   width: 100%;
   height: 100%;
   /* Inherit opacity transition from parent slide */
@@ -135,9 +135,9 @@
 }
 
 /* Media entity wrapper pass-through for crossfade hero */
-.vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image article,
-.vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image .field,
-.vvjs-inner[data-transition^="crossfade"].hero-slideshow .vvjs-hero-image picture {
+:where(.vvjs-inner[data-transition^="crossfade"].hero-slideshow) :where(.vvjs-hero-image) article,
+:where(.vvjs-inner[data-transition^="crossfade"].hero-slideshow) :where(.vvjs-hero-image) .field,
+:where(.vvjs-inner[data-transition^="crossfade"].hero-slideshow) :where(.vvjs-hero-image) picture {
   position: absolute;
   top: 0;
   inset-inline-start: 0;
@@ -151,12 +151,12 @@
  * Ensures accessibility without JavaScript intervention.
  */
 @media (prefers-reduced-motion: reduce) {
-  .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item {
+  :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > .vvjs-item {
     transition: none !important;
     transition-delay: 0s !important;
   }
 
-  .vvjs-inner[data-transition^="crossfade"] .vvjs-items {
+  :where(.vvjs-inner[data-transition^="crossfade"]) .vvjs-items {
     transition: none !important;
   }
 }
@@ -173,9 +173,9 @@
  * Focus management during transitions.
  * Ensure only active slide elements are focusable.
  */
-.vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item:not(.vvjs-active) a,
-.vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item:not(.vvjs-active) button,
-.vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item:not(.vvjs-active) input {
+:where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item:not(.vvjs-active)) a,
+:where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item:not(.vvjs-active)) button,
+:where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item:not(.vvjs-active)) input {
   pointer-events: none;
 }
 
@@ -283,28 +283,28 @@
    Hero Slideshow Animations
    ========================================================================== */
 
-.vvjs.hero-slideshow.a-zoom .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image img,
-.vvjs.hero-slideshow.a-zoom .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image video {
+:where(.vvjs.hero-slideshow.a-zoom) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) img,
+:where(.vvjs.hero-slideshow.a-zoom) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) video {
   animation: vvjs-crossfade-zoom var(--vvjs-transition-duration, 600ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.vvjs.hero-slideshow.a-top .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image img,
-.vvjs.hero-slideshow.a-top .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image video {
+:where(.vvjs.hero-slideshow.a-top) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) img,
+:where(.vvjs.hero-slideshow.a-top) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) video {
   animation: vvjs-crossfade-top var(--vvjs-transition-duration, 600ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.vvjs.hero-slideshow.a-left .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image img,
-.vvjs.hero-slideshow.a-left .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image video {
+:where(.vvjs.hero-slideshow.a-left) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) img,
+:where(.vvjs.hero-slideshow.a-left) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) video {
   animation: vvjs-crossfade-left var(--vvjs-transition-duration, 600ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.vvjs.hero-slideshow.a-right .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image img,
-.vvjs.hero-slideshow.a-right .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image video {
+:where(.vvjs.hero-slideshow.a-right) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) img,
+:where(.vvjs.hero-slideshow.a-right) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) video {
   animation: vvjs-crossfade-right var(--vvjs-transition-duration, 600ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.vvjs.hero-slideshow.a-bottom .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image img,
-.vvjs.hero-slideshow.a-bottom .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item.vvjs-active .vvjs-hero-image video {
+:where(.vvjs.hero-slideshow.a-bottom) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) img,
+:where(.vvjs.hero-slideshow.a-bottom) :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-items) > :where(.vvjs-item.vvjs-active) :where(.vvjs-hero-image) video {
   animation: vvjs-crossfade-bottom var(--vvjs-transition-duration, 600ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -313,9 +313,9 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .vvjs-inner[data-transition^="crossfade"] .vvjs-item-inner,
-  .vvjs-inner[data-transition^="crossfade"] .vvjs-hero-image img,
-  .vvjs-inner[data-transition^="crossfade"] .vvjs-hero-image video {
+  :where(.vvjs-inner[data-transition^="crossfade"]) .vvjs-item-inner,
+  :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-hero-image) img,
+  :where(.vvjs-inner[data-transition^="crossfade"]) :where(.vvjs-hero-image) video {
     animation: none !important;
   }
 }

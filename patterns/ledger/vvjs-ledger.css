@@ -4,7 +4,7 @@
  */
 /* Regular slideshow, manual, editorial: a segmented control across the top,
    a giant chapter numeral and the words left, the photo cut in on a diagonal. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-ledger { max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 72px) 20px; background: var(--vvj-surface); color: var(--vvj-ink); }
+.vvj-pattern--vvjs-ledger { max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 72px) 20px; background: var(--vvj-surface); color: var(--vvj-ink); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-inner { position: relative; display: flex; flex-direction: column; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-inner .nav-dots-numbers { position: static; order: -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 16px; width: auto; margin: 0 0 clamp(24px, 4vw, 48px); padding: 0; background: none; }
 /* All slides share one grid cell, so the box is as tall as the tallest slide and
@@ -13,10 +13,10 @@
    vvjs writes on .vvjs-items. */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-items { display: grid; height: auto !important; counter-reset: vvjs-ledger; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-items > .vvjs-item { grid-area: 1 / 1; position: relative !important; display: block !important; counter-increment: vvjs-ledger; background: var(--vvj-surface); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-items > .vvjs-item:not(.active, .vvjs-active, .vvjs-previous) { visibility: hidden; }
+:where(.vvj-pattern--vvjs-ledger) :where(.vvjs-items) > .vvjs-item:not(.active, .vvjs-active, .vvjs-previous) { visibility: hidden; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-items .vvjs-item-inner { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(24px, 5vw, 72px); align-items: end; padding: 0; animation: none; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvj-media { grid-column: 2; grid-row: 1; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvj-text { grid-column: 1; grid-row: 1; padding: 0 0 76px; }
+.vvj-pattern--vvjs-ledger .vvj-text { grid-column: 1; grid-row: 1; padding: 0 0 76px; }
 
 /* Giant outlined numeral from a CSS counter. */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvj-text::before { content: counter(vvjs-ledger, decimal-leading-zero); display: block; margin: 0 0 20px; font-family: var(--vvj-font-display); font-size: clamp(5rem, 13vw, 11rem); line-height: .8; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.5px var(--vvj-ink); }
@@ -27,9 +27,9 @@
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvj-link a { color: var(--vvj-ink); font-weight: 600; text-decoration-thickness: 1px; text-underline-offset: 6px; }
 
 /* Diagonal cut-in of the photo; the numeral and the words rise. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-item.vvjs-active .vvj-media { animation: vvjs-ledger-cut 1.1s var(--vvj-ease-io) both; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-item.vvjs-active .vvj-media img { animation: vvjs-ledger-drift 1.6s var(--vvj-ease-out) both; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-item.vvjs-active .vvj-text::before { animation: vvjs-ledger-rise .9s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-ledger :where(.vvjs-item.vvjs-active) .vvj-media { animation: vvjs-ledger-cut 1.1s var(--vvj-ease-io) both; }
+.vvj-pattern--vvjs-ledger :where(.vvjs-item.vvjs-active) :where(.vvj-media) img { animation: vvjs-ledger-drift 1.6s var(--vvj-ease-out) both; }
+:where(.vvj-pattern--vvjs-ledger) :where(.vvjs-item.vvjs-active) .vvj-text::before { animation: vvjs-ledger-rise .9s var(--vvj-ease-out) both; }
 @keyframes vvjs-ledger-cut { from { clip-path: polygon(100% 0, 130% 0, 100% 100%, 70% 100%); } to { clip-path: polygon(0 0, 130% 0, 100% 100%, -30% 100%); } }
 @keyframes vvjs-ledger-drift { from { transform: scale(1.12) translateX(4%); } to { transform: none; } }
 @keyframes vvjs-ledger-rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
@@ -58,8 +58,8 @@
 @media (max-width: 767px) {
   .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-items .vvjs-item-inner { grid-template-columns: 1fr; }
   .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvj-media,
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvj-text { grid-column: 1; grid-row: auto; }
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvj-text { padding: 0 0 80px; }
+  .vvj-pattern--vvjs-ledger .vvj-text { grid-column: 1; grid-row: auto; }
+  .vvj-pattern--vvjs-ledger .vvj-text { padding: 0 0 80px; }
   .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvj-text::before { font-size: 4.5rem; }
   .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .echo-total { margin: 0; }
 }

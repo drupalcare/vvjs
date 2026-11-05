@@ -4,20 +4,20 @@
  */
 /* Hero, boxed: a rounded stage, the words on a solid card, a numbered rail
    whose active tab widens and fills with the time left. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip { padding: clamp(20px, 4vw, 56px) clamp(12px, 3vw, 40px); background: var(--vvj-surface); color: var(--vvj-ink); }
+.vvj-pattern--vvjs-filmstrip { padding: clamp(20px, 4vw, 56px) clamp(12px, 3vw, 40px); background: var(--vvj-surface); color: var(--vvj-ink); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner { position: relative; max-width: 1200px; margin: 0 auto; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-items { min-height: clamp(420px, 42vw, 600px); max-width: none; overflow: hidden; border-radius: 28px; background: var(--vvj-stage-bg); isolation: isolate; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-item,
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-item-inner { position: relative; min-height: inherit; }
+.vvj-pattern--vvjs-filmstrip .vvjs-item,
+.vvj-pattern--vvjs-filmstrip .vvjs-item-inner { position: relative; min-height: inherit; }
 
 /* The photo comes into focus. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-item.active .vvjs-hero-image img { animation: vvjs-filmstrip-focus 1.2s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-filmstrip :where(.vvjs-item.active) :where(.vvjs-hero-image) img { animation: vvjs-filmstrip-focus 1.2s var(--vvj-ease-out) both; }
 @keyframes vvjs-filmstrip-focus { from { transform: scale(1.14); filter: blur(12px) grayscale(.5); } to { transform: none; filter: none; } }
 
 /* The words card (overlay_bg_color at 0.8 gives --hero-content-bg). */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-hero-content { position: absolute; z-index: 1; inset: auto auto clamp(12px, 3vw, 36px) clamp(12px, 3vw, 36px); width: min(42%, 480px); margin: 0; padding: clamp(20px, 2.4vw, 32px); border-radius: 20px; transform: none;
   color: var(--vvj-stage-color); background: var(--hero-content-bg, var(--vvj-glass-bg)); box-shadow: inset 0 0 0 1px var(--vvj-glass-line); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-item.active .vvjs-hero-content { animation: vvjs-filmstrip-card .8s .25s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-filmstrip :where(.vvjs-item.active) .vvjs-hero-content { animation: vvjs-filmstrip-card .8s .25s var(--vvj-ease-out) both; }
 @keyframes vvjs-filmstrip-card { from { opacity: 0; transform: translateY(28px); clip-path: inset(30% 0 0 0 round 20px); } to { opacity: 1; transform: none; clip-path: inset(0 round 20px); } }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvj-kicker { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--vvj-stage-muted); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvj-title { color: var(--vvj-stage-color); margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); line-height: 1.08; letter-spacing: -.015em; font-weight: 650; text-wrap: balance; }
@@ -52,5 +52,5 @@
   .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button { flex: 1 1 0; min-width: 24px; height: 52px; padding: 0; }
   .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button.active { flex: 2 1 0; }
   .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-hero-content { inset: auto 12px clamp(12px, 3vw, 36px) clamp(12px, 3vw, 36px); width: auto; }
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvj-summary { display: none; }
+  .vvj-pattern--vvjs-filmstrip .vvj-summary { display: none; }
 }

@@ -27,7 +27,7 @@
   background: var(--hero-content-bg);
 }
 
-.vvjs.hero-slideshow.a-top .vvjs-item-inner img {
+:where(.vvjs.hero-slideshow.a-top) :where(.vvjs-item-inner) img {
   animation: heroanimatetop 0.6s ease-out;
 }
 
@@ -43,7 +43,7 @@
   }
 }
 
-.vvjs.hero-slideshow.a-left .vvjs-item-inner img {
+:where(.vvjs.hero-slideshow.a-left) :where(.vvjs-item-inner) img {
   animation: heroanimateleft 0.6s ease-out;
 }
 
@@ -59,7 +59,7 @@
   }
 }
 
-.vvjs.hero-slideshow.a-right .vvjs-item-inner img {
+:where(.vvjs.hero-slideshow.a-right) :where(.vvjs-item-inner) img {
   animation: heroanimateright 0.6s ease-out;
 }
 
@@ -75,7 +75,7 @@
   }
 }
 
-.vvjs.hero-slideshow.a-bottom .vvjs-item-inner img {
+:where(.vvjs.hero-slideshow.a-bottom) :where(.vvjs-item-inner) img {
   animation: heroanimatebottom 0.6s ease-out;
 }
 

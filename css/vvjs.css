@@ -35,25 +35,25 @@
 }
 
 .vvj-slideshow,
-.vvj-slideshow * {
+:where(.vvj-slideshow) * {
   box-sizing: border-box;
 }
 
 .vvj-slideshow,
-.vvj-slideshow .view-content {
+:where(.vvj-slideshow) .view-content {
   display: block !important;
   width: 100%;
   min-width: 100%;
 }
 
-.vvjs .vvjs-inner {
+:where(.vvjs) .vvjs-inner {
   position: relative;
 }
 
 /* ==========================================================================
    Slide Items & Container
    ========================================================================== */
-.vvjs .vvjs-items {
+:where(.vvjs) .vvjs-items {
   touch-action: pan-y pinch-zoom;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
@@ -68,7 +68,7 @@
   display: block;
 }
 
-.vvjs .vvjs-items .vvjs-item-inner {
+.vvjs :where(.vvjs-items) .vvjs-item-inner {
   overflow: hidden;
   padding-block-start: 1px;
   padding-block-end: 1px;
@@ -92,7 +92,7 @@
   inset-inline-start: 0;
 }
 
-.vvjs .slide-indicators {
+:where(.vvjs) .slide-indicators {
   top: calc(50% - 24px);
 }
 
@@ -133,7 +133,7 @@
   backdrop-filter: blur(4px);
 }
 
-.vvjs .slide-indicators button {
+.vvjs :where(.slide-indicators) button {
   z-index: 1000;
   margin: 0 8px;
   text-decoration: none !important;
@@ -180,20 +180,20 @@
 }
 
 /* Global Setting for top arrows on the sides */
-.vvjs.arrows-sides .vvjs-items,
-.vvjs.arrows-sides .nav-dots-numbers,
-.vvjs.hero-slideshow.arrows-sides .vvjs-item .vvjs-hero-image img,
-.vvjs.hero-slideshow.arrows-sides .vvjs-item .vvjs-hero-image video {
+:where(.vvjs.arrows-sides) .vvjs-items,
+:where(.vvjs.arrows-sides) .nav-dots-numbers,
+:where(.vvjs.hero-slideshow.arrows-sides) :where(.vvjs-item) :where(.vvjs-hero-image) img,
+:where(.vvjs.hero-slideshow.arrows-sides) :where(.vvjs-item) :where(.vvjs-hero-image) video {
   width: calc(100% - 100px) !important;
   margin-inline-start: 50px !important;
   margin-inline-end: 50px !important;
 }
 
-.vvjs.arrows-sides .slide-indicators button {
+:where(.vvjs.arrows-sides) :where(.slide-indicators) button {
   opacity: 0.8;
 }
 
-.vvjs.hero-slideshow.arrows-sides .vvjs-inner > .nav-dots-numbers {
+:where(.vvjs.hero-slideshow.arrows-sides) .vvjs-inner > .nav-dots-numbers {
   inset-inline-start: 50px !important;
   margin: 0 !important;
 }
@@ -201,8 +201,8 @@
 /* ==========================================================================
    Bottom Navigation (Dots & Numbers)
    ========================================================================== */
-.slide-indicators *,
-.nav-dots-numbers * {
+:where(.slide-indicators) *,
+:where(.nav-dots-numbers) * {
   line-height: 1;
 }
 
@@ -366,14 +366,14 @@
   gap: 0.25rem;
 }
 
-.vvjs .echo-total > * {
+.vvjs :where(.echo-total) > * {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
 }
 
-.vvjs .echo-total .current-slide {
+.vvjs :where(.echo-total) .current-slide {
   font-weight: 600;
 }
 
@@ -425,7 +425,7 @@
   color: #fff;
 }
 
-.vvjs-is-paused .progressbar {
+:where(.vvjs-is-paused) .progressbar {
   opacity: 0;
 }
 
@@ -434,18 +434,18 @@
    ========================================================================== */
 
 /* Reverse navigation arrow positions in RTL */
-[dir="rtl"] .vvjs .echo-total,
+[dir="rtl"] :where(.vvjs) .echo-total,
 [dir="rtl"] .vvjs .slide-indicators,
-[dir="rtl"] .vvjs .nav-dots-numbers {
+[dir="rtl"] :where(.vvjs) .nav-dots-numbers {
   flex-direction: row-reverse;
 }
 
 /* Reverse slide animations for RTL */
-[dir="rtl"] .vvjs.slideshow.a-left .vvjs-item-inner {
+[dir="rtl"] :where(.vvjs.slideshow.a-left) .vvjs-item-inner {
   animation: animateright 0.6s ease-out;
 }
 
-[dir="rtl"] .vvjs.slideshow.a-right .vvjs-item-inner {
+[dir="rtl"] :where(.vvjs.slideshow.a-right) .vvjs-item-inner {
   animation: animateleft 0.6s ease-out;
 }
 
@@ -455,8 +455,8 @@
 
 /* Fade Animation */
 .vvjs-hero-content,
-.vvjs.slideshow.a-fade .vvjs-item-inner,
-.vvjs.hero-slideshow.a-fade .vvjs-item-inner img {
+:where(.vvjs.slideshow.a-fade) .vvjs-item-inner,
+:where(.vvjs.hero-slideshow.a-fade) :where(.vvjs-item-inner) img {
   animation: opac 0.8s ease-out;
 }
 
@@ -471,8 +471,8 @@
 }
 
 /* Zoom Animation */
-.vvjs.slideshow.a-zoom .vvjs-item-inner,
-.vvjs.hero-slideshow.a-zoom .vvjs-item-inner img {
+:where(.vvjs.slideshow.a-zoom) .vvjs-item-inner,
+:where(.vvjs.hero-slideshow.a-zoom) :where(.vvjs-item-inner) img {
   animation: animatezoom 0.6s ease-out;
 }
 
@@ -489,7 +489,7 @@
 }
 
 /* Top Animation (For NOT hero slideshow) */
-.vvjs.slideshow.a-top .vvjs-item-inner {
+:where(.vvjs.slideshow.a-top) .vvjs-item-inner {
   position: relative;
   animation: animatetop 0.6s ease-out;
 }
@@ -507,7 +507,7 @@
 }
 
 /* Left Animation */
-.vvjs.slideshow.a-left .vvjs-item-inner {
+:where(.vvjs.slideshow.a-left) .vvjs-item-inner {
   position: relative;
   animation: animateleft 0.6s ease-out;
 }
@@ -525,7 +525,7 @@
 }
 
 /* Right Animation */
-.vvjs.slideshow.a-right .vvjs-item-inner {
+:where(.vvjs.slideshow.a-right) .vvjs-item-inner {
   position: relative;
   animation: animateright 0.6s ease-out;
 }
@@ -543,7 +543,7 @@
 }
 
 /* Bottom Animation */
-.vvjs.slideshow.a-bottom .vvjs-item-inner {
+:where(.vvjs.slideshow.a-bottom) .vvjs-item-inner {
   position: relative;
   animation: animatebottom 0.6s ease-out;
 }

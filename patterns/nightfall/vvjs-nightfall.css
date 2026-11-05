@@ -4,16 +4,16 @@
  */
 /* Hero 21:9 on black: a curtain opens from the centre (inside a View
    Transition where the browser has one), one centred title, a timeline bar. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall { background: var(--vvj-stage-bg); color: var(--vvj-stage-color); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-inner { position: relative; }
+.vvj-pattern--vvjs-nightfall { background: var(--vvj-stage-bg); color: var(--vvj-stage-color); }
+.vvj-pattern--vvjs-nightfall .vvjs-inner { position: relative; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-items { min-height: max(43vw, 520px); overflow: hidden; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-item,
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-item-inner { position: relative; min-height: inherit; }
+.vvj-pattern--vvjs-nightfall .vvjs-item,
+.vvj-pattern--vvjs-nightfall .vvjs-item-inner { position: relative; min-height: inherit; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-hero-image::after { content: ""; position: absolute; inset: 0; background: var(--vvj-stage-scrim); }
 
 /* The curtain; skipped while a View Transition draws the change. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-image { animation: vvjs-nightfall-curtain var(--vvjs-transition-duration, 1200ms) var(--vvj-ease-io) both; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-image img { animation: vvjs-nightfall-burns 9s linear both; }
+.vvj-pattern--vvjs-nightfall :where(.vvjs-item:is(.active, .vvjs-active)) .vvjs-hero-image { animation: vvjs-nightfall-curtain var(--vvjs-transition-duration, 1200ms) var(--vvj-ease-io) both; }
+.vvj-pattern--vvjs-nightfall :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-image) img { animation: vvjs-nightfall-burns 9s linear both; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall.vvjs-vt .vvjs-item:is(.active, .vvjs-active) .vvjs-hero-image { animation: none; }
 @keyframes vvjs-nightfall-curtain { from { clip-path: inset(0 50% 0 50%); } to { clip-path: inset(0 0 0 0); } }
 @keyframes vvjs-nightfall-burns { from { transform: scale(1); } to { transform: scale(1.09) translate(-1%, -1%); } }
@@ -27,9 +27,9 @@
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-link { margin: 26px 0 0; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-link a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 26px; border-radius: 999px; font-weight: 600; text-decoration: none; color: var(--vvj-stage-bg); background: var(--vvj-stage-color); transition: transform .3s var(--vvj-ease-out), box-shadow .3s; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-link a:hover { transform: translateY(-2px); box-shadow: 0 0 0 6px var(--vvj-glass-line); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-item:is(.active, .vvjs-active) .vvj-kicker { animation: vvjs-nightfall-track 1.2s .5s var(--vvj-ease-out) both; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-item:is(.active, .vvjs-active) .vvj-title { animation: vvjs-nightfall-focus 1.3s .6s var(--vvj-ease-out) both; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-item:is(.active, .vvjs-active) .vvj-link { animation: vvjs-nightfall-up .8s 1s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-nightfall :where(.vvjs-item:is(.active, .vvjs-active)) .vvj-kicker { animation: vvjs-nightfall-track 1.2s .5s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-nightfall :where(.vvjs-item:is(.active, .vvjs-active)) .vvj-title { animation: vvjs-nightfall-focus 1.3s .6s var(--vvj-ease-out) both; }
+.vvj-pattern--vvjs-nightfall :where(.vvjs-item:is(.active, .vvjs-active)) .vvj-link { animation: vvjs-nightfall-up .8s 1s var(--vvj-ease-out) both; }
 @keyframes vvjs-nightfall-track { from { opacity: 0; letter-spacing: .9em; } to { opacity: 1; letter-spacing: .3em; } }
 @keyframes vvjs-nightfall-focus { from { opacity: 0; filter: blur(16px); transform: scale(1.06); } to { opacity: 1; filter: none; transform: none; } }
 @keyframes vvjs-nightfall-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
