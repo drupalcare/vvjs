@@ -1,0 +1,166 @@
+/**
+ * @file
+ * Shared by every vvjs Pattern: resets the vvjs controls the Patterns restyle.
+ *
+ * Defensive: every element a Pattern styles is reset here with full
+ * shorthands, so a theme rule on buttons, links, lists, headings or images
+ * cannot reach into a Pattern. Each Pattern then sets only its own values.
+ */
+.vvj-pattern.vvjs,
+.vvj-pattern.vvjs *,
+.vvj-pattern.vvjs *::before,
+.vvj-pattern.vvjs *::after { box-sizing: border-box; }
+.vvj-pattern.vvjs :is(h1, h2, h3, h4, h5, h6, p) {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  hyphens: manual;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.vvj-pattern.vvjs :is(ul, ol, li) { list-style: none; margin: 0; padding: 0; }
+.vvj-pattern.vvjs :is(img, svg) { display: block; max-width: 100%; height: auto; }
+.vvj-pattern.vvjs .vvj-link { margin: 0; padding: 0; }
+.vvj-pattern.vvjs .vvj-link a {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font: inherit;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: start;
+  vertical-align: middle;
+  cursor: pointer;
+}
+/* WCAG 2.5.8: the link is at least 24px tall, whatever its font size. */
+.vvj-pattern.vvjs .vvj-link a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+/* A crossfade slide that is neither showing nor fading out is already inert
+   and aria-hidden; hide it from pointers and layout checks as well. */
+.vvj-pattern.vvjs .vvjs-inner[data-transition^="crossfade"] .vvjs-items > .vvjs-item:not(.active, .vvjs-active, .vvjs-previous) {
+  visibility: hidden;
+}
+
+.vvj-pattern.vvjs .vvjs-inner .nav-dots-numbers .dots-numbers-button,
+.vvj-pattern.vvjs .vvjs-inner .nav-dots-numbers .play-pause-button,
+.vvj-pattern.vvjs .vvjs-inner .slide-indicators .prev-arrow,
+.vvj-pattern.vvjs .vvjs-inner .slide-indicators .next-arrow {
+  position: relative;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-transform: none;
+  vertical-align: middle;
+  outline: 0;
+  color: inherit;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font: inherit;
+  opacity: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* vvjs.css scales, bounces and darkens these on hover and when active. */
+.vvj-pattern.vvjs .vvjs-inner .nav-dots-numbers .dots-numbers-button:hover,
+.vvj-pattern.vvjs .vvjs-inner .nav-dots-numbers > button:hover,
+.vvj-pattern.vvjs .vvjs-inner .slide-indicators > button:hover {
+  transform: none;
+  opacity: 1;
+  background: none;
+}
+
+.vvj-pattern.vvjs .vvjs-inner .nav-dots-numbers .dots-numbers-button:focus-visible,
+.vvj-pattern.vvjs .vvjs-inner .nav-dots-numbers > button:focus-visible,
+.vvj-pattern.vvjs .vvjs-inner .slide-indicators > button:focus-visible {
+  outline: 2px solid var(--vvj-ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--vvj-surface);
+}
+
+.vvj-pattern.vvjs .vvjs-inner[data-arrows] > .slide-indicators {
+  height: auto;
+}
+
+/* The counter is plain text in every Pattern, not vvjs's dark pill. */
+.vvj-pattern.vvjs .vvjs-inner .echo-total {
+  height: auto;
+  padding: 0;
+  color: inherit;
+  border-radius: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Titles take the Pattern's colour (set per Pattern) and never break mid-word. */
+.vvj-pattern.vvjs .vvj-title {
+  overflow-wrap: normal;
+  word-break: normal;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+.vvj-pattern.vvjs .vvjs-inner .nav-dots-numbers .dots-numbers-button.active {
+  transform: none;
+  animation: none;
+  color: inherit;
+  background: none;
+}
+
+.vvj-pattern.vvjs .vvjs-inner .nav-dots-numbers button svg,
+.vvj-pattern.vvjs .vvjs-inner .slide-indicators button svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.vvj-pattern.vvjs .vvjs-inner .progressbar::after {
+  display: none;
+}
+
+.vvj-pattern.vvjs .vvjs-inner .vvjs-disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.vvj-pattern.vvjs .vvj-media img,
+.vvj-pattern.vvjs .vvjs-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vvj-pattern.vvjs .vvjs-hero-image {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.vvj-pattern.vvjs .vvjs-separator {
+  display: none;
+}

@@ -1,0 +1,28 @@
+label: 'Deck'
+description: 'A portrait card on two ghost cards with story bars that fill with the time left; tap either half of the card.'
+weight: 1
+options:
+  hero_slideshow: false
+  time_in_seconds: 6000
+  navigation: dots
+  animation: a-right
+  transition_type: instant
+  transition_duration: 600
+  arrows: arrows-top
+  available_breakpoints: '768'
+  show_total_slides: true
+  show_slide_progress: false
+  show_play_pause: true
+  pause_on_hover: true
+  enable_swipe: true
+  enable_keyboard: true
+  enable_looping: true
+  start_index: 1
+  scrollable_dots_width: 0
+  enable_css: false
+  enable_deeplink: false
+features: []
+needs:
+  - 'Fields in this order: the image first (vvj_image), then kicker (vvj_kicker), title, summary (vvj_summary, trimmed to 160 characters) and link (vvj_link).'
+  - 'Show the image with an image style at least 800 pixels wide; the card crops it to 4:5.'
+  - 'Give the field elements the classes vvj-kicker, vvj-title, vvj-summary and vvj-link.'

@@ -62,6 +62,9 @@
 {# Determine if separator is needed (only when both parts exist) #}
 {% set needs_separator = has_first_field and has_remaining_fields %}
 
+{# A Pattern in regular mode wraps the picture and the words; hero mode already splits them. #}
+{% set vvj_wrap = view.style_plugin.options.vvj_pattern_active|default('') and not view.style_plugin.options.hero_slideshow %}
+
 {#
   ==============================================================================
   FIELD RENDERING MACRO
@@ -112,7 +115,9 @@
 
 {# Render first field (hero background) if it exists #}
 {% if has_first_field %}
+{% if vvj_wrap %}<div class="vvj-media">{% endif %}
   {{ first_field.content }}
+{% if vvj_wrap %}</div>{% endif %}
 {% endif %}
 
 {# Add separator div only when both parts exist (maintains exact original behavior) #}
@@ -122,9 +127,11 @@
 
 {# Render remaining fields (overlay content) with full formatting preserved #}
 {% if has_remaining_fields %}
+{% if vvj_wrap %}<div class="vvj-text vvj-stagger">{% endif %}
   {% for field in remaining_fields %}
     {{ _self.render_field(field) }}
   {% endfor %}
+{% if vvj_wrap %}</div>{% endif %}
 {% endif %}
 
 {#

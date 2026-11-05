@@ -1,0 +1,28 @@
+label: 'Ledger'
+description: 'An editorial split: numbered chapter tabs, a giant outlined numeral and the words, the photo cut in on a diagonal. Manual, no loop.'
+weight: 3
+options:
+  hero_slideshow: false
+  time_in_seconds: 0
+  navigation: numbers
+  animation: none
+  transition_type: crossfade-classic
+  transition_duration: 900
+  arrows: arrows-top
+  available_breakpoints: '768'
+  show_total_slides: true
+  show_slide_progress: false
+  show_play_pause: false
+  pause_on_hover: false
+  enable_swipe: true
+  enable_keyboard: true
+  enable_looping: false
+  start_index: 1
+  scrollable_dots_width: 0
+  enable_css: false
+  enable_deeplink: false
+features: []
+needs:
+  - 'Fields in this order: the image first (vvj_image), then kicker (vvj_kicker), title, summary (vvj_summary, trimmed to 200 characters) and link (vvj_link).'
+  - 'Show the image with the image style vvj_landscape_1200; the frame crops it to 4:3.'
+  - 'Give the field elements the classes vvj-kicker, vvj-title, vvj-summary and vvj-link.'

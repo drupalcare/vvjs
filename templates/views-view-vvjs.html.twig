@@ -91,6 +91,10 @@
 {# Calculate total slides once for efficiency #}
 {% set total_slides = rows|length %}
 
+{# A Pattern chosen in the style settings (vvj_patterns enabled). #}
+{% set vvj_pattern = options.vvj_pattern_active|default('') %}
+{% set vvj_features = options.vvj_pattern_features|default([]) %}
+
 {# Build CSS classes array - preserved exact structure for compatibility #}
 {% set slideshow_classes = [
   'vvjs',
@@ -102,6 +106,9 @@
   navigation_config.show_slide_progress ? 'slide-progress' : '',
   navigation_config.show_total_slides ? 'total-slides' : '',
   options.available_breakpoints ? 'br-' ~ options.available_breakpoints : '',
+  vvj_pattern ? 'vvj-pattern' : '',
+  vvj_pattern,
+  vvj_pattern and 'view_transition' in vvj_features ? 'vvjs-view-transition' : '',
 ] %}
 
 {#
@@ -223,7 +230,7 @@
 
   {# Hidden heading for screen readers #}
   <div id="slideshow-heading-{{ slideshow_config.unique_id }}" role="heading" class="visually-hidden">
-    {{ 'Slideshow'|t }}
+    {{ vvj_pattern and options.vvj_pattern_label ? options.vvj_pattern_label : 'Slideshow'|t }}
   </div>
 
   {# Inner container with JavaScript data attributes - preserved exact structure #}
@@ -305,7 +312,7 @@
                   aria-label="{{ 'Stop automatic slide show'|t }}"
                   class="button play-pause-button play playing control-btn">
             <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
-            {{ include('@vvjs/svg/svg-pause.svg') }}
+            {{ include(vvj_pattern ? '@vvjs/svg/vvjs-pattern-pause.svg' : '@vvjs/svg/svg-pause.svg') }}
           </button>
           {% endif %}
 
@@ -352,7 +359,7 @@
                   aria-controls="vvjs-items-{{ slideshow_config.unique_id }}"
                   aria-label="{{ 'Previous Slide'|t }}">
             <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
-            {{ include('@vvjs/svg/svg-prev.svg') }}
+            {{ include(vvj_pattern ? '@vvjs/svg/vvjs-pattern-prev.svg' : '@vvjs/svg/svg-prev.svg') }}
           </button>
 
           <button class="button next-arrow control-btn"
@@ -360,7 +367,7 @@
                   aria-controls="vvjs-items-{{ slideshow_config.unique_id }}"
                   aria-label="{{ 'Next Slide'|t }}">
             <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
-            {{ include('@vvjs/svg/svg-next.svg') }}
+            {{ include(vvj_pattern ? '@vvjs/svg/vvjs-pattern-next.svg' : '@vvjs/svg/svg-next.svg') }}
           </button>
 
         </div>

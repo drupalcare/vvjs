@@ -101,3 +101,46 @@ vvjs-admin:
     - core/drupal
     - core/drupalSettings
     - core/once
+
+vvjs-pattern-base:
+  css:
+    theme:
+      patterns/vvjs-pattern-base.css: {}
+  dependencies:
+    - vvjs/vvjs
+    - vvj_patterns/base
+
+pattern.iris:
+  css:
+    theme:
+      patterns/iris/vvjs-iris.css: {}
+  dependencies:
+    - vvjs/vvjs-pattern-base
+
+pattern.deck:
+  css:
+    theme:
+      patterns/deck/vvjs-deck.css: {}
+  dependencies:
+    - vvjs/vvjs-pattern-base
+
+pattern.filmstrip:
+  css:
+    theme:
+      patterns/filmstrip/vvjs-filmstrip.css: {}
+  dependencies:
+    - vvjs/vvjs-pattern-base
+
+pattern.ledger:
+  css:
+    theme:
+      patterns/ledger/vvjs-ledger.css: {}
+  dependencies:
+    - vvjs/vvjs-pattern-base
+
+pattern.nightfall:
+  css:
+    theme:
+      patterns/nightfall/vvjs-nightfall.css: {}
+  dependencies:
+    - vvjs/vvjs-pattern-base

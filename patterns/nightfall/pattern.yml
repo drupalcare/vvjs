@@ -1,0 +1,36 @@
+label: 'Nightfall'
+description: 'A 21:9 cinema hero on black: a curtain opens from the centre, one large centred title, a timeline bar with a playhead.'
+weight: 4
+options:
+  hero_slideshow: true
+  time_in_seconds: 8000
+  navigation: numbers
+  animation: none
+  transition_type: crossfade-staged
+  transition_duration: 1200
+  arrows: arrows-top-big
+  overlay_bg_color: '#000000'
+  overlay_bg_opacity: 0
+  overlay_position: d-middle
+  available_breakpoints: '768'
+  min_height: 43
+  max_content_width: 90
+  max_width: 9999
+  show_total_slides: true
+  show_slide_progress: true
+  show_play_pause: true
+  pause_on_hover: true
+  enable_swipe: true
+  enable_keyboard: true
+  enable_looping: true
+  start_index: 1
+  scrollable_dots_width: 0
+  enable_css: false
+  enable_deeplink: false
+features:
+  - view_transition
+needs:
+  - 'Fields in this order: the image first (vvj_image), then kicker (vvj_kicker), title and link (vvj_link).'
+  - 'Show the image with the image style vvj_cinema_1680 (21:9); dark images read best.'
+  - 'Give the field elements the classes vvj-kicker, vvj-title and vvj-link.'
+  - 'Place the view in a full-width region.'

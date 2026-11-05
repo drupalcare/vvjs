@@ -1,0 +1,35 @@
+label: 'Iris'
+description: 'Full-bleed photo hero; the next photo opens as a circle from the control you press, with a floating glass dock.'
+weight: 0
+options:
+  hero_slideshow: true
+  time_in_seconds: 7000
+  navigation: numbers
+  animation: none
+  transition_type: crossfade-dynamic
+  transition_duration: 1400
+  arrows: none
+  overlay_bg_color: '#000000'
+  overlay_bg_opacity: 0
+  overlay_position: d-bottom-left
+  available_breakpoints: '768'
+  min_height: 46
+  max_content_width: 55
+  max_width: 9999
+  show_total_slides: false
+  show_slide_progress: true
+  show_play_pause: true
+  pause_on_hover: true
+  enable_swipe: true
+  enable_keyboard: true
+  enable_looping: true
+  start_index: 1
+  scrollable_dots_width: 0
+  enable_css: false
+  enable_deeplink: false
+features: []
+needs:
+  - 'Fields in this order: the image first (vvj_image), then kicker (vvj_kicker), title, summary (vvj_summary, trimmed to 160 characters) and link (vvj_link).'
+  - 'Show the image with the image style vvj_wide_1600 (16:9).'
+  - 'Give the field elements the classes vvj-kicker, vvj-title, vvj-summary and vvj-link (Rewrite results or Style settings in each field).'
+  - 'Place the view in a full-width region; the stage is 46vw tall and at least 560 pixels.'

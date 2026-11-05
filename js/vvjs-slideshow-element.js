@@ -44,6 +44,9 @@
   const { ElementBase } = Drupal.Vvj;
 
   const PLAY_SVG = `<svg class="svg-play" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 800" fill="currentColor"><path d="m380-300 280-180-280-180v360ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>`;
+  // Patterns use plain glyphs (svg/vvjs-pattern-play.svg, -pause.svg).
+  const PATTERN_PLAY_SVG = `<svg class="vvjs-pattern-icon vvjs-pattern-play" xmlns="http://www.w3.org/2000/svg" viewBox="8 5 11 14" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg>`;
+  const PATTERN_PAUSE_SVG = `<svg class="vvjs-pattern-icon vvjs-pattern-pause" xmlns="http://www.w3.org/2000/svg" viewBox="6 5 12 14" fill="currentColor" aria-hidden="true" focusable="false"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
   const PAUSE_SVG = `<svg class="svg-pause" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 800" fill="currentColor"><path d="M360-320h80v-320h-80v320Zm160 0h80v-320h-80v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>`;
 
   const SWIPE_THRESHOLD = 40;
@@ -146,6 +149,12 @@
       }
 
       this._readConfig();
+      // Pattern instances only (class `vvj-pattern`); a view without a
+      // Pattern never reaches any of the Pattern code below.
+      this._pattern = this.classList.contains('vvj-pattern');
+      this._viewTransition =
+        this._pattern && this.classList.contains('vvjs-view-transition');
+      this._originFromControl = false;
       this._lookupRefs();
       this._setupSlides();
       this._setupCore();
@@ -158,6 +167,11 @@
       this._applyReducedMotion();
       this._announceSlide(this._slideIndex, this._totalSlides);
       this._initDeepLinking();
+
+      if (this._pattern) {
+        this._bindPatternOrigin();
+        this._writePatternState();
+      }
 
       // Start autoplay if conditions allow.
       this._startAutoSlide();
@@ -223,7 +237,9 @@
           slide.style.opacity = isActive ? '1' : '0';
           slide.style.zIndex = isActive ? '2' : '1';
           slide.classList.toggle('vvjs-active', isActive);
-          slide.classList.toggle('vvjs-previous', !isActive);
+          // No slide is fading out at load. vvjs-previous marks only the one
+          // outgoing slide; on every slide it would keep all of them visible.
+          slide.classList.remove('vvjs-previous');
         });
       }
       this._updateAccessibility();
@@ -622,6 +638,43 @@
     }
 
     _updateSlideVisibility() {
+      if (this._viewTransition && this._slideshow) {
+        // NEW 4: one View Transition around the change, when the browser has
+        // one and motion is allowed (Drupal.Vvj.withTransition checks both).
+        // The name is set only for the transition, so it stays unique.
+        const stage = this._slideshow;
+        stage.style.viewTransitionName = `vvjs-stage-${this.id}`;
+        this.classList.add('vvjs-vt');
+        const done = () => {
+          this.classList.remove('vvjs-vt');
+          stage.style.viewTransitionName = '';
+        };
+        const transition = this.withTransition(() => {
+          this._applySlideChange();
+          this._adjustHeight();
+        });
+        if (transition) {
+          transition.finished.then(done, done);
+        } else {
+          done();
+        }
+        return;
+      }
+      this._applySlideChange();
+    }
+
+    /**
+     * Applies the slide change (the body of _updateSlideVisibility).
+     */
+    _applySlideChange() {
+      if (this._pattern) {
+        // NEW 3: a change not started by a click opens from the centre.
+        if (!this._originFromControl) {
+          this.style.removeProperty('--vvjs-origin-x');
+          this.style.removeProperty('--vvjs-origin-y');
+        }
+        this._originFromControl = false;
+      }
       const previousIndex = this._currentSlideIndex;
       const newIndex = this._slideIndex;
       this._currentSlideIndex = newIndex;
@@ -651,6 +704,69 @@
         previousSlide: previousIndex,
         total: this._totalSlides,
       });
+      this._writePatternState();
+    }
+
+    // -----------------------------------------------------------------
+    // Patterns (only on elements with the `vvj-pattern` class).
+    // -----------------------------------------------------------------
+
+    /**
+     * Writes the shared state and resets the time fill of every dot.
+     *
+     * Dots before the active one read full, later ones empty; the active
+     * dot fills with time in _tickProgress().
+     */
+    _writePatternState() {
+      if (!this._pattern) {
+        return;
+      }
+      this.writeState({
+        index: this._slideIndex - 1,
+        total: this._totalSlides,
+        items: this._slides,
+      });
+      this._dots.forEach((dot, index) => {
+        dot.style.setProperty(
+          '--vvj-progress',
+          index < this._slideIndex - 1 ? '1' : '0',
+        );
+      });
+    }
+
+    /**
+     * NEW 3: records where the pressed control sits over the slides.
+     *
+     * Capture phase, so it runs before the control's own click handler.
+     */
+    _bindPatternOrigin() {
+      this.addEventListener(
+        'click',
+        (event) => {
+          const control = event.target.closest?.(
+            '.dots-numbers-button, .prev-arrow, .next-arrow',
+          );
+          if (!control || !this._slideshow) {
+            return;
+          }
+          const box = this._slideshow.getBoundingClientRect();
+          const rect = control.getBoundingClientRect();
+          if (!box.width || !box.height) {
+            return;
+          }
+          const x = ((rect.left + rect.width / 2 - box.left) / box.width) * 100;
+          const y = ((rect.top + rect.height / 2 - box.top) / box.height) * 100;
+          this.style.setProperty('--vvjs-origin-x', `${x.toFixed(2)}%`);
+          this.style.setProperty('--vvjs-origin-y', `${y.toFixed(2)}%`);
+          this._originFromControl = true;
+          // A click that changes nothing (a disabled arrow) must not leave
+          // the origin for the next autoplay change.
+          setTimeout(() => {
+            this._originFromControl = false;
+          }, 0);
+        },
+        { capture: true, signal: this.signal },
+      );
     }
 
     _updateAccessibility() {
@@ -715,6 +831,13 @@
     }
 
     _applyCrossfade(outgoing, incoming) {
+      // An interrupted fade leaves an older slide marked; only the slide
+      // leaving now may carry vvjs-previous.
+      this._slides.forEach((slide) => {
+        if (slide !== outgoing) {
+          slide.classList.remove('vvjs-previous');
+        }
+      });
       if (outgoing) {
         outgoing.style.zIndex = '1';
         outgoing.classList.remove('vvjs-active');
@@ -735,6 +858,7 @@
           return;
         }
         ended = true;
+        const isCurrent = this._activeTransition?.element === element;
         if (this._activeTransition?.listener) {
           element.removeEventListener(
             'transitionend',
@@ -742,6 +866,15 @@
           );
         }
         this._cleanupActiveTransition();
+        // The fade is over: the outgoing slide stops being "previous" and is
+        // hidden (visibility) like every other inactive slide.
+        if (isCurrent) {
+          this._slides.forEach((slide) => {
+            if (slide !== element) {
+              slide.classList.remove('vvjs-previous');
+            }
+          });
+        }
         this._updateAccessibility();
         this._adjustHeight();
       };
@@ -785,7 +918,7 @@
           () => this._goToNextSlide(),
           this._slideTime,
         );
-        if (this._showProgress) {
+        if (this._showProgress || this._pattern) {
           this._startProgress();
         }
       }
@@ -811,7 +944,12 @@
     }
 
     _startProgress() {
-      if (!this._showProgress || !this._progressBar || this._slideTime <= 0) {
+      // Pattern instances also run the clock for the dot time fill (NEW 1).
+      const fillDot = this._pattern && this._dots.length > 0;
+      if (
+        this._slideTime <= 0 ||
+        (!fillDot && (!this._showProgress || !this._progressBar))
+      ) {
         return;
       }
       this._immediateStopProgress();
@@ -820,7 +958,7 @@
     }
 
     _restartProgress() {
-      if (!this._showProgress || this._isPaused) {
+      if ((!this._showProgress && !this._pattern) || this._isPaused) {
         return;
       }
       this._immediateStopProgress();
@@ -828,17 +966,26 @@
     }
 
     _tickProgress() {
-      if (!this._progressBar || this._isPaused) {
+      if ((!this._progressBar && !this._pattern) || this._isPaused) {
         this._immediateStopProgress();
         return;
       }
       const elapsed = Date.now() - this._progressStart;
       const progress = Math.min(100, (elapsed / this._slideTime) * 100);
-      this._progressBar.style.setProperty('--progress', `${progress}%`);
-      this._progressBar.setAttribute(
-        'aria-valuenow',
-        String(Math.round(progress)),
-      );
+      if (this._progressBar) {
+        this._progressBar.style.setProperty('--progress', `${progress}%`);
+        this._progressBar.setAttribute(
+          'aria-valuenow',
+          String(Math.round(progress)),
+        );
+      }
+      if (this._pattern) {
+        // NEW 1: the active dot fills with the time left (0 to 1).
+        this._dots[this._slideIndex - 1]?.style.setProperty(
+          '--vvj-progress',
+          String(progress / 100),
+        );
+      }
       if (progress >= 100) {
         this._immediateStopProgress();
       }
@@ -895,7 +1042,9 @@
       if (!this._playPauseButton) {
         return;
       }
-      this._playPauseButton.innerHTML = this._isPaused ? PLAY_SVG : PAUSE_SVG;
+      const playSvg = this._pattern ? PATTERN_PLAY_SVG : PLAY_SVG;
+      const pauseSvg = this._pattern ? PATTERN_PAUSE_SVG : PAUSE_SVG;
+      this._playPauseButton.innerHTML = this._isPaused ? playSvg : pauseSvg;
       this._playPauseButton.setAttribute(
         'aria-label',
         this._isPaused ? 'Play slideshow' : 'Pause slideshow',

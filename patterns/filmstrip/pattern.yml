@@ -1,0 +1,34 @@
+label: 'Filmstrip'
+description: 'A boxed photo stage with the words on a solid card and a numbered rail; the active tab widens and fills with the time left.'
+weight: 2
+options:
+  hero_slideshow: true
+  time_in_seconds: 6500
+  navigation: numbers
+  animation: a-zoom
+  transition_type: instant
+  transition_duration: 600
+  arrows: arrows-top
+  overlay_bg_color: '#000000'
+  overlay_bg_opacity: 0.8
+  overlay_position: d-bottom-left
+  available_breakpoints: '992'
+  min_height: 42
+  max_content_width: 42
+  max_width: 1200
+  show_total_slides: false
+  show_slide_progress: false
+  show_play_pause: true
+  pause_on_hover: true
+  enable_swipe: true
+  enable_keyboard: true
+  enable_looping: true
+  start_index: 1
+  scrollable_dots_width: 0
+  enable_css: false
+  enable_deeplink: false
+features: []
+needs:
+  - 'Fields in this order: the image first (vvj_image), then kicker (vvj_kicker), title, summary (vvj_summary, trimmed to 160 characters) and link (vvj_link).'
+  - 'Show the image with the image style vvj_wide_1600 (16:9).'
+  - 'Give the field elements the classes vvj-kicker, vvj-title, vvj-summary and vvj-link.'
