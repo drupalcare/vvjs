@@ -1,6 +1,6 @@
 /**
  * @file
- * Views Vanilla Javascript Slideshow - Opacity Toggle.
+ * Views Vanilla JavaScript Slideshow - Opacity Toggle.
  *
  * Filename:     opacity.js
  * Website:      https://www.flashwebcenter.com
@@ -54,7 +54,7 @@
         return;
       }
 
-      // Cache DOM elements with context support for AJAX
+      // Cache DOM elements with context support for Ajax
       const heroSlideshowCheckbox = context.querySelector(
         vvjsSettings.heroSlideshowSelector,
       );
@@ -67,7 +67,7 @@
         return; // Silent fail - elements might not be on this page
       }
 
-      // once() keeps AJAX re-attaches from adding a second listener.
+      // once() keeps Ajax re-attaches from adding a second listener.
       if (!once('vvjs-opacity', heroSlideshowCheckbox).length) {
         return;
       }
@@ -145,7 +145,7 @@
     },
 
     /**
-     * Clean up when behavior is detached (important for AJAX contexts).
+     * Clean up when behavior is detached (important for Ajax contexts).
      *
      * @param {HTMLDocument|HTMLElement} context
      *   The context for which the behavior is being detached.

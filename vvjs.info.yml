@@ -1,6 +1,6 @@
-name: 'Views Vanilla Javascript Slideshow - VVJS'
+name: 'Views Vanilla JavaScript Slideshow - VVJS'
 type: module
-description: 'Accessible slideshow display format for Views.'
+description: 'Displays Views results as an accessible slideshow.'
 core_version_requirement: ^11.3 || ^12
 package: VVJ
 php: 8.3

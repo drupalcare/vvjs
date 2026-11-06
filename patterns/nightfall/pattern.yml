@@ -1,5 +1,5 @@
 label: 'Nightfall'
-description: 'A 21:9 cinema hero on black: a curtain opens from the centre, one large centred title, a timeline bar with a playhead.'
+description: 'A 21:9 cinema hero on black: a curtain opens from the center, one large centered title, a timeline bar with a playhead.'
 weight: 4
 options:
   hero_slideshow: true

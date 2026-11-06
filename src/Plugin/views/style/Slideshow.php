@@ -172,14 +172,14 @@ class Slideshow extends VvjStylePluginBase {
   protected function buildHeroSection(array &$form): void {
     $form['hero_slideshow_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('Hero Slideshow Settings'),
+      '#title' => $this->t('Hero slideshow settings'),
       '#open' => FALSE,
       '#weight' => -45,
     ];
 
     $form['hero_slideshow_section']['hero_slideshow'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Hero Slideshow'),
+      '#title' => $this->t('Hero slideshow'),
       '#default_value' => $this->options['hero_slideshow'] ?? FALSE,
       '#description' => $this->t('Enable this option to create a Hero Slideshow. A Hero Slideshow is a prominent, full-width slideshow often used at the top of a webpage to showcase key content or visuals. It typically features large images with overlaying text or buttons. Note: This requires the row style to be set and the first field in the row to be an Image or Media field. Additional configuration options will be available once this option is enabled.'),
     ];
@@ -194,7 +194,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['hero_slideshow_section']['max_width'] = [
       '#type' => 'number',
-      '#title' => $this->t('Max Width (px)'),
+      '#title' => $this->t('Max width (px)'),
       '#default_value' => $this->options['max_width'] ?? VvjsConstants::DEFAULT_MAX_WIDTH,
       '#min' => VvjsConstants::VIEWS_MIN_WIDTH,
       '#max' => VvjsConstants::VIEWS_MAX_WIDTH,
@@ -204,7 +204,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['hero_slideshow_section']['min_height'] = [
       '#type' => 'number',
-      '#title' => $this->t('Min Height (vw)'),
+      '#title' => $this->t('Min height (vw)'),
       '#default_value' => $this->options['min_height'] ?? VvjsConstants::DEFAULT_MIN_HEIGHT,
       '#min' => VvjsConstants::VIEWS_MIN_HEIGHT,
       '#max' => VvjsConstants::VIEWS_MAX_HEIGHT,
@@ -224,7 +224,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['hero_slideshow_section']['overlay_position'] = [
       '#type' => 'select',
-      '#title' => $this->t('Overlay Position'),
+      '#title' => $this->t('Overlay position'),
       '#default_value' => $this->options['overlay_position'] ?? VvjsConstants::OVERLAY_MIDDLE,
       '#options' => [
         VvjsConstants::OVERLAY_FULL => $this->t('Full'),
@@ -246,7 +246,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['hero_slideshow_section']['overlay_bg_color'] = [
       '#type' => 'color',
-      '#title' => $this->t('Overlay Background Color'),
+      '#title' => $this->t('Overlay background color'),
       '#default_value' => $this->options['overlay_bg_color'] ?? '#000000',
       '#description' => $this->t('Choose the background color for the overlay that appears behind the content within the hero section. This helps improve the readability of the overlay content.'),
       '#states' => $hero_visible,
@@ -256,7 +256,7 @@ class Slideshow extends VvjStylePluginBase {
     $opacityDisplay = is_scalar($rawOpacity) ? (string) $rawOpacity : '0.3';
     $form['hero_slideshow_section']['overlay_bg_opacity'] = [
       '#type' => 'range',
-      '#title' => $this->t('Overlay Background Opacity'),
+      '#title' => $this->t('Overlay background opacity'),
       '#default_value' => $this->options['overlay_bg_opacity'] ?? 0.3,
       '#description' => $this->t('Adjust the opacity of the overlay background color for the hero section content. A lower value makes the background more transparent, while a higher value makes it more opaque.'),
       '#min' => VvjsConstants::MIN_OPACITY,
@@ -317,7 +317,7 @@ class Slideshow extends VvjStylePluginBase {
   protected function buildResponsiveSection(array &$form): void {
     $form['responsive_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('Responsive Settings'),
+      '#title' => $this->t('Responsive settings'),
       '#open' => FALSE,
       '#weight' => -40,
     ];
@@ -346,14 +346,14 @@ class Slideshow extends VvjStylePluginBase {
   protected function buildTimingSection(array &$form): void {
     $form['timing_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('Timing Settings'),
+      '#title' => $this->t('Timing settings'),
       '#open' => TRUE,
       '#weight' => -30,
     ];
 
     $form['timing_section']['time_in_seconds'] = [
       '#type' => 'number',
-      '#title' => $this->t('Auto-rotate Interval (ms)'),
+      '#title' => $this->t('Auto-rotate interval (ms)'),
       '#default_value' => $this->options['time_in_seconds'] ?? VvjsConstants::TIMING_DEFAULT,
       '#min' => VvjsConstants::TIMING_DISABLED,
       '#max' => VvjsConstants::TIMING_MAX,
@@ -373,14 +373,14 @@ class Slideshow extends VvjStylePluginBase {
   protected function buildNavigationSection(array &$form): void {
     $form['navigation_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('Navigation Settings'),
+      '#title' => $this->t('Navigation settings'),
       '#open' => TRUE,
       '#weight' => -25,
     ];
 
     $form['navigation_section']['arrows'] = [
       '#type' => 'select',
-      '#title' => $this->t('Slide Navigation Arrows'),
+      '#title' => $this->t('Slide navigation arrows'),
       '#default_value' => $this->options['arrows'] ?? VvjsConstants::ARROWS_TOP,
       '#options' => [
         VvjsConstants::ARROWS_NONE => $this->t('None'),
@@ -394,7 +394,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['navigation_section']['navigation'] = [
       '#type' => 'select',
-      '#title' => $this->t('Slide Indicators (Bottom Navigation Dots/Numbers)'),
+      '#title' => $this->t('Slide indicators (bottom navigation dots/numbers)'),
       '#default_value' => $this->options['navigation'] ?? VvjsConstants::NAV_DOTS,
       '#options' => [
         VvjsConstants::NAV_NONE => $this->t('None'),
@@ -435,7 +435,7 @@ class Slideshow extends VvjStylePluginBase {
   protected function buildAnimationSection(array &$form): void {
     $form['animation_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('Animation Settings'),
+      '#title' => $this->t('Animation settings'),
       '#open' => TRUE,
       '#weight' => -20,
     ];
@@ -460,7 +460,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['animation_section']['transition_type'] = [
       '#type' => 'select',
-      '#title' => $this->t('Transition Type'),
+      '#title' => $this->t('Transition type'),
       '#default_value' => $this->options['transition_type'] ?? VvjsConstants::TRANSITION_INSTANT,
       '#options' => [
         VvjsConstants::TRANSITION_INSTANT => $this->t('Instant'),
@@ -478,7 +478,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['animation_section']['transition_duration'] = [
       '#type' => 'number',
-      '#title' => $this->t('Transition Duration'),
+      '#title' => $this->t('Transition duration'),
       '#default_value' => $this->options['transition_duration'] ?? VvjsConstants::TRANSITION_DURATION_DEFAULT,
       '#min' => VvjsConstants::TRANSITION_DURATION_MIN,
       '#max' => VvjsConstants::TRANSITION_DURATION_MAX,
@@ -509,14 +509,14 @@ class Slideshow extends VvjStylePluginBase {
   protected function buildDisplaySection(array &$form): void {
     $form['display_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('Display Options'),
+      '#title' => $this->t('Display options'),
       '#open' => TRUE,
       '#weight' => -15,
     ];
 
     $form['display_section']['show_total_slides'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Show Total Slide Number'),
+      '#title' => $this->t('Show total slide number'),
       '#default_value' => $this->options['show_total_slides'] ?? FALSE,
       '#description' => $this->t('Enable this option to display the total number of slides in the slideshow. For example, "Slide 1 of 5".'),
     ];
@@ -531,7 +531,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['display_section']['show_slide_progress'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Show Animation Progress'),
+      '#title' => $this->t('Show animation progress'),
       '#default_value' => $this->options['show_slide_progress'] ?? FALSE,
       '#description' => $this->t('Enable this option to display a circular animation indicator that updates with each slide change. The animation duration matches the slide transition time. (Time In Seconds >= 2 s)'),
       '#states' => $timing_enabled_state,
@@ -539,7 +539,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['display_section']['show_play_pause'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Show Play/Pause Button'),
+      '#title' => $this->t('Show play/pause button'),
       '#default_value' => $this->options['show_play_pause'] ?? TRUE,
       '#description' => $this->t('Enable this option to show a play/pause button at the bottom of the slideshow. (Time In Seconds >= 2 s)'),
       '#states' => $timing_enabled_state,
@@ -555,7 +555,7 @@ class Slideshow extends VvjStylePluginBase {
   protected function buildBehaviorSection(array &$form): void {
     $form['behavior_section'] = [
       '#type' => 'details',
-      '#title' => $this->t('Behavior Settings'),
+      '#title' => $this->t('Behavior settings'),
       '#open' => TRUE,
       '#weight' => -10,
     ];
@@ -570,7 +570,7 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['behavior_section']['pause_on_hover'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Pause on Hover'),
+      '#title' => $this->t('Pause on hover'),
       '#default_value' => $this->options['pause_on_hover'] ?? TRUE,
       '#description' => $this->t('Pause the slideshow when the mouse hovers over it. Uncheck to keep the slideshow running on hover.'),
       '#states' => $timing_enabled_state,
@@ -578,28 +578,28 @@ class Slideshow extends VvjStylePluginBase {
 
     $form['behavior_section']['enable_swipe'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable Touch/Swipe Gestures'),
+      '#title' => $this->t('Enable touch/swipe gestures'),
       '#default_value' => $this->options['enable_swipe'] ?? TRUE,
       '#description' => $this->t('Allow users to navigate slides using touch swipe gestures on mobile devices.'),
     ];
 
     $form['behavior_section']['enable_keyboard'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable Keyboard Navigation'),
+      '#title' => $this->t('Enable keyboard navigation'),
       '#default_value' => $this->options['enable_keyboard'] ?? TRUE,
       '#description' => $this->t('Allow users to navigate slides using keyboard arrow keys, Space to pause/play, Home/End to jump to first/last slide.'),
     ];
 
     $form['behavior_section']['enable_looping'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable Looping'),
+      '#title' => $this->t('Enable looping'),
       '#default_value' => $this->options['enable_looping'] ?? TRUE,
       '#description' => $this->t('When enabled, the slideshow will loop back to the first slide after the last slide. When disabled, it will stop at the last slide.'),
     ];
 
     $form['behavior_section']['start_index'] = [
       '#type' => 'number',
-      '#title' => $this->t('Start Index'),
+      '#title' => $this->t('Start index'),
       '#default_value' => $this->options['start_index'] ?? 1,
       '#min' => 1,
       '#description' => $this->t('Choose which slide the slideshow should display first when it loads. For example, enter 1 to start with the first slide, 2 for the second, etc. This is useful when you have multiple slideshows side by side and want each to start at a different position for a staggered effect. If the number exceeds the total slides, the slideshow will automatically start from the last slide.'),

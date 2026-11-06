@@ -748,7 +748,7 @@
      */
     _applySlideChange() {
       if (this._pattern) {
-        // NEW 3: a change not started by a click opens from the centre.
+        // NEW 3: a change not started by a click opens from the center.
         if (!this._originFromControl) {
           this.style.removeProperty('--vvjs-origin-x');
           this.style.removeProperty('--vvjs-origin-y');

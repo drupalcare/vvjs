@@ -11,7 +11,7 @@ dependencies:
 id: vvjs_example
 label: 'VVJS Example'
 module: views
-description: 'Render Article nodes in a Vanilla JavaScript Slideshow. Works with standard Drupal installation.'
+description: 'Displays Article content in a Vanilla JavaScript slideshow. Works with the Standard installation profile.'
 tag: 'VVJS'
 base_table: node_field_data
 base_field: nid
