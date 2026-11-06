@@ -7,9 +7,9 @@
  * cannot reach into a Pattern. Each Pattern then sets only its own values.
  */
 
-/* Control colours, declared once. Each defaults to the black-and-white token
+/* Control colors, declared once. Each defaults to the black-and-white token
    the rules used before, so the neutral look is unchanged. The Solo and APEX
-   bridges (bridge/vvjs-bridge-*.css) replace them from the theme's colours. */
+   bridges (bridge/vvjs-bridge-*.css) replace them from the theme's colors. */
 :where(.vvj-pattern.vvjs) {
   --vvjs-btn-bg: var(--vvj-ink);
   --vvjs-btn-text: var(--vvj-surface);
@@ -149,7 +149,7 @@
   backdrop-filter: none;
 }
 
-/* Titles take the Pattern's colour (set per Pattern) and never break mid-word. */
+/* Titles take the Pattern's color (set per Pattern) and never break mid-word. */
 .vvj-pattern.vvjs .vvj-title {
   overflow-wrap: normal;
   word-break: normal;

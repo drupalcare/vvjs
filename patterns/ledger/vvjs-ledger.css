@@ -42,7 +42,7 @@
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-inner .nav-dots-numbers .dots-numbers-button:hover { color: var(--vvj-ink); }
 /* The ::after wipe paints the active pill, then a real background takes over
    once the wipe ends, so the text sits on an actual ink background (contrast
-   checkers and forced-colours modes read background-color, not a pseudo). */
+   checkers and forced-colors modes read background-color, not a pseudo). */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-inner .nav-dots-numbers .dots-numbers-button.active { color: var(--vvjs-tab-active-text); background-color: var(--vvjs-tab-active-bg); transition: color .3s, background-color 0s .55s; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-ledger .vvjs-inner .nav-dots-numbers .dots-numbers-button.active::after { clip-path: inset(0 0 0 0 round 999px); }
 

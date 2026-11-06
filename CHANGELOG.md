@@ -3,7 +3,7 @@
 ## [2.0.0] (UNRELEASED)
 
 - Patterns: the bridge reads the shared `--vvj-theme-*` roles instead of spelling theme names.
-- Patterns: under Solo or APEX the Pattern controls take the theme's button and menu colours; black and white stays the default on any other theme.
+- Patterns: under Solo or APEX the Pattern controls take the theme's button and menu colors; black and white stays the default on any other theme.
 - Accessibility: slideshow keys work only when focus is inside the slideshow (Space, Home, End and arrows stay with the page), keyboard focus holds autoplay, autoplay steps are no longer announced, JS strings are translatable, the progress bar is no longer a live region, and the hero slide drops its `complementary` and `img` roles.
 - Patterns: text over photos sits on a darker panel or band (Iris, Nightfall, Filmstrip default), Deck story bars are at least 24px wide and wrap, and the Nightfall tick row wraps instead of overflowing at 320px.
 - Patterns: the viewport breakpoint files (`vvjs-NNN.css`, `vvjs-hero-NNN.css`) no longer lay out Pattern markup, so a Pattern's own container layout is the only one that applies (hero card readable on phones, Deck tap zones kept on small screens); classic slideshows are unchanged.

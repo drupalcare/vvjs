@@ -127,6 +127,8 @@ A Pattern is a ready-made design for this format. VVJS ships 5. Enable the `vvj_
 
 When you choose a different Pattern and save, its settings replace the layout, animation, styling and deep linking settings of the view; you can still change them afterwards. Choose **None** to keep your own settings. Drupal then shows a message naming the settings the Pattern set.
 
+A Pattern owns its layout and sizes itself by the room it has, not by the screen width. So the hero **Max width**, **Min height** and **Overlay position** settings shape the regular and hero slideshows only; a Pattern ignores them.
+
 Each Pattern also lists what the view still needs, for example the fields to add, their order and the CSS classes to give them. The list appears under **To finish the Pattern** in the Patterns section and as a warning after you save. The `vvj_patterns_demo` sub-module shows a working setup: it adds the "VVJ Slide" content type (fields `vvj_nav_label`, `vvj_image`, `vvj_kicker`, `vvj_summary` and `vvj_link`, besides the title), five demo slides and, as optional config, an example view for each VVJ module named `vvj_demo_<module>`.
 
 ## Usage
