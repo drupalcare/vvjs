@@ -21,12 +21,12 @@
 @keyframes vvjs-nightfall-curtain { from { clip-path: inset(0 50% 0 50%); } to { clip-path: inset(0 0 0 0); } }
 @keyframes vvjs-nightfall-burns { from { transform: scale(1); } to { transform: scale(1.09) translate(-1%, -1%); } }
 
-/* One centred title card. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-hero-content { position: absolute; z-index: 1; inset: 0; display: grid; place-content: center; justify-items: center; width: auto; max-width: none; margin: 0; padding: 0 20px 90px; text-align: center; background: none; transform: none; }
+/* One centered title card. The side padding keeps every line of text clear of the edge arrows (inset + 64px + 8px). */
+.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvjs-hero-content { position: absolute; z-index: 1; inset: 0; display: grid; place-content: center; justify-items: center; width: auto; max-width: none; margin: 0; padding: 0 calc(clamp(16px, 3vw, 40px) + 72px) 90px; text-align: center; background: none; transform: none; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-kicker { display: flex; align-items: center; gap: 14px; margin: 0 0 18px; font-size: 13px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--vvj-stage-muted); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-kicker::before,
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-kicker::after { content: ""; width: 36px; height: 1px; background: currentColor; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-title { color: var(--vvj-stage-color); max-width: 90vw; margin: 0; font-family: var(--vvj-font-display); font-weight: 400; font-size: clamp(2.6rem, 8.5vw, 8.5rem); line-height: .92; letter-spacing: -.025em; text-wrap: balance; }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-title { color: var(--vvj-stage-color); max-width: 100%; margin: 0; font-family: var(--vvj-font-display); font-weight: 400; font-size: clamp(2rem, 8.5cqi, 8.5rem); overflow-wrap: break-word; line-height: .92; letter-spacing: -.025em; text-wrap: balance; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-link { margin: 26px 0 0; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-link a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 26px; border-radius: 999px; font-weight: 600; text-decoration: none; color: var(--vvj-stage-bg); background: var(--vvj-stage-color); transition: transform .3s var(--vvj-ease-out), box-shadow .3s; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-nightfall .vvj-link a:hover { transform: translateY(-2px); box-shadow: 0 0 0 6px var(--vvj-glass-line); }
