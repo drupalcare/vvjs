@@ -2,6 +2,7 @@
 
 ## [2.0.0] (UNRELEASED)
 
+- Accessibility: in Windows high contrast (forced colors) the Pattern icons stay visible; they are masks painted with the text color, which the system used to replace.
 - Patterns: the bridge reads the shared `--vvj-theme-*` roles instead of spelling theme names.
 - Patterns: under Solo or APEX the Pattern controls take the theme's button and menu colors; black and white stays the default on any other theme.
 - Accessibility: slideshow keys work only when focus is inside the slideshow (Space, Home, End and arrows stay with the page), keyboard focus holds autoplay, autoplay steps are no longer announced, JS strings are translatable, the progress bar is no longer a live region, and the hero slide drops its `complementary` and `img` roles.

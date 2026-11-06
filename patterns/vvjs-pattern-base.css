@@ -213,3 +213,11 @@
 .vvj-pattern.vvjs .vvjs-separator {
   display: none;
 }
+
+/* Forced colors: icons are masks painted with currentColor. Keep that paint,
+   so the system does not replace it with the page ground and hide the icon. */
+@media (forced-colors: active) {
+  :where(.vvj-pattern.vvjs .vvj-link a)::after {
+    forced-color-adjust: none;
+  }
+}
