@@ -1,0 +1,35 @@
+/**
+ * @file
+ * vvjs Pattern bridge for APEX: maps the module's colour tokens to the
+ * theme's region colours.
+ *
+ * Token mapping ONLY. Every Pattern rule keeps reading the vvjs tokens
+ * declared in vvjs-pattern-base.css; nothing here paints an element.
+ * `:where()` keeps this at zero specificity, and it loads just after the
+ * base file (weight 1), so it replaces the black-and-white defaults. Each
+ * mapping keeps the black-and-white value as its fallback, so a region that
+ * leaves a colour unset still renders. The Pattern inherits the region it
+ * sits in.
+ */
+/* Colours come from the shared --vvj-theme-* roles (vvj_patterns bridge), so the
+   theme's own colour spelling lives once, there. Each role keeps its black-and-white fallback. */
+:where(.vvj-pattern.vvjs) {
+  --vvjs-btn-bg: var(--vvj-theme-button-bg, var(--vvj-ink));
+  --vvjs-btn-text: var(--vvj-theme-button-text, var(--vvj-surface));
+  --vvjs-tab-active-bg: var(--vvj-theme-active-bg, var(--vvj-ink));
+  --vvjs-tab-active-text: var(--vvj-theme-active-text, var(--vvj-surface));
+  --vvjs-progress: var(--vvj-theme-button-bg, var(--vvj-ink));
+
+  /* APEX extra colours: the owner will name the five; none are mapped yet.
+     Add them here, one token each, with a black-and-white fallback. */
+}
+
+@media (forced-colors: active) {
+  :where(.vvj-pattern.vvjs) {
+    --vvjs-btn-bg: ButtonText;
+    --vvjs-btn-text: ButtonFace;
+    --vvjs-tab-active-bg: Highlight;
+    --vvjs-tab-active-text: HighlightText;
+    --vvjs-progress: Highlight;
+  }
+}

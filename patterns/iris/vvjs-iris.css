@@ -20,10 +20,17 @@
 @keyframes vvjs-iris-settle { from { transform: scale(1.18); } to { transform: none; } }
 
 /* Words bottom left, rising one after another. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-hero-content { position: absolute; z-index: 1; inset: auto auto clamp(104px, 9vw, 132px) clamp(20px, 5vw, 80px); width: min(55%, 760px); margin: 0; padding: 0; background: none; transform: none; }
+/* A soft dark panel grows with the words (the stage-bg token at 78%, solid under
+   the text, feathered at the edge), so the title, summary and link keep their
+   contrast on a bright photo wherever the global scrim is still thin. */
+:where(.vvj-pattern--vvjs-iris .vvjs-hero-content)::before { content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none; border-radius: 24px;
+  background: color-mix(in srgb, var(--vvj-stage-bg) 78%, transparent); box-shadow: 0 0 80px 44px color-mix(in srgb, var(--vvj-stage-bg) 78%, transparent); }
+/* The offset is a translate, not inset or margin, so a theme or module rule
+   that sets bottom, start or margin cannot move it. */
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-hero-content { position: absolute; z-index: 1; inset: auto auto 0 0; width: min(55%, 760px); margin: 0; translate: clamp(20px, 5vw, 80px) calc(-1 * clamp(104px, 9vw, 132px)); padding: 0; background: none; transform: none; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-kicker { margin: 0 0 14px; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--vvj-stage-muted); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-kicker::before { content: ""; display: inline-block; width: 28px; height: 2px; margin: 0 12px 0 0; vertical-align: middle; background: currentColor; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-title { color: var(--vvj-stage-color); margin: 0; font-family: var(--vvj-font-display); font-weight: 500; font-size: clamp(2.5rem, 6.6vw, 6.4rem); line-height: .95; letter-spacing: -.02em; text-wrap: balance; }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-title { color: var(--vvj-stage-color); margin: 0; font-family: var(--vvj-font-display); font-weight: 500; font-size: clamp(2.5rem, 8cqi, 6.4rem); line-height: .95; letter-spacing: -.02em; text-wrap: balance; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-summary { margin: 18px 0 0; max-width: 46ch; font-size: clamp(1rem, 1.3vw, 1.2rem); line-height: 1.5; color: var(--vvj-stage-muted); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-link { margin: 14px 0 0; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-link a { color: var(--vvj-stage-color); font-weight: 600; text-underline-offset: 6px; }
@@ -37,19 +44,24 @@
 /* The glass dock: pause with its time ring, then 01 02 03. */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers { position: absolute; z-index: 5; inset: auto clamp(16px, 4vw, 56px) clamp(24px, 3vw, 40px) auto; display: flex; align-items: center; gap: 4px; width: auto; margin: 0; padding: 6px; border-radius: 999px;
   background: var(--vvj-glass-bg); box-shadow: inset 0 0 0 1px var(--vvj-glass-line), var(--vvj-glass-shadow); -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .dots-numbers-button-wrapper { display: flex; gap: 2px; counter-reset: vvjs-iris; }
+/* One row that never leaves the stage: the module wraps the nav, so many
+   slides pushed the numbers onto a second row over the words. */
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers { flex-wrap: nowrap; max-width: calc(100% - 2 * clamp(16px, 4vw, 56px)); }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .dots-numbers-button-wrapper { display: flex; flex: 0 1 auto; gap: 2px; counter-reset: vvjs-iris; min-width: 0; padding-block: 8px; margin-block: -8px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+:where(.vvj-pattern--vvjs-iris .dots-numbers-button-wrapper)::-webkit-scrollbar { display: none; }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button { flex-shrink: 0; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button { counter-increment: vvjs-iris; display: inline-grid; place-items: center; min-width: 44px; height: 44px; padding: 0 14px; border-radius: 999px; font-size: 0; line-height: 1; text-align: center; transition: background-color .3s, color .3s, min-width .5s var(--vvj-ease-out); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button::before { content: counter(vvjs-iris, decimal-leading-zero); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button:hover { background: var(--vvj-glass-line); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button.active { min-width: 72px; color: var(--vvj-stage-bg); background: var(--vvj-stage-color); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .play-pause-button { display: grid; place-items: center; width: 44px; height: 44px; margin: 0 6px 0 0; border-radius: 50%; font-size: 15px; color: var(--vvj-stage-color); }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .play-pause-button { flex-shrink: 0; display: grid; place-items: center; width: 44px; height: 44px; margin: 0 6px 0 0; border-radius: 50%; font-size: 15px; color: var(--vvj-stage-color); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers button:active { transform: scale(.92); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .echo-animation { position: absolute; inset: 50% auto auto 6px; width: 44px; height: 44px; margin: 0; padding: 0; transform: translateY(-50%); pointer-events: none; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .progressbar { width: 100%; height: 100%; border: 0; border-radius: 50%; background: conic-gradient(var(--vvj-stage-color) var(--progress, 0%), var(--vvj-stage-line) 0);
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), var(--vvj-mask-solid) calc(100% - 2.5px)); mask: radial-gradient(farthest-side, transparent calc(100% - 3px), var(--vvj-mask-solid) calc(100% - 2.5px)); }
 
-@media (max-width: 767px) {
+@container vvj-region (max-width: 720px) {
   .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers { inset: auto 12px clamp(24px, 3vw, 40px) 12px; justify-content: space-between; }
   .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button { padding: 0 10px; }
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-hero-content { inset: auto auto 96px clamp(20px, 5vw, 80px); width: calc(100% - 40px); }
+  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-hero-content { translate: clamp(20px, 5vw, 80px) -96px; width: calc(100% - 40px); }
 }

@@ -103,6 +103,8 @@
       this._touchEndX = null;
       this._touchEndY = null;
       this._isMouseOver = false;
+      this._isFocusHeld = false;
+      this._autoChange = false;
 
       // Config (read from data attributes).
       this._slideTime = 5000;
@@ -160,6 +162,7 @@
       this._setupCore();
       this._bindNavigation();
       this._bindKeyboard();
+      this._bindFocusHold();
       this._bindPointerEvents();
       this._bindMouseHover();
       this._bindVisibility();
@@ -254,7 +257,10 @@
         this._progressBar.setAttribute('aria-valuenow', '0');
         this._progressBar.setAttribute('aria-valuemin', '0');
         this._progressBar.setAttribute('aria-valuemax', '100');
-        this._progressBar.setAttribute('aria-label', 'Slide progress');
+        this._progressBar.setAttribute(
+          'aria-label',
+          Drupal.t('Slide progress'),
+        );
       }
       if (this._scrollableDotsWidth > 0 && this._dotsWrapper) {
         this._dotsWrapper.style.maxWidth = `${this._scrollableDotsWidth}px`;
@@ -320,13 +326,34 @@
       if (!this._keyboardEnabled) {
         return;
       }
+      // Keys are handled only when focus is inside THIS slideshow, never
+      // because it is on screen: the page keeps Space, Home, End and the
+      // arrows for scrolling and for other widgets (WCAG 2.1.1, 2.1.4).
       document.addEventListener(
         'keydown',
         (e) => {
-          if (e.target.closest('input, textarea, [contenteditable="true"]')) {
+          if (
+            e.defaultPrevented ||
+            e.altKey ||
+            e.ctrlKey ||
+            e.metaKey ||
+            !(e.target instanceof Element) ||
+            !this.contains(e.target)
+          ) {
             return;
           }
-          if (!this._isFocusedOrVisible()) {
+          const control = e.target.closest(
+            'a, button, input, select, textarea, summary, [contenteditable="true"], [role="tab"]',
+          );
+          const onDot =
+            control !== null && Array.from(this._dots).includes(control);
+          const onOwnButton =
+            control !== null &&
+            (control === this._prevButton ||
+              control === this._nextButton ||
+              control === this._playPauseButton);
+          // A link, field or button inside a slide keeps every key.
+          if (control !== null && !onDot && !onOwnButton) {
             return;
           }
           switch (e.key) {
@@ -344,36 +371,89 @@
 
             case ' ':
             case 'Spacebar':
+              // Space activates a focused control; it toggles autoplay only
+              // when focus is on the slideshow itself.
+              if (control !== null) {
+                return;
+              }
               e.preventDefault();
               this._togglePause();
               break;
 
             case 'Home':
+              // Home and End belong to the tab list only.
+              if (!onDot) {
+                return;
+              }
               e.preventDefault();
               this._goToSlide(1);
               this._startAutoSlide();
               break;
 
             case 'End':
+              if (!onDot) {
+                return;
+              }
               e.preventDefault();
               this._goToSlide(this._totalSlides);
               this._startAutoSlide();
               break;
 
             default:
-              break;
+              return;
+          }
+          // Roving tabindex: focus follows the active tab.
+          if (onDot) {
+            this._dots[this._slideIndex - 1]?.focus();
           }
         },
         { signal: this.signal },
       );
     }
 
-    _isFocusedOrVisible() {
-      if (this.contains(document.activeElement)) {
-        return true;
-      }
-      const rect = this.getBoundingClientRect();
-      return rect.top < window.innerHeight && rect.bottom > 0;
+    /**
+     * Holds autoplay while keyboard focus is inside the slideshow.
+     *
+     * Mirrors Drupal.Vvj.Autoplay: the Play / Pause button itself does not
+     * hold, so pressing Play starts at once. Only :focus-visible focus holds,
+     * so a mouse click on a control keeps the mouse behavior unchanged
+     * (WCAG 2.2.2).
+     */
+    _bindFocusHold() {
+      this.addEventListener(
+        'focusin',
+        (e) => {
+          const target = e.target;
+          const hold =
+            target instanceof Element &&
+            target !== this._playPauseButton &&
+            target.matches(':focus-visible');
+          if (hold === this._isFocusHeld) {
+            return;
+          }
+          this._isFocusHeld = hold;
+          if (hold) {
+            this._stopAutoSlide();
+          } else {
+            this._startAutoSlide();
+          }
+        },
+        { signal: this.signal },
+      );
+      this.addEventListener(
+        'focusout',
+        (e) => {
+          if (
+            !this._isFocusHeld ||
+            (e.relatedTarget instanceof Node && this.contains(e.relatedTarget))
+          ) {
+            return;
+          }
+          this._isFocusHeld = false;
+          this._startAutoSlide();
+        },
+        { signal: this.signal },
+      );
     }
 
     _bindPointerEvents() {
@@ -689,7 +769,12 @@
       this._updateDots();
       this._updateArrows();
       this._updateSlideCounter();
-      this._announceSlide(newIndex, this._totalSlides);
+      // Only a change the visitor asked for is announced; autoplay steps
+      // would talk over what a screen reader user is reading.
+      if (!this._autoChange) {
+        this._announceSlide(newIndex, this._totalSlides);
+      }
+      this._autoChange = false;
       this._restartProgress();
 
       // Update deeplink hash.
@@ -790,18 +875,10 @@
         return;
       }
 
-      let contentHeight;
-      if (this._transitionType.startsWith('crossfade')) {
-        const prevOpacity = currentSlide.style.opacity;
-        const prevZ = currentSlide.style.zIndex;
-        currentSlide.style.opacity = '1';
-        currentSlide.style.zIndex = '9999';
-        contentHeight = currentSlide.getBoundingClientRect().height;
-        currentSlide.style.opacity = prevOpacity;
-        currentSlide.style.zIndex = prevZ;
-      } else {
-        contentHeight = currentSlide.getBoundingClientRect().height;
-      }
+      // Opacity and z-index never change a box's size, so the slide is
+      // measured as it is. Raising them for the read (as before) forced a
+      // style recalc and layout and could restart a running crossfade.
+      const contentHeight = currentSlide.getBoundingClientRect().height;
 
       const cs = window.getComputedStyle(this._slideshow);
       const padTop = parseFloat(cs.paddingTop) || 0;
@@ -912,15 +989,29 @@
         this._slideTime > 0 &&
         !this._isPaused &&
         this._isVisible &&
-        !this._isMouseOver
+        !this._isMouseOver &&
+        !this._isFocusHeld
       ) {
         this._autoSlideId = setInterval(
-          () => this._goToNextSlide(),
+          () => this._autoAdvance(),
           this._slideTime,
         );
         if (this._showProgress || this._pattern) {
           this._startProgress();
         }
+      }
+    }
+
+    /**
+     * One autoplay step. Marks the change as automatic, so it is not read
+     * out by the live region (WCAG 2.2.2, 4.1.3).
+     */
+    _autoAdvance() {
+      const before = this._slideIndex;
+      this._autoChange = true;
+      this._goToNextSlide();
+      if (this._slideIndex === before) {
+        this._autoChange = false;
       }
     }
 
@@ -1047,7 +1138,9 @@
       this._playPauseButton.innerHTML = this._isPaused ? playSvg : pauseSvg;
       this._playPauseButton.setAttribute(
         'aria-label',
-        this._isPaused ? 'Play slideshow' : 'Pause slideshow',
+        this._isPaused
+          ? Drupal.t('Play slideshow')
+          : Drupal.t('Pause slideshow'),
       );
     }
 
@@ -1064,7 +1157,7 @@
       this._inner.classList.add('reduced-motion');
       this._updatePlayPauseButton();
       this._announceMessage(
-        'Slideshow paused due to reduced motion preference',
+        Drupal.t('Slideshow paused due to reduced motion preference'),
       );
       // Force transition type to instant (matches v1 behavior).
       this._transitionType = 'instant';
@@ -1073,7 +1166,10 @@
 
     _announceSlide(index, total) {
       if (this._announcer) {
-        this._announcer.textContent = `Slide ${index} of ${total}`;
+        this._announcer.textContent = Drupal.t('Slide @index of @total', {
+          '@index': index,
+          '@total': total,
+        });
       }
     }
 

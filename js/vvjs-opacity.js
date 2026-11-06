@@ -12,7 +12,14 @@
 // phpcs:disable Generic.PHP.UpperCaseConstant
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
-(function (Drupal, drupalSettings) {
+(function (Drupal, drupalSettings, once) {
+  /**
+   * One AbortController per wired checkbox, aborted when it is unloaded.
+   *
+   * @type {WeakMap<HTMLInputElement, AbortController>}
+   */
+  const controllers = new WeakMap();
+
   /**
    * Toggle opacity controls based on hero slideshow state.
    *
@@ -60,8 +67,8 @@
         return; // Silent fail - elements might not be on this page
       }
 
-      // Skip if already processed (prevents duplicate event listeners in AJAX contexts)
-      if (heroSlideshowCheckbox.hasAttribute('data-vvjs-opacity-processed')) {
+      // once() keeps AJAX re-attaches from adding a second listener.
+      if (!once('vvjs-opacity', heroSlideshowCheckbox).length) {
         return;
       }
 
@@ -124,12 +131,12 @@
       updateOpacityVisibility(heroSlideshowCheckbox.checked);
 
       // Add event listener with passive option for better performance
+      const controller = new AbortController();
+      controllers.set(heroSlideshowCheckbox, controller);
       heroSlideshowCheckbox.addEventListener('change', handleCheckboxChange, {
         passive: true,
+        signal: controller.signal,
       });
-
-      // Mark as processed to prevent duplicate processing
-      heroSlideshowCheckbox.setAttribute('data-vvjs-opacity-processed', 'true');
 
       // Optional: Add visual feedback during transitions
       if (opacityValueContainer.style.transition === '') {
@@ -149,14 +156,15 @@
      */
     detach(context, settings, trigger) {
       if (trigger === 'unload') {
-        // Clean up processed markers and event listeners if needed
-        const processedElements = context.querySelectorAll(
-          '[data-vvjs-opacity-processed]',
-        );
-        processedElements.forEach((element) => {
-          element.removeAttribute('data-vvjs-opacity-processed');
-        });
+        // Release the once() marker and the change listener, so a later
+        // attach wires it again exactly once.
+        once
+          .remove('vvjs-opacity', '[data-once~="vvjs-opacity"]', context)
+          .forEach((checkbox) => {
+            controllers.get(checkbox)?.abort();
+            controllers.delete(checkbox);
+          });
       }
     },
   };
-})(Drupal, drupalSettings);
+})(Drupal, drupalSettings, once);

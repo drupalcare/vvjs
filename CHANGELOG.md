@@ -2,6 +2,12 @@
 
 ## [2.0.0] (UNRELEASED)
 
+- Patterns: the bridge reads the shared `--vvj-theme-*` roles instead of spelling theme names.
+- Patterns: under Solo or APEX the Pattern controls take the theme's button and menu colours; black and white stays the default on any other theme.
+- Accessibility: slideshow keys work only when focus is inside the slideshow (Space, Home, End and arrows stay with the page), keyboard focus holds autoplay, autoplay steps are no longer announced, JS strings are translatable, the progress bar is no longer a live region, and the hero slide drops its `complementary` and `img` roles.
+- Patterns: text over photos sits on a darker panel or band (Iris, Nightfall, Filmstrip default), Deck story bars are at least 24px wide and wrap, and the Nightfall tick row wraps instead of overflowing at 320px.
+- Patterns: the viewport breakpoint files (`vvjs-NNN.css`, `vvjs-hero-NNN.css`) no longer lay out Pattern markup, so a Pattern's own container layout is the only one that applies (hero card readable on phones, Deck tap zones kept on small screens); classic slideshows are unchanged.
+
 **Drop-in upgrade for 1.x sites.** v2 modernizes internals: extends `vvj_core`
 foundation, ships `<vvjs-slideshow>` custom element extending `VvjElementBase`,
 AbortController-tracked listeners, IntersectionObserver-driven pause-when-out-
@@ -38,9 +44,13 @@ JS behavior key, and the full Drupal.vvjs.* public API surface from 1.x.
   now delegate to methods on the custom element instance.
 - `getInstance()` returns the `<vvjs-slideshow>` element itself (v1 returned a
   `Slideshow` orchestrator object).
+- Code style: JavaScript and CSS follow Drupal core's ESLint, Stylelint and Prettier rules, and the spell-check job passes with a project word file. Rendering and behavior are unchanged.
+- Layout: Pattern layout now follows the width the Pattern itself gets (container queries on `vvj-region`) instead of the screen width, so Patterns lay out correctly in a narrow content column; overlays and the Pattern root keep screen-width queries.
 
 ### Fixed
 
+- Hover rules that must beat a rest rule are flattened with `:where()` so no new Pattern selector exceeds 0,2,0; the look is unchanged (check-vvj-cascade: winners changed 0).
+- Patterns: Iris text clears the slide numbers and its numbers stay in one row inside the stage; Deck text keeps room for the play button and counter; Filmstrip numbers line up with the play button and scroll instead of squeezing the active one.
 - **The arrows show when there is nothing further.** On a slideshow that does
   not loop, the previous arrow on the first slide and the next arrow on the
   last looked active but did nothing. They now stay in place, dimmed and
@@ -72,6 +82,8 @@ JS behavior key, and the full Drupal.vvjs.* public API surface from 1.x.
   transitions` library) is no longer emitted alongside an animation, matching
   v1.
 - Animation dropdown order back to v1 (None, **Zoom, Fade**, …).
+- The slideshow measures a slide without changing its opacity or stacking, and the opacity control releases its listener on detach. A `line-height` that a later `font: inherit` always overrode is removed from the dots/arrows rule; it never applied.
+- In numbers mode inside a pattern, the number buttons use the module's own size (0.875rem) and line-height (1), which the pattern base had reset to the inherited font. The Deck, Filmstrip, Iris, Ledger and Nightfall patterns keep their own number styling.
 
 ### Removed
 

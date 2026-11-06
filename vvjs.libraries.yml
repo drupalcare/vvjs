@@ -102,6 +102,18 @@ vvjs-admin:
     - core/drupalSettings
     - core/once
 
+# Theme bridges: token mapping only. vvj_patterns adds the one that matches the
+# active theme as a dependency of vvjs-pattern-base; neutral loads neither.
+pattern-bridge-solo:
+  css:
+    theme:
+      patterns/bridge/vvjs-bridge-solo.css: { weight: 1 }
+
+pattern-bridge-apex:
+  css:
+    theme:
+      patterns/bridge/vvjs-bridge-apex.css: { weight: 1 }
+
 vvjs-pattern-base:
   css:
     theme:

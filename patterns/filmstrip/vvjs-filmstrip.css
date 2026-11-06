@@ -16,7 +16,7 @@
 
 /* The words card (overlay_bg_color at 0.8 gives --hero-content-bg). */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-hero-content { position: absolute; z-index: 1; inset: auto auto clamp(12px, 3vw, 36px) clamp(12px, 3vw, 36px); width: min(42%, 480px); margin: 0; padding: clamp(20px, 2.4vw, 32px); border-radius: 20px; transform: none;
-  color: var(--vvj-stage-color); background: var(--hero-content-bg, var(--vvj-glass-bg)); box-shadow: inset 0 0 0 1px var(--vvj-glass-line); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  color: var(--vvj-stage-color); background: var(--hero-content-bg, color-mix(in srgb, var(--vvj-stage-bg) 82%, transparent)); box-shadow: inset 0 0 0 1px var(--vvj-glass-line); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 .vvj-pattern--vvjs-filmstrip :where(.vvjs-item.active) .vvjs-hero-content { animation: vvjs-filmstrip-card .8s .25s var(--vvj-ease-out) both; }
 @keyframes vvjs-filmstrip-card { from { opacity: 0; transform: translateY(28px); clip-path: inset(30% 0 0 0 round 20px); } to { opacity: 1; transform: none; clip-path: inset(0 round 20px); } }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvj-kicker { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--vvj-stage-muted); }
@@ -30,21 +30,27 @@
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .slide-indicators .prev-arrow,
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .slide-indicators .next-arrow { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 15px; font-size: 18px; color: var(--vvj-stage-bg); background: var(--vvj-stage-color); box-shadow: var(--vvj-glass-shadow); transition: transform .3s var(--vvj-ease-out); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .slide-indicators .prev-arrow:hover { transform: translateX(-3px); }
+:where(.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .slide-indicators .prev-arrow:hover)::after { content: ""; position: absolute; inset: -5px; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .slide-indicators .next-arrow:hover { transform: translateX(3px); }
+:where(.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .slide-indicators .next-arrow:hover)::after { content: ""; position: absolute; inset: -5px; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .slide-indicators button:active { transform: scale(.9); }
 
 /* The rail. */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers { position: static; display: flex; align-items: stretch; gap: 10px; width: auto; margin: 14px 0 0; padding: 0; background: none; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .play-pause-button { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; font-size: 18px; color: var(--vvj-surface); background: var(--vvj-ink); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .dots-numbers-button-wrapper { flex: 1; display: flex; gap: 10px; min-width: 0; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button { flex: 0 0 64px; display: flex; align-items: center; justify-content: center; height: 64px; padding: 0; overflow: hidden; border-radius: 18px; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums;
+.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .play-pause-button { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; font-size: 18px; color: var(--vvjs-btn-text); background: var(--vvjs-btn-bg); }
+/* The wrapper is as tall as its 64px buttons (the module fixes it at 32px,
+   which pushed the numbers above the play button) and scrolls sideways when
+   there are more slides than room, instead of squeezing the active one. */
+.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .dots-numbers-button-wrapper { flex: 1; display: flex; align-self: stretch; align-items: flex-start; justify-content: flex-start; gap: 10px; min-width: 0; height: auto; padding-block: 8px; margin-block: -8px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+:where(.vvj-pattern--vvjs-filmstrip .dots-numbers-button-wrapper)::-webkit-scrollbar { display: none; }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button { flex: 0 0 64px; display: flex; align-items: center; justify-content: center; height: 64px; padding: 0; overflow: hidden; border-radius: 18px; font-size: 18px; font-weight: 600; line-height: inherit; font-variant-numeric: tabular-nums;
   background: var(--vvj-raised); transition: flex-grow .6s var(--vvj-ease-out), flex-basis .6s var(--vvj-ease-out), background-color .3s; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button:hover { background: color-mix(in srgb, var(--vvj-ink) 14%, var(--vvj-surface)); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button.active { flex: 0 1 200px; background: var(--vvj-raised); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button::after { content: ""; position: absolute; inset: auto auto 10px 14px; width: 0; height: 3px; border-radius: 3px; background: var(--vvj-ink); }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button.active { flex: 0 0 200px; background: var(--vvj-raised); }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button::after { content: ""; position: absolute; inset: auto auto 10px 14px; width: 0; height: 3px; border-radius: 3px; background: var(--vvjs-progress); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers .dots-numbers-button.active::after { width: calc(var(--vvj-progress, 0) * (100% - 28px)); }
 
-@media (max-width: 599px) {
+@container vvj-region (max-width: 560px) {
   .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .vvjs-inner .nav-dots-numbers,
   .vvj-pattern.vvjs.vvj-pattern--vvjs-filmstrip .dots-numbers-button-wrapper { gap: 6px; }
   /* The tabs share the row so the rail never runs past the play button or the box. */

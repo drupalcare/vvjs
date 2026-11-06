@@ -8,7 +8,9 @@
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items { grid-column: 1 / -1; grid-row: 1; display: grid; }
 .vvj-pattern--vvjs-deck :where(.vvjs-items) > .vvjs-item { grid-area: 1 / 1; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items .vvjs-item-inner { display: grid; grid-template-columns: var(--vvjs-deck-card) 1fr; column-gap: clamp(32px, 6vw, 96px); align-items: start; padding: 0; animation: none; }
-.vvj-pattern--vvjs-deck .vvj-text { align-self: center; }
+/* The text fills the card height and keeps the bottom 84px for the play
+   button and counter, which sit in the same grid row. */
+.vvj-pattern--vvjs-deck .vvj-text { align-self: stretch; display: flex; flex-direction: column; justify-content: center; padding-block-end: 84px; }
 
 /* The two ghost cards. */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items::before,
@@ -33,14 +35,14 @@
 
 /* Story bars across the top of the card: --vvj-progress fills the active one. */
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers { position: static; grid-column: 2; grid-row: 1; align-self: end; display: flex; align-items: center; gap: 16px; width: auto; margin: 0; padding: 0; background: none; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .dots-numbers-button-wrapper { position: absolute; z-index: 4; inset: 4px auto auto 14px; display: flex; gap: 6px; width: calc(var(--vvjs-deck-card) - 28px); }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .dots-numbers-button-wrapper { position: absolute; z-index: 4; inset: 4px auto auto 14px; display: flex; flex-wrap: wrap; gap: 0 6px; width: calc(var(--vvjs-deck-card) - 28px); height: auto; min-height: 0; }
 /* !important: vvjs.css forces navigation "dots" to 10px with !important. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .dots-numbers-button { flex: 1; height: 44px !important; margin: 0 !important; font-size: 0; }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .dots-numbers-button { flex: 1 0 24px; min-width: 24px; height: 44px !important; margin: 0 !important; font-size: 0; line-height: inherit; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .dots-numbers-button::before,
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .dots-numbers-button::after { content: ""; position: absolute; inset: 20px auto auto 0; height: 4px; border-radius: 4px; }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .dots-numbers-button::before { inset: 20px 0 auto 0; background: var(--vvj-stage-line); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .dots-numbers-button::after { width: calc(var(--vvj-progress, 0) * 100%); background: var(--vvj-stage-color); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .play-pause-button { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; font-size: 16px; color: var(--vvj-surface); background: var(--vvj-ink); transition: transform .25s var(--vvj-ease-out); }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .play-pause-button { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; font-size: 16px; color: var(--vvjs-btn-text); background: var(--vvjs-btn-bg); transition: transform .25s var(--vvj-ease-out); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .play-pause-button:hover { transform: scale(1.08); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers .play-pause-button:active { transform: scale(.9); }
 .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .echo-total { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--vvj-muted); }
@@ -58,9 +60,10 @@
   .vvj-pattern--vvjs-deck :where(.vvjs-inner) :where(.slide-indicators) svg { opacity: .85; scale: .85; }
 }
 
-@media (max-width: 767px) {
+@container vvj-region (max-width: 720px) {
   .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner,
   .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-items .vvjs-item-inner { grid-template-columns: 1fr; row-gap: 24px; }
   .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvjs-inner .nav-dots-numbers { grid-column: 1; grid-row: 2; margin: 20px 0 0; }
   .vvj-pattern.vvjs.vvj-pattern--vvjs-deck .vvj-title { font-size: 2rem; }
+  .vvj-pattern--vvjs-deck .vvj-text { padding-block-end: 0; }
 }
