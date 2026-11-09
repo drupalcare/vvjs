@@ -221,3 +221,9 @@
     forced-color-adjust: none;
   }
 }
+
+/* Right-to-left: the row already runs right to left, so the module's RTL
+   row-reverse put Previous (and dot 1) back on the left. */
+.vvj-pattern.vvjs:dir(rtl) :is(.slide-indicators, .nav-dots-numbers) {
+  flex-direction: row;
+}

@@ -1,6 +1,10 @@
 label: 'Deck'
 description: 'A portrait card on two ghost cards with story bars that fill with the time left; tap either half of the card.'
 weight: 1
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [nonprofit, publication, events]
 options:
   hero_slideshow: false
   time_in_seconds: 6000

@@ -53,6 +53,13 @@ JS behavior key, and the full Drupal.vvjs.* public API surface from 1.x.
 
 ### Fixed
 
+- Patterns: Ledger, Filmstrip, Iris and Nightfall each have their own control place; Nightfall's arrows use logical positions, so Previous is on the right on right-to-left pages.
+- Patterns: Deck's previous and next tap areas stay over the card on right-to-left pages instead of covering the words.
+- Patterns: spacing, corner radius, type size, shadow and motion read shared `--vvj-*` variables with fallbacks, so a site or theme can adjust them in one place; a few odd values moved to the nearest step, under 10%.
+- Patterns: each Pattern states its stage, ground, placement and the kinds of site it serves best in `pattern.yml`.
+- Patterns: on right-to-left pages Previous sits on the right; the Deck arrow icons mirror; Nightfall uses smaller arrows in a narrow column so its title stays 12 px clear of them.
+- Patterns: sizes that followed the screen width (`vw`) now follow the Pattern's own width (`cqi`), so a Pattern in a sidebar or narrow column keeps its proportions.
+- Patterns: the Filmstrip, Iris and Nightfall captions keep their own width and ground (the module's `width: 100%` loaded later and stretched the card past the slide); Filmstrip and Iris sit on the start side on right-to-left pages.
 - Hover rules that must beat a rest rule are flattened with `:where()` so no new Pattern selector exceeds 0,2,0; the look is unchanged (check-vvj-cascade: winners changed 0).
 - Patterns: Iris text clears the slide numbers and its numbers stay in one row inside the stage; Deck text keeps room for the play button and counter; Filmstrip numbers line up with the play button and scroll instead of squeezing the active one.
 - **The arrows show when there is nothing further.** On a slideshow that does

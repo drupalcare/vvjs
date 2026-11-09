@@ -1,6 +1,10 @@
 label: 'Filmstrip'
 description: 'A boxed photo stage with the words on a solid card and a numbered rail; the active tab widens and fills with the time left.'
 weight: 2
+stage: open
+ground: light
+placement: inner-padding
+serves: [university, healthcare, corporate]
 options:
   hero_slideshow: true
   time_in_seconds: 6500

@@ -1,6 +1,10 @@
 label: 'Ledger'
 description: 'An editorial split: numbered chapter tabs, a giant outlined numeral and the words, the photo cut in on a diagonal. Manual, no loop.'
 weight: 3
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [publication, cultural, associations]
 options:
   hero_slideshow: false
   time_in_seconds: 0

@@ -1,6 +1,10 @@
 label: 'Iris'
 description: 'Full-bleed photo hero; the next photo opens as a circle from the control you press, with a floating glass dock.'
 weight: 0
+stage: open
+ground: dark
+placement: neither
+serves: [corporate, saas, healthcare]
 options:
   hero_slideshow: true
   time_in_seconds: 7000
