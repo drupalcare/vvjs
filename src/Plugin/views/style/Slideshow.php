@@ -541,7 +541,7 @@ class Slideshow extends VvjStylePluginBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Show play/pause button'),
       '#default_value' => $this->options['show_play_pause'] ?? TRUE,
-      '#description' => $this->t('Enable this option to show a play/pause button at the bottom of the slideshow. (Time In Seconds >= 2 s)'),
+      '#description' => $this->t('While slides advance on their own (Time In Seconds above 0), the play/pause button is always shown so visitors can stop the motion (WCAG 2.2.2), whatever this option says. Without auto-advance there is nothing to pause and no button is shown.'),
       '#states' => $timing_enabled_state,
     ];
   }

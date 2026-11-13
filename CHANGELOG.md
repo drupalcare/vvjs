@@ -2,6 +2,7 @@
 
 ## [2.0.0] (UNRELEASED)
 
+- Accessibility: dots and number tabs show a keyboard focus ring; progress text passes contrast; tab ids are unique per slideshow; slides are tab panels only when tabs exist; the play/pause button always shows while slides auto-advance; hidden slides are inert from the first paint.
 - Accessibility: in Windows high contrast (forced colors) the Pattern icons stay visible; they are masks painted with the text color, which the system used to replace.
 - Patterns: the bridge reads the shared `--vvj-theme-*` roles instead of spelling theme names.
 - Patterns: under Solo or APEX the Pattern controls take the theme's button and menu colors; black and white stays the default on any other theme.

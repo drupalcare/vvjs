@@ -33,6 +33,10 @@ options:
   enable_deeplink: false
 features:
   - view_transition
+pictures:
+  vvj_image:
+    style: vvj_cinema_1680
+    responsive: false
 needs:
   - 'Fields in this order: the image first (vvj_image), then kicker (vvj_kicker), title and link (vvj_link).'
   - 'Show the image with the image style vvj_cinema_1680 (21:9); dark images read best.'

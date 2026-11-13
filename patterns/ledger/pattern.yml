@@ -26,6 +26,10 @@ options:
   enable_css: false
   enable_deeplink: false
 features: []
+pictures:
+  vvj_image:
+    style: vvj_landscape_1200
+    responsive: false
 needs:
   - 'Fields in this order: the image first (vvj_image), then kicker (vvj_kicker), title, summary (vvj_summary, trimmed to 200 characters) and link (vvj_link).'
   - 'Show the image with the image style vvj_landscape_1200; the frame crops it to 4:3.'

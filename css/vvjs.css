@@ -150,7 +150,8 @@
 }
 
 .vvjs .slide-indicators > button:focus-visible,
-.vvjs .nav-dots-numbers > button:focus-visible {
+.vvjs .nav-dots-numbers > button:focus-visible,
+.vvjs .nav-dots-numbers .dots-numbers-button:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 4px;
 }
@@ -395,7 +396,7 @@
     opacity 0.3s ease-in-out;
   opacity: 1;
   border-radius: 50%;
-  background: conic-gradient(#007bff var(--progress), #e6e6e6 0%);
+  background: conic-gradient(#0072ed var(--progress), #e6e6e6 0%);
 }
 
 .progressbar::after {
@@ -407,7 +408,7 @@
   height: calc(100% - var(--bar-width));
   content: attr(aria-valuenow) "%";
   transition: color 0.3s ease-in-out;
-  color: #007bff;
+  color: #0072ed;
   border-radius: 50%;
   background: #fff;
   font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace !important;
@@ -417,12 +418,14 @@
 
 .progressbar[aria-valuenow="100"] {
   transform: scale(1.05);
-  background: conic-gradient(#007bff 100%, #007bff 0%);
+  background: conic-gradient(#0072ed 100%, #0072ed 0%);
 }
 
+/* #0072ed and white give 4.54:1 either way round (WCAG 1.4.3). */
 .progressbar[aria-valuenow="100"]::after {
   content: "100%";
   color: #fff;
+  background: #0072ed;
 }
 
 :where(.vvjs-is-paused) .progressbar {

@@ -11,10 +11,17 @@
   font-weight: bold;
 }
 
+/* White on #0072ed is 4.54:1 (WCAG 1.4.3). */
 .vvjs .nav-dots-numbers.numbers .dots-numbers-button.active {
   color: #fff;
-  border-color: #007bff;
-  background-color: #007bff;
+  border-color: #0072ed;
+  background-color: #0072ed;
+}
+
+/* The active tab holds keyboard focus; a white ring would vanish on a light
+   page, so it takes the tab's own blue (WCAG 2.4.7). */
+.vvjs .nav-dots-numbers.numbers .dots-numbers-button.active:focus-visible {
+  outline-color: #0072ed;
 }
 
 @media (min-width: 36rem) {

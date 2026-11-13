@@ -32,6 +32,10 @@ options:
   enable_css: false
   enable_deeplink: false
 features: []
+pictures:
+  vvj_image:
+    style: vvj_wide_1600
+    responsive: false
 needs:
   - 'Fields in this order: the image first (vvj_image), then kicker (vvj_kicker), title, summary (vvj_summary, trimmed to 160 characters) and link (vvj_link).'
   - 'Show the image with the image style vvj_wide_1600 (16:9).'

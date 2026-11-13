@@ -863,9 +863,9 @@
         slide.setAttribute('aria-hidden', String(!isActive));
         slide.toggleAttribute('inert', !isActive);
         slide.classList.toggle('active', isActive);
-        slide.querySelectorAll('a, button, input').forEach((el) => {
-          el.setAttribute('tabindex', isActive ? '0' : '-1');
-        });
+        // `inert` keeps every control of a hidden slide out of the tab order,
+        // so the tabindex values the content was authored with stay as they
+        // are.
       });
     }
 

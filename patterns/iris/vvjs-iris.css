@@ -3,77 +3,294 @@
  * vvjs Pattern Iris.
  */
 /* Hero, full bleed: the next photo opens as a circle from the pressed control. */
-.vvj-pattern--vvjs-iris { background: var(--vvj-stage-bg); color: var(--vvj-stage-color); }
-.vvj-pattern--vvjs-iris .vvjs-inner { position: relative; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-items { min-height: max(46cqi, 560px); overflow: hidden; background: var(--vvj-stage-bg); }
+.vvj-pattern--vvjs-iris {
+  color: var(--vvj-stage-color);
+  background: var(--vvj-stage-bg);
+}
+.vvj-pattern--vvjs-iris .vvjs-inner {
+  position: relative;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-items {
+  overflow: hidden;
+  min-height: max(46cqi, 560px);
+  background: var(--vvj-stage-bg);
+}
 .vvj-pattern--vvjs-iris .vvjs-item,
-.vvj-pattern--vvjs-iris .vvjs-item-inner { position: relative; min-height: inherit; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-hero-image::after { content: ""; position: absolute; inset: 0; background: var(--vvj-stage-scrim); }
+.vvj-pattern--vvjs-iris .vvjs-item-inner {
+  position: relative;
+  min-height: inherit;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-hero-image::after {
+  position: absolute;
+  content: "";
+  background: var(--vvj-stage-scrim);
+  inset: 0;
+}
 
 /* The iris opens from --vvjs-origin-x/-y (written on a click), else the centre. */
-.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) .vvjs-hero-image { animation: vvjs-iris-open var(--vvjs-transition-duration, 1400ms) var(--vvj-ease-io) both; }
-.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-image) img { animation: vvjs-iris-settle 2.4s var(--vvj-ease-out) both; }
-@keyframes vvjs-iris-open {
-  from { clip-path: circle(0 at var(--vvjs-origin-x, 50%) var(--vvjs-origin-y, 50%)); }
-  to { clip-path: circle(150% at var(--vvjs-origin-x, 50%) var(--vvjs-origin-y, 50%)); }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) .vvjs-hero-image {
+  animation: vvjs-iris-open var(--vvjs-transition-duration, 1400ms) var(--vvj-ease-io) both;
 }
-@keyframes vvjs-iris-settle { from { transform: scale(1.18); } to { transform: none; } }
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-image) img {
+  animation: vvjs-iris-settle 2.4s var(--vvj-ease-out) both;
+}
+@keyframes vvjs-iris-open {
+  from {
+    clip-path: circle(0 at var(--vvjs-origin-x, 50%) var(--vvjs-origin-y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--vvjs-origin-x, 50%) var(--vvjs-origin-y, 50%));
+  }
+}
+@keyframes vvjs-iris-settle {
+  from {
+    transform: scale(1.18);
+  }
+  to {
+    transform: none;
+  }
+}
 
 /* Words bottom left, rising one after another. */
 /* A soft dark panel grows with the words (the stage-bg token at 78%, solid under
    the text, feathered at the edge), so the title, summary and link keep their
    contrast on a bright photo wherever the global scrim is still thin. */
-:where(.vvj-pattern--vvjs-iris .vvjs-hero-content)::before { content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none; border-radius: var(--vvj-radius-24, 24px);
-  background: color-mix(in srgb, var(--vvj-stage-bg) 78%, transparent); box-shadow: 0 0 80px 44px color-mix(in srgb, var(--vvj-stage-bg) 78%, transparent); }
+:where(.vvj-pattern--vvjs-iris .vvjs-hero-content)::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  border-radius: var(--vvj-radius-24, 24px);
+  background: color-mix(in sRGB, var(--vvj-stage-bg) 78%, transparent);
+  box-shadow: 0 0 80px 44px color-mix(in sRGB, var(--vvj-stage-bg) 78%, transparent);
+  inset: 0;
+}
 /* The offset is a translate, not inset or margin, so a theme or module rule
    that sets bottom, start or margin cannot move it. */
 /* .vvjs-items in each hero-content selector outweighs vvjs-hero.css
    (width: 100%; background), which loads after this file at the same
    weight and stretched the card past the slide. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-items .vvjs-hero-content { position: absolute; z-index: 1; inset-block: auto 0; inset-inline: 0 auto; width: min(55%, 760px); margin: 0; translate: clamp(20px, 5cqi, 80px) calc(-1 * clamp(104px, 9cqi, 132px)); padding: 0; background: none; transform: none; }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-items .vvjs-hero-content {
+  position: absolute;
+  z-index: 1;
+  width: min(55%, 760px);
+  margin: 0;
+  padding: 0;
+  transform: none;
+  background: none;
+  inset-block: auto 0;
+  inset-inline: 0 auto;
+  translate: clamp(20px, 5cqi, 80px) calc(-1 * clamp(104px, 9cqi, 132px));
+}
 /* translate has no logical form: on a right-to-left page the words step in from the right. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris:dir(rtl) .vvjs-items .vvjs-hero-content { translate: calc(-1 * clamp(20px, 5cqi, 80px)) calc(-1 * clamp(104px, 9cqi, 132px)); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-kicker { margin: 0 0 var(--vvj-space-14, 14px); font-size: var(--vvj-text-13, 0.8125rem); letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--vvj-stage-muted); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-kicker::before { content: ""; display: inline-block; width: 28px; height: 2px; margin: 0 var(--vvj-space-12, 12px) 0 0; vertical-align: middle; background: currentColor; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-title { color: var(--vvj-stage-color); margin: 0; font-family: var(--vvj-font-display); font-weight: 500; font-size: clamp(2.5rem, 8cqi, 6.4rem); line-height: .95; letter-spacing: -.02em; text-wrap: balance; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-summary { margin: var(--vvj-space-18, 18px) 0 0; max-width: 46ch; font-size: clamp(1rem, 1.3cqi, 1.2rem); line-height: 1.5; color: var(--vvj-stage-muted); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-link { margin: var(--vvj-space-14, 14px) 0 0; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-link a { color: var(--vvj-stage-color); font-weight: 600; text-underline-offset: 6px; }
-.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > * { animation: vvjs-iris-rise var(--vvj-dur-900, 0.9s) var(--vvj-ease-out) both; }
-.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(1) { animation-delay: var(--vvj-dur-450, 0.45s); }
-.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(2) { animation-delay: var(--vvj-dur-550, 0.55s); }
-.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(3) { animation-delay: var(--vvj-dur-700, 0.7s); }
-.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(4) { animation-delay: var(--vvj-dur-800, 0.8s); }
-@keyframes vvjs-iris-rise { from { clip-path: inset(0 0 100% 0); transform: translateY(60%); } to { clip-path: inset(0 0 -20% 0); transform: none; } }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris:dir(rtl) .vvjs-items .vvjs-hero-content {
+  translate: calc(-1 * clamp(20px, 5cqi, 80px)) calc(-1 * clamp(104px, 9cqi, 132px));
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-kicker {
+  margin: 0 0 var(--vvj-space-14, 14px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--vvj-stage-muted);
+  font-size: var(--vvj-text-13, 0.8125rem);
+  font-weight: 600;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-kicker::before {
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  margin: 0 var(--vvj-space-12, 12px) 0 0;
+  content: "";
+  vertical-align: middle;
+  background: currentColor;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-title {
+  margin: 0;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--vvj-stage-color);
+  font-family: var(--vvj-font-display);
+  font-size: clamp(2.5rem, 8cqi, 6.4rem);
+  font-weight: 500;
+  line-height: 0.95;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-summary {
+  max-width: 46ch;
+  margin: var(--vvj-space-18, 18px) 0 0;
+  color: var(--vvj-stage-muted);
+  font-size: clamp(1rem, 1.3cqi, 1.2rem);
+  line-height: 1.5;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-link {
+  margin: var(--vvj-space-14, 14px) 0 0;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvj-link a {
+  color: var(--vvj-stage-color);
+  font-weight: 600;
+  text-underline-offset: 6px;
+}
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > * {
+  animation: vvjs-iris-rise var(--vvj-dur-900, 0.9s) var(--vvj-ease-out) both;
+}
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(1) {
+  animation-delay: var(--vvj-dur-450, 0.45s);
+}
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(2) {
+  animation-delay: var(--vvj-dur-550, 0.55s);
+}
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(3) {
+  animation-delay: var(--vvj-dur-700, 0.7s);
+}
+.vvj-pattern--vvjs-iris :where(.vvjs-item:is(.active, .vvjs-active)) :where(.vvjs-hero-content) > :nth-child(4) {
+  animation-delay: var(--vvj-dur-800, 0.8s);
+}
+@keyframes vvjs-iris-rise {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(60%);
+  }
+  to {
+    clip-path: inset(0 0 -20% 0);
+    transform: none;
+  }
+}
 
 /* The glass dock: pause with its time ring, then 01 02 03. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers { position: absolute; z-index: 5; inset: auto clamp(16px, 4cqi, 56px) clamp(24px, 3cqi, 40px) auto; display: flex; align-items: center; gap: var(--vvj-space-4, 4px); width: auto; margin: 0; padding: var(--vvj-space-6, 6px); border-radius: var(--vvj-radius-pill, 999px);
-  background: var(--vvj-glass-bg); box-shadow: inset 0 0 0 1px var(--vvj-glass-line), var(--vvj-glass-shadow); -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6); }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers {
+  position: absolute;
+  z-index: 5;
+  inset: auto clamp(16px, 4cqi, 56px) clamp(24px, 3cqi, 40px) auto;
+  display: flex;
+  align-items: center;
+  gap: var(--vvj-space-4, 4px);
+  width: auto;
+  margin: 0;
+  padding: var(--vvj-space-6, 6px);
+  border-radius: var(--vvj-radius-pill, 999px);
+  background: var(--vvj-glass-bg);
+  box-shadow:
+    inset 0 0 0 1px var(--vvj-glass-line),
+    var(--vvj-glass-shadow);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+}
 /* One row that never leaves the stage: the module wraps the nav, so many
    slides pushed the numbers onto a second row over the words. */
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers { flex-wrap: nowrap; max-width: calc(100% - 2 * clamp(16px, 4cqi, 56px)); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .dots-numbers-button-wrapper { display: flex; flex: 0 1 auto; gap: var(--vvj-space-2, 2px); counter-reset: vvjs-iris; min-width: 0; padding-block: var(--vvj-space-8, 8px); margin-block: calc(var(--vvj-space-8, 8px) * -1); overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
-:where(.vvj-pattern--vvjs-iris .dots-numbers-button-wrapper)::-webkit-scrollbar { display: none; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button { flex-shrink: 0; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button { counter-increment: vvjs-iris; display: inline-grid; place-items: center; min-width: 44px; height: 44px; padding: 0 var(--vvj-space-14, 14px); border-radius: var(--vvj-radius-pill, 999px); font-size: 0; line-height: 1; text-align: center; transition: background-color var(--vvj-dur-300, 0.3s), color var(--vvj-dur-300, 0.3s), min-width var(--vvj-dur-500, 0.5s) var(--vvj-ease-out); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button::before { content: counter(vvjs-iris, decimal-leading-zero); font-size: var(--vvj-text-14, 0.875rem); font-weight: 600; font-variant-numeric: tabular-nums; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button:hover { background: var(--vvj-glass-line); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button.active { min-width: 72px; color: var(--vvj-stage-bg); background: var(--vvj-stage-color); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .play-pause-button { flex-shrink: 0; display: grid; place-items: center; width: 44px; height: 44px; margin: 0 var(--vvj-space-6, 6px) 0 0; border-radius: 50%; font-size: var(--vvj-text-15, 0.9375rem); color: var(--vvj-stage-color); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers button:active { transform: scale(.92); }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .echo-animation { position: absolute; inset: 50% auto auto 6px; width: 44px; height: 44px; margin: 0; padding: 0; transform: translateY(-50%); pointer-events: none; }
-.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .progressbar { width: 100%; height: 100%; border: 0; border-radius: 50%; background: conic-gradient(var(--vvj-stage-color) var(--progress, 0%), var(--vvj-stage-line) 0);
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), var(--vvj-mask-solid) calc(100% - 2.5px)); mask: radial-gradient(farthest-side, transparent calc(100% - 3px), var(--vvj-mask-solid) calc(100% - 2.5px)); }
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers {
+  flex-wrap: nowrap;
+  max-width: calc(100% - 2 * clamp(16px, 4cqi, 56px));
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .dots-numbers-button-wrapper {
+  display: flex;
+  overflow-x: auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  counter-reset: vvjs-iris;
+  gap: var(--vvj-space-2, 2px);
+  padding-block: var(--vvj-space-8, 8px);
+  margin-block: calc(var(--vvj-space-8, 8px) * -1);
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+:where(.vvj-pattern--vvjs-iris .dots-numbers-button-wrapper)::-webkit-scrollbar {
+  display: none;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button {
+  flex-shrink: 0;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 var(--vvj-space-14, 14px);
+  counter-increment: vvjs-iris;
+  transition:
+    background-color var(--vvj-dur-300, 0.3s),
+    color var(--vvj-dur-300, 0.3s),
+    min-width var(--vvj-dur-500, 0.5s) var(--vvj-ease-out);
+  text-align: center;
+  border-radius: var(--vvj-radius-pill, 999px);
+  font-size: 0;
+  line-height: 1;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button::before {
+  content: counter(vvjs-iris, decimal-leading-zero);
+  font-size: var(--vvj-text-14, 0.875rem);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button:hover {
+  background: var(--vvj-glass-line);
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button.active {
+  min-width: 72px;
+  color: var(--vvj-stage-bg);
+  background: var(--vvj-stage-color);
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .play-pause-button {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 var(--vvj-space-6, 6px) 0 0;
+  color: var(--vvj-stage-color);
+  border-radius: 50%;
+  font-size: var(--vvj-text-15, 0.9375rem);
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers button:active {
+  transform: scale(0.92);
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .echo-animation {
+  position: absolute;
+  inset: 50% auto auto 6px;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.vvj-pattern.vvjs.vvj-pattern--vvjs-iris .progressbar {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--vvj-stage-color) var(--progress, 0%), var(--vvj-stage-line) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), var(--vvj-mask-solid) calc(100% - 2.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), var(--vvj-mask-solid) calc(100% - 2.5px));
+}
 
 @container vvj-region (max-width: 720px) {
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers { inset: auto 12px clamp(24px, 3cqi, 40px) 12px; justify-content: space-between; }
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button { padding: 0 var(--vvj-space-10, 10px); }
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-items .vvjs-hero-content { translate: clamp(20px, 5cqi, 80px) -96px; width: calc(100% - 40px); }
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris:dir(rtl) .vvjs-items .vvjs-hero-content { translate: calc(-1 * clamp(20px, 5cqi, 80px)) -96px; }
+  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers {
+    inset: auto 12px clamp(24px, 3cqi, 40px) 12px;
+    justify-content: space-between;
+  }
+  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .dots-numbers-button {
+    padding: 0 var(--vvj-space-10, 10px);
+  }
+  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-items .vvjs-hero-content {
+    translate: clamp(20px, 5cqi, 80px) -96px;
+    width: calc(100% - 40px);
+  }
+  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris:dir(rtl) .vvjs-items .vvjs-hero-content {
+    translate: calc(-1 * clamp(20px, 5cqi, 80px)) -96px;
+  }
 }
 
 /* Own place and style (rule 11): on a wide region play and its time ring stand alone on the photo. */
 @container vvj-region (min-width: 721px) {
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .play-pause-button { position: absolute; inset-inline-end: 0; inset-block-end: calc(100% + 9cqi); margin: 0; background: var(--vvj-glass-bg); box-shadow: inset 0 0 0 1px var(--vvj-glass-line); }
-  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .echo-animation { inset-inline: auto 0; inset-block: auto calc(100% + 9cqi); transform: none; }
+  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .vvjs-inner .nav-dots-numbers .play-pause-button {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-end: calc(100% + 9cqi);
+    margin: 0;
+    background: var(--vvj-glass-bg);
+    box-shadow: inset 0 0 0 1px var(--vvj-glass-line);
+  }
+  .vvj-pattern.vvjs.vvj-pattern--vvjs-iris .echo-animation {
+    inset-inline: auto 0;
+    inset-block: auto calc(100% + 9cqi);
+    transform: none;
+  }
 }

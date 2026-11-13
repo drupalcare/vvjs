@@ -91,6 +91,20 @@
 {# Calculate total slides once for efficiency #}
 {% set total_slides = rows|length %}
 
+{# Accessibility state of the slides, shared by both slide macros. The
+   slides are tab panels only when the tabs are printed; the start slide is
+   clamped the same way as in render_navigation_dots(). #}
+{% set start_slide = behavior_config.start_index > total_slides ? total_slides : behavior_config.start_index %}
+{% set slide_a11y = {
+  tabs: navigation_config.navigation != 'none' and total_slides > 1,
+  total: total_slides,
+  start: start_slide < 1 ? 1 : start_slide,
+} %}
+
+{# While slides advance on their own, the play/pause control is always shown
+   so visitors can stop the motion (WCAG 2.2.2). #}
+{% set has_play_pause = animation_config.time_in_seconds > 0 %}
+
 {# A Pattern chosen in the style settings (vvj_patterns enabled). #}
 {% set vvj_pattern = options.vvj_pattern_active|default('') %}
 {% set vvj_features = options.vvj_pattern_features|default([]) %}
@@ -118,7 +132,7 @@
 #}
 
 {# Macro for generating individual hero slideshow items #}
-{% macro render_hero_slide(row_content, slideshow_config, hero_config, navigation_config, loop_info, key) %}
+{% macro render_hero_slide(row_content, slideshow_config, hero_config, slide_a11y, loop_info) %}
   {# Split content into image and content sections - preserved exact logic #}
   {% set split_content = row_content|split('<div class="vvjs-separator"></div>') %}
   {% set hero_image = split_content[0]|default('') %}
@@ -126,15 +140,20 @@
 
   <div id="vvjs-item-{{ slideshow_config.unique_id }}-{{ loop_info.index }}"
        class="vvjs-item"
+       {% if slide_a11y.tabs %}
        role="tabpanel"
-       tabindex="{{ loop_info.first ? '0' : '-1' }}"
-       aria-hidden="{{ loop_info.first ? 'false' : 'true' }}"
-       {%- if navigation_config.navigation != 'none' %} aria-labelledby="dots-numbers-button-{{ loop_info.index }}"{% endif %}>
+       aria-labelledby="dots-numbers-button-{{ slideshow_config.unique_id }}-{{ loop_info.index }}"
+       {% else %}
+       role="group"
+       aria-roledescription="{{ 'slide'|t }}"
+       aria-label="{{ '@index of @total'|t({'@index': loop_info.index, '@total': slide_a11y.total}) }}"
+       {% endif %}
+       tabindex="{{ loop_info.index == slide_a11y.start ? '0' : '-1' }}"
+       aria-hidden="{{ loop_info.index == slide_a11y.start ? 'false' : 'true' }}"
+       {%- if loop_info.index != slide_a11y.start %} inert{% endif %}>
 
     <div class="vvjs-item-inner"
-         id="{{ slideshow_config.slide_inner_id }}-{{ loop_info.index }}-pane"
-         role="group"
-         aria-labelledby="{{ slideshow_config.slide_id }}-image-{{ key + 1 }} {{ slideshow_config.slide_id }}-content-{{ key + 1 }}">
+         id="{{ slideshow_config.slide_inner_id }}-{{ loop_info.index }}-pane">
 
       <div class="vvjs-hero-image">
         {# SECURITY: Using |raw since content is already rendered by Drupal's system #}
@@ -152,14 +171,22 @@
   </div>
 {% endmacro %}
 
-{# Macro for generating regular slideshow items #}
-{% macro render_regular_slide(row, slideshow_config, navigation_config, loop_info) %}
+{# Macro for generating regular slideshow items. A slide is a tab panel named
+   by its tab when the tabs are printed, otherwise a named slide group. #}
+{% macro render_regular_slide(row, slideshow_config, slide_a11y, loop_info) %}
   <div id="vvjs-item-{{ slideshow_config.unique_id }}-{{ loop_info.index }}"
        class="vvjs-item"
+       {% if slide_a11y.tabs %}
        role="tabpanel"
-       tabindex="{{ loop_info.first ? '0' : '-1' }}"
-       aria-hidden="{{ loop_info.first ? 'false' : 'true' }}"
-       {%- if navigation_config.navigation != 'none' %} aria-labelledby="dots-numbers-button-{{ loop_info.index }}"{% endif %}>
+       aria-labelledby="dots-numbers-button-{{ slideshow_config.unique_id }}-{{ loop_info.index }}"
+       {% else %}
+       role="group"
+       aria-roledescription="{{ 'slide'|t }}"
+       aria-label="{{ '@index of @total'|t({'@index': loop_info.index, '@total': slide_a11y.total}) }}"
+       {% endif %}
+       tabindex="{{ loop_info.index == slide_a11y.start ? '0' : '-1' }}"
+       aria-hidden="{{ loop_info.index == slide_a11y.start ? 'false' : 'true' }}"
+       {%- if loop_info.index != slide_a11y.start %} inert{% endif %}>
     <div id="{{ slideshow_config.slide_inner_id }}-{{ loop_info.index }}-pane" class="vvjs-item-inner">
       {{ row.content }}
     </div>
@@ -185,7 +212,7 @@
       {% if deeplink_config.enabled and deeplink_config.identifier and navigation_config.navigation != 'none' %}
         {# Deep linking enabled - use anchor links #}
         {% set slide_link = '#' ~ deeplink_config.identifier ~ '-' ~ loop.index %}
-        <a id="dots-numbers-button-{{ loop.index }}"
+        <a id="dots-numbers-button-{{ slideshow_config.unique_id }}-{{ loop.index }}"
            href="{{ slide_link }}"
            class="button dots-numbers-button{{ is_active ? ' active' : '' }} control-btn"
            role="tab"
@@ -197,7 +224,7 @@
         </a>
       {% else %}
         {# Default buttons #}
-        <button id="dots-numbers-button-{{ loop.index }}"
+        <button id="dots-numbers-button-{{ slideshow_config.unique_id }}-{{ loop.index }}"
                 class="button dots-numbers-button{{ is_active ? ' active' : '' }} control-btn"
                 type="button"
                 role="tab"
@@ -225,9 +252,9 @@
      aria-labelledby="slideshow-heading-{{ slideshow_config.unique_id }}">
 
   {# Hidden heading for screen readers #}
-  <div id="slideshow-heading-{{ slideshow_config.unique_id }}" role="heading" aria-level="2" class="visually-hidden">
+  <h2 id="slideshow-heading-{{ slideshow_config.unique_id }}" class="visually-hidden">
     {{ vvj_pattern and options.vvj_pattern_label ? options.vvj_pattern_label : 'Slideshow'|t }}
-  </div>
+  </h2>
 
   {# Inner container with JavaScript data attributes - preserved exact structure #}
   <div id="{{ slideshow_config.slide_inner_id }}"
@@ -237,7 +264,7 @@
        data-navigation="{{ navigation_config.navigation != 'none' ? 'true' : 'false' }}"
        data-show-total-slides="{{ navigation_config.show_total_slides ? 'true' : 'false' }}"
        data-show-slide-progress="{{ navigation_config.show_slide_progress ? 'true' : 'false' }}"
-       data-play-pause="{{ navigation_config.show_play_pause ? 'true' : 'false' }}"
+       data-play-pause="{{ has_play_pause ? 'true' : 'false' }}"
        data-static="{{ animation_config.is_static ? 'true' : 'false' }}"
        data-time="{{ animation_config.time_in_seconds }}"
        data-pause-on-hover="{{ behavior_config.pause_on_hover ? 'true' : 'false' }}"
@@ -270,15 +297,15 @@
 
       {% if hero_config.enabled %}
         {# Hero Slideshow Mode - Improved image/content layout #}
-        {% for key, row in rows %}
+        {% for row in rows %}
           {% set row_content = row.content|render %}
-          {{ _self.render_hero_slide(row_content, slideshow_config, hero_config, navigation_config, loop, key) }}
+          {{ _self.render_hero_slide(row_content, slideshow_config, hero_config, slide_a11y, loop) }}
         {% endfor %}
 
       {% else %}
         {# Regular Slideshow Mode - Standard content display #}
         {% for row in rows %}
-          {{ _self.render_regular_slide(row, slideshow_config, navigation_config, loop) }}
+          {{ _self.render_regular_slide(row, slideshow_config, slide_a11y, loop) }}
         {% endfor %}
 
       {% endif %}
@@ -295,13 +322,14 @@
     {% if total_slides > 1 %}
 
       {# Bottom navigation panel (play/pause, progress, dots/numbers, counter) #}
-      {% if navigation_config.navigation != 'none' or navigation_config.show_total_slides or navigation_config.show_slide_progress or navigation_config.show_play_pause %}
+      {% if navigation_config.navigation != 'none' or navigation_config.show_total_slides or navigation_config.show_slide_progress or has_play_pause %}
         <div id="nav-dots-numbers-{{ slideshow_config.unique_id }}"
-             aria-label="{{ 'Slideshow Tabs'|t }}"
+             role="group"
+             aria-label="{{ 'Slideshow controls'|t }}"
              class="nav-dots-numbers {{ navigation_config.navigation }}">
 
           {# Play/Pause Button #}
-          {% if navigation_config.show_play_pause and animation_config.time_in_seconds > 0 %}
+          {% if has_play_pause %}
           <button id="play-pause-button-{{ slideshow_config.unique_id }}"
                   type="button"
                   aria-label="{{ 'Pause slideshow'|t }}"
